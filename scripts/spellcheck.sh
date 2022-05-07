@@ -21,6 +21,7 @@ for file in $(find ../. -name "*.md" -o -name "*.tex"); do
     linesBeforeCheck=$(cat $results | wc -l)
     SpellcheckFile $file
     linesAfterCheck=$(cat $results | wc -l)
+    linesAfterCheck=$((linesAfterCheck - 1))
     
     if [ $linesAfterCheck -gt $linesBeforeCheck ]; then
         foundError=true
@@ -33,6 +34,6 @@ if [ $foundError = true ]; then
     cat $results
     exit 1
 else
-    printf "Spellcheck complete. No errors found."
+    printf "Spellcheck complete. No errors found.\n"
     exit 0
 fi
