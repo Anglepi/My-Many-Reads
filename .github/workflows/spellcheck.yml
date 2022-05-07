@@ -5,6 +5,7 @@ on:
       - '**.md'
       - '**.tex'
       - '.github/workflows/spellcheck.yml'
+      - 'scripts/spellcheck.sh'
 
 jobs:
   spellcheck:
