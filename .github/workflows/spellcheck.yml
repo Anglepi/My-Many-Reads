@@ -4,6 +4,7 @@ on:
     paths:
       - '**.md'
       - '**.tex'
+      - '.github/workflows/spellcheck.yml'
 
 jobs:
   spellcheck:
@@ -16,6 +17,9 @@ jobs:
 
     - name: Install spellchecker tool
       run: sudo apt install aspell aspell-es aspell-en
+
+    - name: Add execution permissions to spellchecker script
+      run: chmod +x scripts/spellcheck.sh
 
     - name: Execute spellchecker target
       run: make spellcheck
