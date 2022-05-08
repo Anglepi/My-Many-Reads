@@ -7,3 +7,7 @@ biblio
 colorlinks
 linkcolor
 urlcolor
+Goodreads
+Librarything
+gamificación
+metadatos
