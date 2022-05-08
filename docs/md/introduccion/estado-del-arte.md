@@ -1,6 +1,6 @@
 # Estado del arte
 
-Actualmente solo destacan otras dos plataformas similares, [goodreads](https://www.goodreads.com/) y [librarything](https://www.librarything.com/), siendo la primera la opción más conocida y popular en cuanto a este tipo de plataformas. A continuación se exploran las características de estas dos plataformas, listando aspectos positivos y negativos.
+Actualmente solo destacan otras dos plataformas similares, [Goodreads](https://www.goodreads.com/) y [Librarything](https://www.librarything.com/), siendo la primera la opción más conocida y popular en cuanto a este tipo de plataformas. A continuación se exploran las características de estas dos plataformas, listando aspectos positivos y negativos.
 
 ## Goodreads
 
