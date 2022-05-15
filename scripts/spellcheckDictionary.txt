@@ -11,3 +11,5 @@ Goodreads
 Librarything
 gamificación
 metadatos
+KanBan
+personalizables
