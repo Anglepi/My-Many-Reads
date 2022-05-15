@@ -1,0 +1,2 @@
+spellcheck:
+	./scripts/spellcheck.sh
