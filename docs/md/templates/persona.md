@@ -6,7 +6,7 @@
 | ----------- | ----------------------------------------------------------------------------- |
 | Role        | _Role the persona performs regarding the platform_                            |
 | Occupation  | _What do they do for a living? This gives an idea of the persona's knowledge_ |
-| Biograpyhy  | _Brief introduction of the persona_                                           |
+| Biography   | _Brief introduction of the persona_                                           |
 | Fears       | _Concerns the persona might have regarding the use of My Many Reads_          |
 | Necessities | _What is the persona trying to achieve by using My Many Reads_                |
 
