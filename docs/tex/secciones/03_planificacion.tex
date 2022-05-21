@@ -24,6 +24,20 @@ Los tipos de \textit{issues} más destacables de mencionar son las historias de 
 
 \subsection{Milestones}
 
+Cada \textit{milestone} representa un \textit{Producto Mínimamente Viable} o PMV. Un \textit{milestone} recoge todo el conjunto de tareas (\textit{issues}) necesarios de cumplimentar para alcanzar los requisitos propuestos del PMV propuesto. Del uso de estos \textit{milestones} como representaciones de PMVs se deduce fácilmente que se sigue una metodología que emplea iteraciones para diferentes entregas del proyecto en función de su desarrollo, es decir, cada nuevo \textit{milestone} se construye como un incremento del anterior, por lo que cada PMV debe suponer un incremento notable en la funcionalidad.
+\\\\
+El hecho de que estos \textit{milestones} estén compuestos del conjunto de \textit{issues} necesarios para su terminación no quiere decir que absolutamente todos los \textit{issues} del proyecto estén asignados a un \textit{milestone}, puesto que como se ha explicado en la sección anterior, un \textit{issue} es una herramienta muy versátil, permitiendo instancias de éstos dedicadas a tareas cotidianas o de menor importancia que no encajen como parte de un \textit{milestone}, como por ejemplo la corrección de erratas.
+\\\\
+Por lo general, un \textit{milestone} estará compuesto de historias de usuario o historias técnicas, pero eso no quiere decir que éstas (mayormente las historias de usuario) puedan formar parte de varios \textit{milestones}. Un ejemplo genérico de este caso sería el de la siguiente historia de usuario:
+
+\begin{center}
+    \textit{Como Usuario de My Many Reads,}\\
+    \textit{quiero poder consultar recomendaciones personalizadas de libros,}\\
+    \textit{para así ayudarme en la toma de decisión de mi próxima lectura.}
+\end{center}
+
+Esta historia se podría cumplimentar fácilmente con un algoritmo muy básico de recomendaciones en base a la lista de libros leídos por el usuario. Sin embargo, en el caso de \textit{My Many Reads}, esta historia necesita algo más que un algoritmo básico. Añadir complejidad al algoritmo para producir mejores resultados u ofrecer métodos alternativos de obtener recomendaciones también pueden ser parte de esta historia propuesta, pero no tendrían por qué serlo del mismo PMV, por lo que esta historia podría tener varios niveles de completitud, pudiendo pertenecer algunos de ellos a \textit{milestones} diferentes.
+
 \section{Temporización}
 
 \section{Seguimiento del desarrollo}
