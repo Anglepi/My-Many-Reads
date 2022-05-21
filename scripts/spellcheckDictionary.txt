@@ -13,3 +13,6 @@ gamificación
 metadatos
 KanBan
 personalizables
+PMV
+PMVs
+serlo
