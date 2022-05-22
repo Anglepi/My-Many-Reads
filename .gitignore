@@ -5,14 +5,14 @@
 Spellchecker.results
 
 # Latex generated files
-/docs/tex/*.aux
-/docs/tex/*.bbl
-/docs/tex/*.blg
-/docs/tex/*.lof
-/docs/tex/*.log
-/docs/tex/*.lot
-/docs/tex/*.out
-/docs/tex/*.toc
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.out
+*.toc
 
 # PDF files
 *.pdf
