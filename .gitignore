@@ -3,3 +3,16 @@
 
 # Spellchecker results file
 Spellchecker.results
+
+# Latex generated files
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+
+# PDF files
+*.pdf

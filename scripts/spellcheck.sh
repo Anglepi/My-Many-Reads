@@ -12,7 +12,7 @@ SpellcheckFile() {
     fi
 
     echo "Spellchecking $1" >> $results
-    cat $1 | aspell --lang=en --mode=$mode list | aspell --lang=es --mode=$mode list | sort >> $results
+    cat $1 | aspell --lang=en --mode=$mode list | aspell --lang=es --mode=$mode --personal=./scripts/spellcheckDictionary.txt list | sort >> $results
 }
 
 foundError=false
