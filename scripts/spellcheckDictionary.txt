@@ -18,3 +18,4 @@ PMVs
 serlo
 disfrutable
 Ésto
+Covid
