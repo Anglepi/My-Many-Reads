@@ -19,5 +19,4 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build PDF
-        working-directory: ./docs/tex
         run: make doc
