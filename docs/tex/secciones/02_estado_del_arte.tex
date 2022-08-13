@@ -1,9 +1,39 @@
 \chapter{Estado del arte}
 \label{Estado del arte}
 
+Con lo descrito hasta ahora, se pueden identificar fácilmente dos tipos de usuarios o clientes de \textit{My Many Reads}, aunque puede que en el futuro aparezcan más. Éstos son:
+\begin{itemize}
+    \item El \textbf{usuario lector}, que visita la plataforma como un punto de interés y apoyo para su \textit{hobby}.
+    \item El \textbf{usuario editorial}, que consume el tráfico de información generado con el fin de introducir anuncios o hacer estudios de mercado.
+\end{itemize}
+
+\section{Problemas de los usuarios}
+
+Entre estos dos usuarios se puede generar la siguiente lista de problemas:
+\begin{itemize}
+    \item \textbf{Usuario lector}
+    \begin{itemize}
+        \item Necesita una herramienta para gestionar mis lecturas.
+        \item Necesita recomendaciones de libros nuevos, que se adapten a mis gustos.
+        \item Necesita explorar libremente los libros existentes por características como la popularidad, en caso de querer explorar nuevas opciones.
+        \item Necesita conocer libros similares entre sí, junto a los motivos de la similitud, en caso de querer leer algo parecido a un libro que ya ha leído.
+    \end{itemize}
+    \item \textbf{Usuario editorial}
+    \begin{itemize}
+        \item Necesita saber cuales son las tendencias más populares, como autores o géneros, para conocer el estado del mercado actual.
+        \item Necesita publicitar libros en lugares concurridos por la audiencia adecuada.
+    \end{itemize}
+\end{itemize}
+
 Actualmente solo destacan otras dos plataformas similares, Goodreads y Librarything, siendo la primera la opción más conocida y popular en cuanto a este tipo de plataformas. A continuación se exploran las características de estas dos plataformas, listando aspectos positivos y negativos.
 
-\section[Goodreads]{Goodreads\\ {\large \url{https://www.goodreads.com/}}}
+\section{Plataformas existentes}
+
+En esta sección se exploran las características de algunas plataformas ya existentes similares a \textit{My Many Reads}, resolviendo problemas comunes y compartiendo objetivos.
+
+En sus correspondientes secciones se realiza un análisis exploratorio de ambas plataformas, enumerando aspectos positivos y negativos con el fin de descubrir posibles fortalezas y debilidades a tener en cuenta durante el desarrollo de \textit{My Many Reads}, y finalmente incluyendo una tabla en la que se indica qué problemas de los mencionados anteriormente solventa y hasta que punto.
+
+\subsection[Goodreads]{Goodreads\\ {\large \url{https://www.goodreads.com/}}}
 
 Sin duda la opción más popular, esta plataforma ofrece una serie de opciones bastante llamativas y útiles:
 
@@ -32,7 +62,40 @@ No por nada esta plataforma es la más popular, pero sin embargo no carece de as
     \item El autor, otro elemento del cual un usuario podría usar para guiarse a la hora de buscar su siguiente lectura, solo dispone de un perfil muy similar al que podría tener cualquier usuario común, diferenciándose en una sección de AMA y de listado de sus libros. No parece haber un lugar en el que discutir sobre el estilo narrativo u otros elementos comunes a todos sus libros, que puedan llevar a un usuario a leer diferentes libros del autor que no compartan género entre sí.
 \end{itemize}
 
-\section[Librarything]{Librarything\\ {\large \url{https://www.librarything.com/}}}
+En la tabla siguiente se muestra el grado de cumplimiento que tiene esta plataforma con respecto a los problemas listados anteriormente:
+
+\begin{table}[H]
+    \begin{tabularx}{\linewidth}{|X|X|}
+        \hline
+        \textbf{Problema} & \textbf{¿Lo solventa \textit{Goodreads}?} \\
+        \hline
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Usuario lector}} \\
+        \hline
+        Tiene una herramienta para gestionar lecturas     & \textbf{Sí}, con \textit{shelves} para categorizar tus libros \\ 
+        \hline
+        Ofrece recomendaciones adaptadas a los gustos del usuario & \textbf{Sí}, según géneros, \textit{shelves} y privadas de otros usuarios \\ 
+        \hline
+        Permite explorar libros estableciendo criterios de búsqueda   & \textbf{Parcialmente}, sólo por géneros \\ 
+        \hline
+        Permite consultar libros relacionados con otros   & \textbf{Parcialmente}, pero sin justificación \\ 
+        \hline
+        \multicolumn{2}{|l|}{ \textbf{Usuario editorial}} \\
+        \hline
+        Muestra las tendencias actuales     & \textbf{Parcialmente}, muestra 25 tendencias entre todos los usuarios del sitio, además de unos premios anuales. No permite por ejemplo tendencias por género o autor. \\ 
+        \hline
+        Muestra publicidad dirigida     & \textbf{Sí}, a través de artículos, solo uno por libro. Para ver más hay que ir a una sección propia. Además, enlaces de compra en tiendas online. \\ 
+        \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Modelo de negocio}
+
+En esta plataforma, el modelo de negocio queda claramente visible. En el pie de página se puede observar una sección denominada \textit{Work with us} en la que aparecen enlaces de interés para autores y anunciantes que puedan estar interesados en darse a conocer o adquirir más público a través de la plataforma.
+
+Por otra parte, y no quedando reflejado tan claro de cara al usuario, también venden información con el objetivo de mostrar publicidad más relevante a los usuarios, y los enlaces a tiendas online para comprar libros que muestra suelen tener incrustados algún código de referencia mediante el cual, probablemente, la página gane cierta comisión por las ventas realizadas a través de dicho enlace.
+
+\subsection[Librarything]{Librarything\\ {\large \url{https://www.librarything.com/}}}
 
 La opción menos popular, no da indicios de la funcionalidad al completo que ofrece hasta que el usuario se registra. Además de ofrecer menos funcionalidad que Goodreads, parece que tiene algunos problemas adicionales. Comenzando por lo que ofrece esta plataforma:
 
@@ -57,7 +120,42 @@ La funcionalidad ofrecida es claramente menor, aunque cabe decir que tiene lo su
 \item No existen listas de libros y las recomendaciones escritas por usuarios no tienen por qué incluir el motivo de la recomendación, lo cual no genera mucha confianza.
 \end{itemize}
 
-\section{Conclusiones}
+En la tabla siguiente se muestra el grado de cumplimiento que tiene esta plataforma con respecto a los problemas listados anteriormente:
+
+\begin{table}[H]
+    \begin{tabularx}{\linewidth}{|X|X|}
+        \hline
+        \textbf{Problema} & \textbf{¿Lo solventa \textit{Goodreads}?} \\
+        \hline
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Usuario lector}} \\
+        \hline
+        Tiene una herramienta para gestionar lecturas     & \textbf{Sí}, con colecciones para categorizar tus libros \\ 
+        \hline
+        Ofrece recomendaciones adaptadas a los gustos del usuario & \textbf{Sí}, de entre los más populares y los más recientes \\ 
+        \hline
+        Permite explorar libros estableciendo criterios de búsqueda   & \textbf{Parcialmente}, sólo por términos de popularidad \\ 
+        \hline
+        Permite consultar libros relacionados con otros   & \textbf{Parcialmente}, por autor, géneros, comunes a los usuarios, pero sin justificación \\ 
+        \hline
+        \multicolumn{2}{|l|}{ \textbf{Usuario editorial}} \\
+        \hline
+        Muestra las tendencias actuales     & \textbf{Sí}, en intervalos de tiempo configurables, así como otras estadísticas sobre autores, series e idiomas. \\ 
+        \hline
+        Muestra publicidad dirigida     & \textbf{Parcialmente}, solo enlaces a tiendas online. \\ 
+        \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{Modelo de negocio}
+
+Hasta hace poco, parece ser que esta plataforma subsistía a base de suscripciones mensuales, hasta que debido a la pandemia del Covid-19, decidieron cambiar este aspecto y volverse gratuito.
+
+A pesar de todo esto, siguen sin mostrar anuncios a los usuarios miembro, y si modelo de negocio no termina de estar totalmente claro. Es cierto que ofrecen estadísticas que podrían ser útiles, pero son de acceso libre. 
+
+Teniendo en cuenta este último cambio, y el poco énfasis realizado en mostrar anuncios y publicitar nuevo contenido del mundo de la lectura, no aporta una sensación de tener algún tipo de beneficios desde el punto de vista del usuario promedio, pero en los términos de servicio se indica que ésta plataforma se reserva los derechos de vender toda la información anónima, es decir, que no se pueda asociar a una persona concreta.
+ 
+\subsection{Conclusiones}
 
 Aunque también hay que mencionar que existen otras plataformas de este estilo pero con temática diferente, en cuanto a libros hay pocas opciones, y la que parece la mejor de ellas, Goodreads, tiene una amplitud de aspectos que se podrían mejorar, y por tanto introducirse en este entorno no parece una lucha imposible.
 
@@ -80,3 +178,21 @@ Aspectos negativos:
 \item Al consultar los libros relacionados con uno en concreto, no especifican por qué están relacionados con éstos salvo por \textit{"A muchos usuarios también les gustó este otro libro"}. Más detalles del por qué están relacionados ayudarían a un usuario a tomar una decisión.
 \item La abundancia de funcionalidades \textit{"Nice to have"} como los \textit{challenges}, \textit{quizzes}, etc. distraen al usuario de la funcionalidad principal.
 \end{itemize}
+
+\section{En \textit{My Many Reads}}
+
+Considerando los puntos débiles y fuertes de estas plataformas (principalmente \textit{Goodreads} ya que es la más notable) se puede elaborar una lista de los elementos principales que resultarán de mayor utilidad para el inicio del ciclo de vida, ya que otros, como los elementos de gamificación, solo resultarían interesantes cuando se alcance cierta cantidad de usuarios activos en la plataforma, y por tanto no es necesario considerarlos de momento.
+
+\begin{table}[H]
+    \begin{tabularx}{\linewidth}{|X|X|}
+        \hline
+        \textbf{Apartado de interés} & \textbf{Propuesta de mejora} \\
+        \hline
+        Biblioteca gestionable     & La utilidad de mayor importancia en este tipo de aplicaciones. Tanto en \textit{Goodreads} como en \textit{Librarything} éstas son similares, y difícilmente mejorables. Se propone mantener las características ofrecidas por éstas con una interfaz mejorada y la opción adicional de incluir comentarios privados acerca de cada libro, que sirvan al lector como anotaciones para el futuro incluyendo aspectos negativos y positivos que sean de utilidad para decidir si volver a realizar la lectura. \\ 
+        \hline
+        Sistema de recomendaciones & Las recomendaciones a partir de la biblioteca solo se pueden mejorar con un ajuste del algoritmo. Dado que este es privado para cada plataforma, habrá que construir uno nuevo realizando un estudio de los parámetros a considerar y el peso de estos para el resultado. Adicionalmente se pretende ofrecer una nueva modalidad de recomendaciones en la que los usuarios relacionen dos libros justificando dicha relación, permitiendo a otros usuarios votar por ésta y consultarlas por popularidad para obtener una información más relevante. \\ 
+        \hline
+        Motor de búsqueda   & En ambas plataformas el sistema de búsqueda de libros no permite una gran libertad a la hora de consultar libros en general en base a ciertos criterios de búsqueda, probablemente porque confíen en que solo se quiera buscar en base a las recomendaciones. Sin embargo, es posible que alguien quiera salir un poco de su zona de comfort de lectura y explorar nuevos géneros. Esto demuestra la utilidad de un sistema de búsqueda con capacidades más complejas de filtrado, combinando características como popularidad y géneros, autores o incluso fechas de publicación. \\ 
+        \hline
+    \end{tabularx}
+\end{table}

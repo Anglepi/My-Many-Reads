@@ -21,3 +21,4 @@ disfrutable
 LaTeX
 Subtasks
 Touchpoints
+Covid
