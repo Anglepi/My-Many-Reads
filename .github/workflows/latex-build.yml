@@ -1,0 +1,23 @@
+name: Build PDF
+
+on:
+  push:
+    paths:
+      - ".github/workflows/latex-build.yml"
+      - "**.tex"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build PDF
+
+    container:
+      image: danteev/texlive:latest
+
+    steps:
+      - name: Download repo
+        uses: actions/checkout@v2
+
+      - name: Build PDF
+        working-directory: ./doc/tex
+        run: make doc
