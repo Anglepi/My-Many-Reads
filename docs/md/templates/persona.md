@@ -17,17 +17,17 @@
     \centering
     \begin{tabularx}{\columnwidth}{|l|X|}
         \hline
-        Nombre y edad & Nombre y edad de la persona. \\
+        \textbf{Nombre y edad} & Nombre y edad de la persona. \\
         \hline
-        Rol & Papel que cumple con respecto a My Many Reads. \\
+        \textbf{Rol} & Papel que cumple con respecto a My Many Reads. \\
         \hline
-        Ocupación & A qué se dedica, con el fin de dar una idea general de los conocimientos de la persona. \\
+        \textbf{Ocupación} & A qué se dedica, con el fin de dar una idea general de los conocimientos de la persona. \\
         \hline
-        Biografía & Breve introducción de la persona. \\
+        \textbf{Biografía} & Breve introducción de la persona. \\
         \hline
-        Temores & Preocupaciones que tiene la persona sobre usar una plataforma como My Many Reads. \\
+        \textbf{Temores} & Preocupaciones que tiene la persona sobre usar una plataforma como My Many Reads. \\
         \hline
-        Necesidades & Qué busca obtener la persona de My Many Reads. \\
+        \textbf{Necesidades} & Qué busca obtener la persona de My Many Reads. \\
         \hline
     \end{tabularx}
 \end{table}
