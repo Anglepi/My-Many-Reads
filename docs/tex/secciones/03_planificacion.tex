@@ -40,4 +40,23 @@ Esta historia se podría cumplimentar fácilmente con un algoritmo muy básico d
 
 \section{Temporización}
 
+Dado que el proyecto se está enfocando de manera ágil, no procede realizar una temporización completa de éste. Dicha temporización se elabora en varias ocasiones a lo largo del desarrollo, para periodos más cortos de tiempo, pero siempre con objetivos más difusos y abiertos al cambio en largos plazos de tiempo.
+
+En primer lugar hay que categorizar los \textit{issues} de desarrollo del proyecto, para diferenciar entre varios tipos y asignar un tiempo a cada uno de éstos:
+
+\begin{itemize}
+    \item \textbf{Epopeyas:} representan un cambio notable en el proyecto. Son una agrupación de tareas, que se completa cuando la última de éstas se ha completado. Cada epopeya debe estar estimada a poder finalizarse en un periodo entre 5 y 8 días hábiles.
+    \item \textbf{Tareas:} las unidades mínimas de trabajo. Por sí solas, pueden incluso no suponer ningún cambio en el proyecto. Se deben planificar para ser realizables en 1 a 3 días hábiles.
+\end{itemize}
+
+Con varias de estas epopeyas se definiría un \textit{milestone} que, como se indica en el apartado anterior, representa un PMV. Lo ideal sería que cada PMV se desarrollase en entre 4 y 6 semanas, lo que significa aproximadamente 4 epopeyas por PMV, pero es posible que en algunos casos se requerirá más o menos tiempo o epopeyas para completar un \textit{milestone}.
+
+Cabe mencionar que también se emplearán issues que sean excepciones a estas categorías. Éstas pueden consistir en pequeños arreglos independientes, sin epopeya asignada, u objetivos de mayor duración que no encajan con la definición de epopeya pero que tampoco llegan a representar un PMV, quizás pudiendo definirse como \textit{fase}. Existirán pocas excepciones que no encajen en las categorías definidas previamente, y es por eso por lo que se prefiere simplemente dejarlas como excepciones y no intentar categorizar todas ellas.
+
 \section{Seguimiento del desarrollo}
+
+En la página del repositorio en GitHub se encuentran todas las \href{https://github.com/Anglepi/My-Many-Reads/issues}{\textit{issues}} y \href{https://github.com/Anglepi/My-Many-Reads/milestones}{\textit{milestones}} del proyecto, organizadas como ya se ha descrito anteriormente. Así mismo, en la sección de proyectos, se puede consultar un tablero \href{https://github.com/users/Anglepi/projects/1}{\textit{KanBan}} que contendrá tanto tareas como epopeyas de desarrollo y su estado actual, con el fin de apoyar la organización del desarrollo.
+
+Dado que se están empleando los \href{https://github.com/Anglepi/My-Many-Reads/pulls}{\textit{Pull Requests}} para realizar los incrementos de progreso en el proyecto, éstos también son una fuente muy útil de información acerca del seguimiento y estado del desarrollo. Éstos son un buen lugar para encontrar la documentación del proyecto en un momento dado, ya que entre las tareas de integración continua \href{https://github.com/Anglepi/My-Many-Reads/actions/workflows/latex-build.yml}{hay una que genera este PDF}, tan solo selecciona el \textit{workflow} deseado y lo encontrarás abajo.
+
+Adicionalmente, en la sección de \textit{Implementación} se enumerarán todos los PMV junto con sus epopeyas y las tareas que las forman, así como el tiempo dedicado a cada uno de estos elementos, que se irán actualizando conforme se desarrolle el proyecto.
