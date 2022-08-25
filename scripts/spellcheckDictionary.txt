@@ -25,3 +25,5 @@ Covid
 preprocesamiento
 TFM
 TFG
+preprocessing
+publishings
