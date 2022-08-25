@@ -22,3 +22,8 @@ LaTeX
 Subtasks
 Touchpoints
 Covid
+preprocesamiento
+TFM
+TFG
+preprocessing
+publishings

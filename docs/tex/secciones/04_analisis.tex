@@ -1,7 +1,141 @@
 \chapter{Análisis del problema}
 
+\section{\textit{User personas} y \textit{user journeys}}
+
+Tanto los \textit{user personas}\cite{personas} como los \textit{user journeys}\cite{userjourney} son buenas técnicas para realizar un análisis en profundidad del problema y obtener más detalles acerca de cuales son los puntos críticos de la aplicación y cómo atenderlos de manera que se garantice una buena experiencia por parte del usuario. Estas herramientas no solo ayudan a comprender mejor el problema, sino también a elaborar una lista de requisitos funcionales y no funcionales, que son de gran ayuda a la hora de diseñar e implementar cualquier proyecto.
+
+En primer lugar, una lista de \textit{personas} aportará una idea general de qué tipos de usuario podrían usar la plataforma solución planteada, además de, posiblemente, información adicional sobre problemas que pudieran existir y que radiquen en características concretas del usuario. A continuación se explorarán las historias de los usuarios a través de la plataforma, a través de \textit{user journeys}, con el fin de determinar qué soluciones desean encontrar y cómo pueden hacerlo, así como el nivel de satisfacción obtenido al realizar las acciones necesarias para conseguir su objetivo, influenciado por el proceso y el resultado. 
+
+\subsection{\textit{Personas}}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\columnwidth}{|l|X|}
+        \hline
+        \textbf{Nombre y edad} & Sergio, 24 años. \\
+        \hline
+        \textbf{Rol} & Fan de la lectura (usuario lector). \\
+        \hline
+        \textbf{Ocupación} & Estudiante de Marketing Digital. \\
+        \hline
+        \textbf{Biografía} & Ya finalizando sus estudios, Sergio encuentra más tiempo que dedicar a la lectura. Disfruta tanto de leer novelas de fantasía y ciencia ficción como libros de historia. Sabe manejarse bien con el ordenador, aunque solo es experto en herramientas de comunicación y diseño, y no suele usar otro tipo de aplicaciones. Le gusta mantener una lista de objetivos a corto, medio y largo plazo ya que le ayuda a llevar una mejor calidad de vida. \\
+        \hline
+        \textbf{Temores} & Su mayor preocupación es que no aparezcan los libros de historia que le regaló su abuelo. Por otra parte, su principal preocupación es que la biblioteca no le permita diferenciar sus lecturas de historia de las novelas, ya que él lo considera dos tipos de \textit{hobby} diferentes. \\
+        \hline
+        \textbf{Necesidades} & Quiere una herramienta que gestione sus lecturas, permitiéndole diferenciar entre finalizadas, en progreso y pendientes con el fin de apoyar su lista de objetivos. Como es muy organizado, le gustaría que la herramienta fuese fácil de gestionar y versátil en caso de querer cambiar la organización de sus lecturas. \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\columnwidth}{|l|X|}
+        \hline
+        \textbf{Nombre y edad} & Ana, 32 años. \\
+        \hline
+        \textbf{Rol} & Fan de la lectura (usuario lector). \\
+        \hline
+        \textbf{Ocupación} & Talent recruiter en una compañía de IT. \\
+        \hline
+        \textbf{Biografía} & Desde su adolescencia Ana ha disfrutado muchísimo de la lectura, aficionándose a muchos géneros diferentes. De hecho en casa tiene una estantería llena de libros, la cual organiza de diferentes maneras continuamente, incluso por colores de la portada. Últimamente le resulta difícil encontrar un nuevo libro para leer, y se ha dado cuenta de que ha releído bastantes libros, por lo que quiere explorar nuevos libros, incluso los no disponibles en su idioma. \\
+        \hline
+        \textbf{Temores} & A Ana le preocupa que \textit{My Many Reads} no ofrezca buenas herramientas para descubrir nuevos libros. Piensa que la única manera de obtener recomendaciones de un sistema de esta naturaleza es a partir de una biblioteca, y que por tanto la plataforma no le ofrecerá opciones muy diferentes a otras herramientas del estilo. También quiere explorar libros con libertad en función de sus propios criterios, y le preocupa no tener mucha libertad a la hora de hacer esta búsqueda. \\
+        \hline
+        \textbf{Necesidades} & Su principal necesidad es encontrar nuevas lecturas. Para ello no quiere depender solo de recomendaciones en base a su biblioteca, si no que le gustaría disponer de herramientas para explorar manualmente libros en base a unos criterios de búsqueda específicos. También le gustaría encontrar recomendaciones en base a un libro concreto, y si están justificadas por otros usuarios, mejor. \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\columnwidth}{|l|X|}
+        \hline
+        \textbf{Nombre y edad} & Julio, 29 años. \\
+        \hline
+        \textbf{Rol} & Consumidor de información generada. \\
+        \hline
+        \textbf{Ocupación} & Product Manager del equipo de análisis de datos de una editorial. \\
+        \hline
+        \textbf{Biografía} & Julio comenzó a trabajar en su nuevo puesto hace poco. En este le han encargado encontrar información sobre el mercado actual del libro, para saber qué géneros y autores tienen más potencial de alcanzar un mayor nivel de ventas. Trabaja con muchos tipos de herramientas para obtener la información a analizar, y le gusta estar al día con las noticias de nuevas publicaciones. \\
+        \hline
+        \textbf{Temores} & La principal preocupación de Julio es hacer una inversión para obtener información de baja calidad, ya que esto aumenta su trabajo añadiendo requisitos de preprocesamiento de datos y, por si fuera poco, reduce la fiabilidad de estos, lo cual le puede llevar a tomar malas decisiones que afecten a su trabajo. Tampoco quiere datos procesados, ya que desconocerá las técnicas de procesamiento y tampoco serán fiables. \\
+        \hline
+        \textbf{Necesidades} & Quiere encontrar una buena fuente de datos sobre los libros más populares en la actualidad, para conocer los autores y géneros con más mercado y por tanto más posibilidades de buenas ventas. \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\columnwidth}{|l|X|}
+        \hline
+        \textbf{Nombre y edad} & Javier, 36 años. \\
+        \hline
+        \textbf{Rol} & Miembro del tribunal. \\
+        \hline
+        \textbf{Ocupación} & Profesor en la Universidad de Granada. \\
+        \hline
+        \textbf{Biografía} & Siempre llega una época en la que Javier debe dedicar más tiempo a su trabajo, leyendo todos los TFG y TFM que le han sido asignados. Siempre muestra curiosidad por éstos, ya que no es raro encontrar alguno del que aprender algo nuevo, conocer nuevos puntos de vista o metodologías, aunque la carga de trabajo hace que le cueste un esfuerzo adicional realizar estas revisiones. \\
+        \hline
+        \textbf{Temores} & Lo que Javier más teme encontrarse es una documentación desorganizada, con un pobre nivel de expresión o llena de información innecesaria o irrelevante, sin unas fuentes fiables bien indicadas, ya que se tratará de un proyecto más difícil de estudiar y con menor valor. \\
+        \hline
+        \textbf{Necesidades} & Quiere una documentación organizada y clara, que demuestre buenos análisis para el problema a resolver y proponga soluciones de valor y justificadas. \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\subsection{\textit{User journeys}}
+
+Para crear una biblioteca y añadir libros:
+
+\begin{itemize}
+    \item \textbf{Acciones}
+    \begin{enumerate}
+        \item Desde la página principal, acceder a la sección de \textit{Mis bibliotecas}.
+        \item En la lista de bibliotecas, seleccionar la opción \textit{Crear nueva biblioteca}, indicando el nombre de ésta.
+        \item Con la biblioteca ya creada, acceder a la página de algún libro a través del buscador u otros medios.
+        \item Desde la página del libro, buscar la opción \textit{Añadir a la biblioteca...} junto a los detalles del libro.
+        \item En el menú emergente, seleccionar la nueva biblioteca.
+    \end{enumerate}
+\item \textbf{Puntos de contacto}
+    \begin{itemize}
+        \item Página principal.
+        \item Lista de libros de un usuario.
+        \item (Opcional) Buscador.
+        \item Página de un libro.
+    \end{itemize}
+\item \textbf{Pensamientos}
+    \begin{itemize}
+        \item La creación de la biblioteca es un proceso sencillo.
+        \item Los libros se añaden desde su página, y se accede a ellos de manera sencilla a través de un buscador en la barra de navegación presente en todas las vistas, lo cual resulta cómodo.
+    \end{itemize}
+\end{itemize}
+
+Para buscar recomendaciones, existen varias formas:
+\begin{itemize}
+    \item \textbf{Acciones}
+    \begin{enumerate}
+        \item \textbf{Opción A.} Desde la página principal, acceder a la sección de \textit{Mis bibliotecas} y seleccionar la biblioteca cuyas recomendaciones se quieren consultar.
+        \item En la página de la biblioteca, seleccionar la opción \textit{Recomendaciones}. Aparecerán recomendaciones generadas automáticamente a partir de los libros de la biblioteca.
+        \item \textbf{Opción B.} Desde la página de un libro, acceder a la sección de \textit{Recomendaciones}. Aparecerán relaciones entre dicho libro y otros, realizadas y justificadas por otros usuarios.
+    \end{enumerate}
+\item \textbf{Puntos de contacto}
+    \begin{itemize}
+        \item Página principal.
+        \item Lista de libros de un usuario.
+        \item Lista de recomendaciones de una biblioteca.
+        \item Página de un libro.
+        \item Página de recomendaciones de otros usuarios en base a un libro.
+    \end{itemize}
+\item \textbf{Pensamientos}
+    \begin{itemize}
+        \item Las recomendaciones son fácilmente accesibles, y el algoritmo ofrece buenos resultados.
+        \item Puedo consultar recomendaciones en base a mi libro favorito realizadas por otros usuarios con una justificación que me permite intuir si la recomendación es en base a mis aspectos favoritos del libro.
+    \end{itemize}
+\end{itemize}
+
 \section{Aprovechamiento de la plataforma}
-Si bien es cierto que ya existe algunas plataformas similares (ver \nameref{Estado del arte}), se puede ver que no son perfectas, y de alguna manera se podrían introducir mejoras en algún sentido que podrían aumentar el número de usuarios, por lo que no sería descabellado pensar en hacerles competencia y tener algo de éxito.
+Si bien es cierto que ya existen algunas plataformas similares (ver \nameref{Estado del arte}), se puede ver que no son perfectas, y de alguna manera se podrían introducir mejoras en algún sentido que podrían aumentar el número de usuarios, por lo que no sería descabellado pensar en hacerles competencia y tener algo de éxito.
 
 El primer paso sería lograr una comunidad activa, para lo cual hay que ofrecer incentivos a los usuarios para emplear la plataforma, pues una red social sin usuarios no serviría para nada. Pero también hay que tener en cuenta que ofrecer un mero servicio a los usuarios sin obtener algún tipo de beneficio con el que cubrir los gastos de mantenimiento no lo más adecuado, por lo que habría que explotar este tráfico de usuarios e información de alguna manera:
 
