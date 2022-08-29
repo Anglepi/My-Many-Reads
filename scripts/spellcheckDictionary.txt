@@ -27,3 +27,6 @@ TFM
 TFG
 preprocessing
 publishings
+BD
+HU
+MMR
