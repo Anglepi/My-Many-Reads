@@ -49,7 +49,21 @@ A continuación se describen todos los elementos que conforman el entorno de des
 
 \subsubsection{Gestor de tareas}
 
-\textbf{Elección final:} \textit{make}.
+\textbf{Elección final:} \href{https://www.gnu.org/software/make/}{\textit{make}}.
+
+\textit{Make} es uno de los gestores de tareas más populares actualmente, muy probablemente debido a la sencillez de su uso e instalación y su versatilidad. El factor determinante para tomar esta decisión fue, principalmente, esta versatilidad, pues sabía que no solo lo usaría para gestionar actividades del desarrollo, sino para todo lo relacionado con la elaboración de este proyecto, incluida la documentación.
+
+Esta elección fue de las primeras que hubo de tomarse, mucho antes de comenzar el desarrollo, pues como es lo habitual, el proyecto comenzó por una documentación e investigación que sirviera para justificar la viabilidad del mismo, sin ser muy relevantes los detalles técnicos del mismo.
+
+Solo es necesario un fichero \textit{Makefile} en el que incluir las tareas a automatizar bajo sus nombres
+
+Las alternativas a considerar se investigaron una vez se tomó la elección del lenguaje de programación a usar, ya que el resto de gestores de tareas genéricos con los que me he topado los descartaba, principalmente debido a la sintaxis que empleaban o a que requerían la instalación de complementos adicionales que, probablemente, no usaría para otra cosa, por lo que me pareció inconveniente.
+
+\textbf{Alternativa principal:} \href{https://www.pyinvoke.org/}{\textit{invoke}}.
+
+Es una muy buena herramienta para gestión de tareas en Python. Mediante un fichero \textit{tasks.py} se definen las tareas a realizar, y dado que la sintaxis de python es muy conocida y para nada compleja, no es difícil de construir. Además se pueden ejecutar órdenes en la línea de comandos muy fácilmente, por lo que también es muy versátil.
+
+Muy probablemente habría sido la opción principal si se supiera desde el principio que se usaría Python para desarrollar el proyecto, dado que no tiene absolutamente nada que envidiarle a \textit{make}. Sin embargo éste se usaba desde el principio del proyecto, y dado que el cambio no aportaba ningún beneficio, se optó por descartar la opción.
 
 \subsubsection{Editor de código}
 
