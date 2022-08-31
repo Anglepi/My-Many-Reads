@@ -30,3 +30,6 @@ publishings
 BD
 HU
 MMR
+Makefile
+aspell
+py
