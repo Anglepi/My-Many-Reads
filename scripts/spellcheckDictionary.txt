@@ -33,3 +33,7 @@ MMR
 Makefile
 aspell
 py
+GitLens
+IDEs
+JetBrains
+PyCharm
