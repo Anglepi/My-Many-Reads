@@ -93,7 +93,23 @@ Un IDE sería ideal si solo se fuera a trabajar en código, pero dado que este p
 
 \subsubsection{Lenguaje de programación}
 
-\textbf{Elección final:} \textit{Python 3}.
+\textbf{Elección final:} \href{https://www.python.org/}{\textit{Python 3}}.
+
+En un principio mi intención era tomar esta elección dándole bastante importancia a lo cómodo que me sentiría con un lenguaje en cuanto a gustos personales, ya que prefiero lenguajes tipados y más explícitos. Sin embargo, cuanto más avanzaba en las fases de diseño, más peso daba al sistema de recomendación. 
+
+Es evidente que necesitaría algún tipo de API para servir los datos, pero por otra parte también necesitaría buenas herramientas de tratamiento y análisis de datos para poder construir un buen algoritmo de recomendaciones automático. Esto me llevó a pensar que probablemente el lenguaje que buscaba fuera bastante popular, pues habría tener buenas bibliotecas de desarrollo de APIs y de tratamiento de datos, las cuales suelen estar relacionadas con una buena comunidad de desarrolladores.
+
+La decisión, como se indica arriba, fue Python. Este lenguaje he de admitir que no se adapta mucho a mis gustos personales en cuanto a sintaxis, pero lo que ofrece me será de gran utilidad para este desarrollo.
+
+\textbf{Alternativa:} \href{https://go.dev/}{\textit{Go}}.
+
+En cuanto a lenguajes existe mucha variedad, por la que la cantidad de alternativas que puede haber a Python, muchas de ellas totalmente viables a día de hoy, es considerable. Es posible que mi elección no haya sido la más acertada ya que me preocupa el rendimiento, pues en una asignatura del Master lo usé para construir un algoritmo genético y los tiempos de ejecución resultaron ser devastadores.
+
+Es cierto que la velocidad del lenguaje \cite{languagespeed} es importante, pero también lo son las utilidades que ofrece y el nivel de mantenimiento y actualizaciones que prolonga su ciclo de vida.
+
+Me he decantado por poner esta alternativa ya que es la que tenía en mente al comienzo del proyecto. Sintácticamente es un lenguaje que me encanta, además del control de punteros explícito y otras características, y ya lo había probado anteriormente para desarrollar una API REST y me gustó bastante. Además, tiene al equipo de Google detrás, por lo que inspira bastante confianza.
+
+Demuestra ser bastante más rápido que Python en \href{https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/go-python3.html}{bastantes situaciones} \cite{languagespeed}, pero por desgracia no encontré librerías prometedoras con utilidades para el tratamiento de datos que me permitieran, entre otras cosas, establecer correlaciones.
 
 \subsubsection{Herramientas ajenas a la programación.}
 
