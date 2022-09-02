@@ -119,4 +119,8 @@ Aunque LaTeX es algo más tedioso de usar puesto que la configuración inicial e
 
 Por otra parte está \textit{Markdown}. Se trata de un lenguaje de marcas para dar formato al texto muy popular, el cual se encuentra cada vez en más sitios web a disposición de sus usuarios. En el caso de este proyecto, utilizo \textit{Markdown} para toda la documentación que quiero que sea visible directamente en el \href{https://github.com/Anglepi/My-Many-Reads}{repositorio del proyecto}. Dado que no existen alternativas que estén tan extendidas, realmente no tiene competencia para su uso en sitios web.
 
-\textbf{Revisión ortográfica:} \textit{aspell}
+\textbf{Revisión ortográfica:} \href{http://aspell.net/}{\textit{aspell}}.
+
+Es un corrector ortográfico \textit{Open Source} que empleo para la corrección de mi documentación. El principal motivo de la elección de ésta es que, a parte de ser \textit{Open Source}, tiene soporte para ficheros de LaTeX. En el repositorio hay \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheck.sh}{un \textit{script}} que se encarga de su uso, apoyándose en un diccionario personalizado de \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheckDictionary.txt}{excepciones} ya que esta comprobación ortográfica es parte del proceso de integración, y si no supera esta comprobación no se permitirá la inclusión de los cambios a la rama principal.
+
+La alternativa más potente es \href{https://www.antidote.info/en/}{\textit{Antidote} de \textit{Druide}}, que además ofrece comprobaciones gramaticales las cuales parecen ser bastante acertadas. Sin embargo, al ser una opción de pago, se ha descartado.
