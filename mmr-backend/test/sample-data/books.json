@@ -6,7 +6,7 @@
     "author": "Cervantes",
     "genres": ["Fantasy", "Action"],
     "publisher": "Nova editorial",
-    "publishingDate": "2017-10-28"
+    "publishing_date": "2017-10-28"
   },
   {
     "id": "SecondBookId",
@@ -15,7 +15,7 @@
     "author": "Cervantes",
     "genres": ["Fantasy", "Action"],
     "publisher": "Nova editorial",
-    "publishingDate": "2018-10-28"
+    "publishing_date": "2018-10-28"
   },
   {
     "id": "ThirdBookId",
@@ -24,6 +24,6 @@
     "author": "Cervantes",
     "genres": ["Fantasy", "Action"],
     "publisher": "Nova editorial",
-    "publishingDate": "2019-10-28"
+    "publishing_date": "2019-10-28"
   }
 ]
