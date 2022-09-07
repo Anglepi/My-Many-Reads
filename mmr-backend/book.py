@@ -11,3 +11,16 @@ class Book:
         self.__genres: list[Book.Genre] = genres
         self.__publisher: str = publisher
         self.__publishing_date: str = publishing_date
+
+    class Genre(Enum):
+        ACTION = "Action"
+        SCIFI = "Sci-fi"
+        FANTASY = "Fantasy"
+        FICTION = "Fiction"
+        SUSPENSE = "Suspense"
+        GRAPHIC_NOVEL = "Graphic novel"
+        MANGA = "Manga"
+        HISTORICAL = "Historical"
+        ART = "Art"
+        SCIENCE = "Science"
+        THRILLER = "Thriller"
