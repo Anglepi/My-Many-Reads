@@ -27,5 +27,8 @@ jobs:
           pip install pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      - name: set PYTHONPATH
+        run: echo "::set-env name=PYTHONPATH::home/runner/work/My-Many-Reads"
+
       - name: Execute tests target
         run: make test
