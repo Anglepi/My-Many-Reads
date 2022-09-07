@@ -16,6 +16,7 @@ class Book:
         bookList: list[Book] = []
         for book in books:
             bookList.append(Book.fromDict(book))
+        return bookList
 
     def fromDict(book):
         return Book(book["id"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"])
