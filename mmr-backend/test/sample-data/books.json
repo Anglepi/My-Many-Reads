@@ -1,0 +1,29 @@
+[
+  {
+    "id": "ABookId",
+    "title": "A book",
+    "synopsis": "Some random descriptivie text about the book",
+    "author": "Cervantes",
+    "genres": ["Fantasy", "Action"],
+    "publisher": "Nova editorial",
+    "publishingDate": "2017-10-28"
+  },
+  {
+    "id": "SecondBookId",
+    "title": "A book: Reloaded",
+    "synopsis": "Some random descriptivie text about the book",
+    "author": "Cervantes",
+    "genres": ["Fantasy", "Action"],
+    "publisher": "Nova editorial",
+    "publishingDate": "2018-10-28"
+  },
+  {
+    "id": "ThirdBookId",
+    "title": "A book: Revoluitions",
+    "synopsis": "Some random descriptivie text about the book",
+    "author": "Cervantes",
+    "genres": ["Fantasy", "Action"],
+    "publisher": "Nova editorial",
+    "publishingDate": "2019-10-28"
+  }
+]
