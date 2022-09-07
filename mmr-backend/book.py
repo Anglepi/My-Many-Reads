@@ -20,7 +20,7 @@ class Book:
     def fromDict(book):
         return Book(book["id"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishingDate"])
 
-    def toDict(self):
+    def toDict(self) -> dict:
         return {"id": self.__id, "title": self.__title, "synopsis": self.__synopsis, "author": self.__author, "genres": self.__genres, "publisher": self.__publisher, "publishing_date": self.__publishing_date}
 
     class Genre(Enum):
