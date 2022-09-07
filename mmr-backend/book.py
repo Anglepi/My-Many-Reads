@@ -12,6 +12,17 @@ class Book:
         self.__publisher: str = publisher
         self.__publishing_date: str = publishing_date
 
+    def fromList(books):
+        bookList: list[Book] = []
+        for book in books:
+            bookList.append(Book.fromDict(book))
+
+    def fromDict(book):
+        return Book(book["id"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishingDate"])
+
+    def toDict(self):
+        return {"id": self.__id, "title": self.__title, "synopsis": self.__synopsis, "author": self.__author, "genres": self.__genres, "publisher": self.__publisher, "publishing_date": self.__publishing_date}
+
     class Genre(Enum):
         ACTION = "Action"
         SCIFI = "Sci-fi"
