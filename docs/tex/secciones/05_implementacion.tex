@@ -111,6 +111,24 @@ Me he decantado por poner esta alternativa ya que es la que tenía en mente al c
 
 Demuestra ser bastante más rápido que Python en \href{https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/go-python3.html}{bastantes situaciones} \cite{languagespeed}, pero por desgracia no encontré librerías prometedoras con utilidades para el tratamiento de datos que me permitieran, entre otras cosas, establecer correlaciones.
 
+\subsubsection{\textit{Test framework.}}
+
+\textbf{Elección final:} \href{https://docs.Pytest.org/}{\textit{Pytest}}
+
+Existen muchos marcos de test diferentes, cada uno de ellos con fortalezas y debilidades además de otras características que aportan atractivo según la metodología y mentalidad con la que se enfoque el desarrollo.
+
+En este caso se ha escogido \textit{Pytest} por la sencillez de su uso, ya que el único requisito que hay que aplicar en el código es prefijar el nombre de ficheros, clases y funciones con \textit{test}. Este prefijo es el que el \textit{framework}, a través de la orden \textit{Pytest}, buscará para determinar qué debe ejecutar, y el resultado de dichas ejecuciones determinará el éxito o fallo del test.
+
+\textbf{Alternativas:}
+
+Una opción muy popular es \href{https://robotframework.org/}{Robot Framework}, mediante el cual el programador define procesos y les otorga nombres empleando \textit{keywords} en lenguaje natural, lo que le permite construir tests para funcionalidades más complejas ordenando estas \textit{keywords}, dando lugar a una lista de pasos en lenguaje natural que definen una funcionalidad completa.
+
+Como salida ofrece, además del resultado en la línea de comandos, archivos en formato \textit{html} con la información en un formato gráfico más visual y organizado.
+
+Todo esto, a primera vista, suena muy llamativo, pero implica una carga extra de trabajo y un aumento de la deuda técnica que, en este caso, no me resultaba nada de interés, por lo que la descarté.
+
+\href{https://docs.python.org/3/library/unittest.html}{\textit{Python unittest}} es otra alternativa, muy similar a \textit{Pytest}, cuya diferencia principalmente es que requiere la importación de un módulo y los tests definidos deben ser estrictamente clases que hereden de una en el módulo importado, dentro de la cual se deben definir las funciones de \textit{testing}. Como la única diferencia notable es tener que escribir un poco más de código y no aporta más beneficios, \textit{unittest} quedó descartada.
+
 \subsubsection{Herramientas ajenas a la programación.}
 
 \textbf{Para escribir la documentación:} \href{https://www.latex-project.org/}{\textit{LaTeX}} junto a \href{https://www.markdownguide.org/getting-started/}{\textit{Markdown}}.
