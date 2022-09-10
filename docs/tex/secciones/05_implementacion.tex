@@ -142,3 +142,11 @@ Por otra parte está \textit{Markdown}. Se trata de un lenguaje de marcas para d
 Es un corrector ortográfico \textit{Open Source} que empleo para la corrección de mi documentación. El principal motivo de la elección de ésta es que, a parte de ser \textit{Open Source}, tiene soporte para ficheros de LaTeX. En el repositorio hay \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheck.sh}{un \textit{script}} que se encarga de su uso, apoyándose en un diccionario personalizado de \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheckDictionary.txt}{excepciones} ya que esta comprobación ortográfica es parte del proceso de integración, y si no supera esta comprobación no se permitirá la inclusión de los cambios a la rama principal.
 
 La alternativa más potente es \href{https://www.antidote.info/en/}{\textit{Antidote} de \textit{Druide}}, que además ofrece comprobaciones gramaticales las cuales parecen ser bastante acertadas. Sin embargo, al ser una opción de pago, se ha descartado.
+
+\subsection{Módulos importados}
+
+\textbf{Biblioteca de aserciones:} \href{https://github.com/assertpy/assertpy}{assertpy}
+
+Una biblioteca con varias funciones de aserciones para encapsular todo el proceso de \textit{assert} junto con las comprobaciones pertinentes. Partiendo de la función \textit{assert_that} y encadenando otras, permite construir aserciones en lenguaje casi natural.
+
+La alternativa más prometedora que consideré fue \href{https://github.com/grappa-py/grappa}{\textit{Grappa}}, con la cual también construyes las aserciones formando frases en lenguaje natural encadenando funciones. No hay mucha diferencia con assertpy en cuanto a características ofrecidas, así que por gustos personales me decanté por la otra opción.
