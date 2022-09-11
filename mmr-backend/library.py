@@ -20,3 +20,22 @@ class Library:
             self.__score: int = score
             self.__status: Library.ReadingStatus = status
 
+        def get_book_id(self):
+            return self.__bookId
+
+    def add_entry(self, entry: Library.Entry):
+        self.__entries.append(entry)
+
+    def update_entry(self, bookId: str, new_entry: Library.Entry):
+        for entry in self.__entries:
+            if(entry.get_book_id() == bookId):
+                entry = new_entry
+                break
+
+    def remove_entry(self, bookId: str):
+        for entry in self.__entries:
+            if(entry.get_book_id() == bookId):
+                self.__entries.remove(entry)
+
+    def get_entries(self):
+        return self.__entries
