@@ -16,5 +16,27 @@ def test_create_library():
     library = Library(owner, name)
 
     # Then
-    assert_that(library.get_name()).is_equal_to(name)
-    assert_that(library.get_owner()).is_equal_to(owner)
+    check_library_data(library, owner, name, [])
+
+
+def test_create_library_with_entries():
+    # Given
+    owner = "An owner"
+    name = "library name"
+    entries = get_sample_entries()
+
+    # When
+    library = Library(owner, name, entries)
+
+    # Then
+    check_library_data(library, owner, name, entries)
+
+
+def check_library_data(library: Library, expected_owner: str, expected_name: str, expected_entries: list[Library.Entry]):
+    assert_that(library.get_name()).is_equal_to(expected_name)
+    assert_that(library.get_owner()).is_equal_to(expected_owner)
+    assert_that(library.get_entries()).is_equal_to(expected_entries)
+
+
+def get_sample_entries():
+    return [Library.Entry("first book id", 7, "PLAN TO READ"), Library.Entry("second book id", 10, "COMPLETED")]
