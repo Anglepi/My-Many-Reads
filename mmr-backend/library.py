@@ -15,26 +15,26 @@ class Library:
         ON_HOLD = "ON HOLD"
     
     class Entry:
-        def __init__(self, bookId: str, score: int, status: Library.ReadingStatus):
-            self.__bookId: str = bookId
+        def __init__(self, book_id: str, score: int, status: Library.ReadingStatus):
+            self.__book_id: str = book_id
             self.__score: int = score
             self.__status: Library.ReadingStatus = status
 
         def get_book_id(self):
-            return self.__bookId
+            return self.__book_id
 
     def add_entry(self, entry: Library.Entry):
         self.__entries.append(entry)
 
-    def update_entry(self, bookId: str, new_entry: Library.Entry):
+    def update_entry(self, book_id: str, new_entry: Library.Entry):
         for entry in self.__entries:
-            if(entry.get_book_id() == bookId):
+            if(entry.get_book_id() == book_id):
                 entry = new_entry
                 break
 
-    def remove_entry(self, bookId: str):
+    def remove_entry(self, book_id: str):
         for entry in self.__entries:
-            if(entry.get_book_id() == bookId):
+            if(entry.get_book_id() == book_id):
                 self.__entries.remove(entry)
 
     def get_entries(self):

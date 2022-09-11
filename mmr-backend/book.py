@@ -12,16 +12,16 @@ class Book:
         self.__publisher: str = publisher
         self.__publishing_date: str = publishing_date
 
-    def fromList(books):
+    def from_list(books):
         bookList: list[Book] = []
         for book in books:
-            bookList.append(Book.fromDict(book))
+            bookList.append(Book.from_dict(book))
         return bookList
 
-    def fromDict(book):
+    def from_dict(book):
         return Book(book["id"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"])
 
-    def toDict(self) -> dict:
+    def to_dict(self) -> dict:
         return {"id": self.__id, "title": self.__title, "synopsis": self.__synopsis, "author": self.__author, "genres": self.__genres, "publisher": self.__publisher, "publishing_date": self.__publishing_date}
 
     class Genre(Enum):
