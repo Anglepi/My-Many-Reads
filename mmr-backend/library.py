@@ -1,6 +1,7 @@
 from __future__ import annotations
 from enum import Enum
 
+
 class Library:
     def __init__(self, owner, name: str, entries: list[Library.Entry] = []):
         self.__owner = owner
@@ -13,7 +14,7 @@ class Library:
         COMPLETED = "COMPLETED"
         DROPPED = "DROPPED"
         ON_HOLD = "ON HOLD"
-    
+
     class Entry:
         def __init__(self, book_id: str, score: int, status: Library.ReadingStatus):
             self.__book_id: str = book_id
@@ -23,18 +24,24 @@ class Library:
         def get_book_id(self):
             return self.__book_id
 
+    def get_owner(self):
+        return self.__owner
+
+    def get_name(self):
+        return self.__name
+
     def add_entry(self, entry: Library.Entry):
         self.__entries.append(entry)
 
     def update_entry(self, book_id: str, new_entry: Library.Entry):
         for entry in self.__entries:
-            if(entry.get_book_id() == book_id):
+            if (entry.get_book_id() == book_id):
                 entry = new_entry
                 break
 
     def remove_entry(self, book_id: str):
         for entry in self.__entries:
-            if(entry.get_book_id() == book_id):
+            if (entry.get_book_id() == book_id):
                 self.__entries.remove(entry)
 
     def get_entries(self):
