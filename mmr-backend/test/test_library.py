@@ -82,8 +82,7 @@ def test_remove_entry():
     # Given
     owner = "Sergio"
     name = "Libros de historia"
-    library = Library(owner, name, [Library.Entry(
-        "first book id", 7, "PLAN TO READ"), Library.Entry("second book id", 10, "COMPLETED")].copy())
+    library = Library(owner, name, get_sample_entries())
     expected_library = '{"owner": "Sergio", "name": "Libros de historia", "entries": [{"book_id": "first book id", "score": 7, "status": "PLAN TO READ"}]}'
 
     # When
@@ -97,8 +96,7 @@ def test_update_entry():
     # Given
     owner = "Sergio"
     name = "Libros de historia"
-    library = Library(owner, name, [Library.Entry(
-        "first book id", 7, "PLAN TO READ")].copy())
+    library = Library(owner, name, [get_sample_entries()[0]])
     expected_library = '{"owner": "Sergio", "name": "Libros de historia", "entries": [{"book_id": "some other new book", "score": 0, "status": "ON HOLD"}]}'
 
     # When
