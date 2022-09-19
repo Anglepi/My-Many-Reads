@@ -93,5 +93,21 @@ def test_remove_entry():
     assert_that(json.dumps(library.to_dict())).is_equal_to(expected_library)
 
 
+def test_update_entry():
+    # Given
+    owner = "Sergio"
+    name = "Libros de historia"
+    library = Library(owner, name, [Library.Entry(
+        "first book id", 7, "PLAN TO READ")].copy())
+    expected_library = '{"owner": "Sergio", "name": "Libros de historia", "entries": [{"book_id": "some other new book", "score": 0, "status": "ON HOLD"}]}'
+
+    # When
+    library.update_entry("first book id", Library.Entry(
+        "some other new book", 0, "ON HOLD"))
+
+    # Then
+    assert_that(json.dumps(library.to_dict())).is_equal_to(expected_library)
+
+
 def get_sample_entries():
     return [Library.Entry("first book id", 7, "PLAN TO READ"), Library.Entry("second book id", 10, "COMPLETED")]
