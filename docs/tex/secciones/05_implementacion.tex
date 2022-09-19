@@ -111,6 +111,18 @@ Me he decantado por poner esta alternativa ya que es la que tenía en mente al c
 
 Demuestra ser bastante más rápido que Python en \href{https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/go-python3.html}{bastantes situaciones} \cite{languagespeed}, pero por desgracia no encontré librerías prometedoras con utilidades para el tratamiento de datos que me permitieran, entre otras cosas, establecer correlaciones.
 
+\subsubsection{Gestor de dependencias}
+
+\textbf{Elección final:} \href{https://python-poetry.org/}{\textit{Poetry}}
+
+\textit{Poetry} te permite gestionar todos los paquetes y dependencias. Básicamente, gestiona todos estos elementos mediante el uso de un fichero denominado \href{https://github.com/Anglepi/My-Many-Reads/blob/main/pyproject.toml}{pyproject.toml}, y mediante unos sencillos comandos te permite crear pequeños entornos virtuales donde se realizan todas las instalaciones de paquetes necesarias y abrir una instancia de \textit{shell} en dichos entornos.
+
+Su uso surgió como una \href{https://github.com/Anglepi/My-Many-Reads/pull/39#discussion_r974230463}{\textit{review action}} del primer \textit{pull request}, puesto que antes usaba el clásico \textit{requirements.txt} y actualmente no se considera la mejor práctica.
+
+\textbf{Alternativa:} \href{https://pipenv-es.readthedocs.io/es/latest/}{\textit{Pipenv}}
+
+En cuanto a uso, comandos y acciones gestionadas, es muy similar a \textit{Poetry}, pero a diferencia de éste, no usa \textit{pyproject.toml}, especificado como estándar en la \href{https://peps.python.org/pep-0518/}{PEP-518}. Como no hay muchas diferencias notables entre ellas a nivel de funcionalidad, la opción quedó descartada por este último detalle, además de que las guías de la herramienta y la legibilidad del fichero \textit{pyproject.toml} me resultaron más atractivos que los de \textit{Pipenv}.
+
 \subsubsection{\textit{Test framework.}}
 
 \textbf{Elección final:} \href{https://docs.Pytest.org/}{\textit{Pytest}}
