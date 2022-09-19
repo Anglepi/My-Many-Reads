@@ -5,8 +5,8 @@ test:
 	poetry run pytest
 
 coverage:
-	coverage run -m pytest
-	coverage report -m
+	poetry run coverage run -m pytest
+	poetry run coverage report -m
 
 doc:
 	cd docs/tex/; \
