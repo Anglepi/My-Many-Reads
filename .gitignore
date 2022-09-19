@@ -19,3 +19,9 @@ Spellchecker.results
 
 # PDF files
 *.pdf
+
+# VSCode settings
+.vscode/
+
+# Tests and coverage outputs
+.coverage
