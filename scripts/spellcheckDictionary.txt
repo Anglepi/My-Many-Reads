@@ -46,3 +46,8 @@ html
 unittest
 assertpy
 Grappa
+Pipenv
+pyproject
+toml
+txt
+pytest
