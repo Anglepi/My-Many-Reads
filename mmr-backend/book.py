@@ -5,7 +5,7 @@ from enum import Enum
 
 @dataclass(frozen=True)
 class Book:
-    id: str
+    ISBN: str
     title: str
     synopsis: str
     author: str
@@ -20,10 +20,10 @@ class Book:
         return bookList
 
     def fromDict(book):
-        return Book(book["id"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"])
+        return Book(book["ISBN"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"])
 
     def toDict(self) -> dict:
-        return {"id": self.id, "title": self.title, "synopsis": self.synopsis, "author": self.author, "genres": self.genres, "publisher": self.publisher, "publishing_date": self.publishing_date}
+        return {"ISBN": self.ISBN, "title": self.title, "synopsis": self.synopsis, "author": self.author, "genres": self.genres, "publisher": self.publisher, "publishing_date": self.publishing_date}
 
     class Genre(Enum):
         ACTION = "Action"

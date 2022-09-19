@@ -1,6 +1,6 @@
 [
   {
-    "id": "ABookId",
+    "ISBN": "ABookId",
     "title": "A book",
     "synopsis": "Some random descriptivie text about the book",
     "author": "Cervantes",
@@ -9,7 +9,7 @@
     "publishing_date": "2017-10-28"
   },
   {
-    "id": "SecondBookId",
+    "ISBN": "SecondBookId",
     "title": "A book: Reloaded",
     "synopsis": "Some random descriptivie text about the book",
     "author": "Cervantes",
@@ -18,7 +18,7 @@
     "publishing_date": "2018-10-28"
   },
   {
-    "id": "ThirdBookId",
+    "ISBN": "ThirdBookId",
     "title": "A book: Revoluitions",
     "synopsis": "Some random descriptivie text about the book",
     "author": "Cervantes",
