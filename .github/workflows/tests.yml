@@ -21,6 +21,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+
       - name: set PYTHONPATH
         run: echo "PYTHONPATH=$GITHUB_WORKSPACE/mmr-backend" >> $GITHUB_ENV
 
