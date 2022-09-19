@@ -47,9 +47,9 @@ class Library:
         self.__entries.append(entry)
 
     def update_entry(self, book_id: str, new_entry: Library.Entry):
-        for entry in self.__entries:
+        for index, entry in enumerate(self.__entries):
             if (entry.get_book_id() == book_id):
-                entry = new_entry
+                self.__entries[index] = new_entry
                 break
 
     def remove_entry(self, book_id: str):
