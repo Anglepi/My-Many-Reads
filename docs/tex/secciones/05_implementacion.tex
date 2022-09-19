@@ -119,6 +119,8 @@ Existen muchos marcos de test diferentes, cada uno de ellos con fortalezas y deb
 
 En este caso se ha escogido \textit{Pytest} por la sencillez de su uso, ya que el único requisito que hay que aplicar en el código es prefijar el nombre de ficheros, clases y funciones con \textit{test}. Este prefijo es el que el \textit{framework}, a través de la orden \textit{Pytest}, buscará para determinar qué debe ejecutar, y el resultado de dichas ejecuciones determinará el éxito o fallo del test.
 
+\textit{Pytest} por sí solo no ofrece utilidades para determinar la cobertura de los tests, es decir, las líneas de código y casos que ejecutan dichos tests, lo cual resulta de gran utilidad para determinar aquellas secciones o ramas de ejecución cuyo comportamiento no se está comprobando. Para ello se puede incluir \href{https://pypi.org/project/pytest-cov/}{un plugin} o instalar la herramienta \href{https://coverage.readthedocs.io/}{\textit{coverage}} por separado, ambas opciones siendo prácticamente similares.
+
 \textbf{Alternativas:}
 
 Una opción muy popular es \href{https://robotframework.org/}{Robot Framework}, mediante el cual el programador define procesos y les otorga nombres empleando \textit{keywords} en lenguaje natural, lo que le permite construir tests para funcionalidades más complejas ordenando estas \textit{keywords}, dando lugar a una lista de pasos en lenguaje natural que definen una funcionalidad completa.
