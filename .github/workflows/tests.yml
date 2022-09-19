@@ -4,6 +4,7 @@ on:
     paths:
       - "**.py"
       - ".github/workflows/tests.yml"
+      - "pyproject.toml"
 
 jobs:
   build:
