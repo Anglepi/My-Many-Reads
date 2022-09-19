@@ -4,8 +4,6 @@ spellcheck:
 test:
 	pytest
 
-# Requires coverage to be installed, it is not included in requirements.txt
-# > pip install coverage
 coverage:
 	coverage run -m pytest
 	coverage report -m
