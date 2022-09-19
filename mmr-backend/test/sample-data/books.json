@@ -1,0 +1,32 @@
+[
+  {
+    "ISBN": "ABookId",
+    "title": "A book",
+    "synopsis": "Some random descriptivie text about the book",
+    "author": ["Cervantes"],
+    "genres": ["Fantasy", "Action"],
+    "publisher": "Nova editorial",
+    "publishing_date": "2017-10-28",
+    "edition": "1st Edition"
+  },
+  {
+    "ISBN": "SecondBookId",
+    "title": "A book: Reloaded",
+    "synopsis": "Some random descriptivie text about the book",
+    "author": ["Cervantes", "Manuel"],
+    "genres": ["Fantasy", "Action"],
+    "publisher": "Nova editorial",
+    "publishing_date": "2018-10-28",
+    "edition": "Special anniversary edition"
+  },
+  {
+    "ISBN": "ThirdBookId",
+    "title": "A book: Revoluitions",
+    "synopsis": "Some random descriptivie text about the book",
+    "author": ["Cervantes"],
+    "genres": ["Fantasy", "Action"],
+    "publisher": "Nova editorial",
+    "publishing_date": "2019-10-28",
+    "edition": "5th edition"
+  }
+]

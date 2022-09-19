@@ -1,6 +1,9 @@
 spellcheck:
 	./scripts/spellcheck.sh
 
+test:
+	poetry run pytest
+
 doc:
 	cd docs/tex/; \
 	pdflatex proyecto.tex; \
