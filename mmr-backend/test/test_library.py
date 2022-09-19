@@ -48,6 +48,21 @@ def test_create_library_with_entries():
     assert_that(json.dumps(library.to_dict())).is_equal_to(expected_library)
 
 
+def test_library_properties():
+    # Given
+    owner = "An owner"
+    name = "library name"
+    entries = get_sample_entries()
+
+    # When
+    library = Library(owner, name, entries)
+
+    # Then
+    assert_that(library.get_owner()).is_equal_to(owner)
+    assert_that(library.get_name()).is_equal_to(name)
+    assert_that(library.get_entries()).is_equal_to(entries)
+
+
 def test_add_entry():
     # Given
     owner = "Sergio"
