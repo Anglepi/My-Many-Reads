@@ -2,7 +2,7 @@ spellcheck:
 	./scripts/spellcheck.sh
 
 test:
-	pytest
+	poetry run pytest
 
 doc:
 	cd docs/tex/; \
