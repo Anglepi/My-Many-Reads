@@ -2,7 +2,7 @@ spellcheck:
 	./scripts/spellcheck.sh
 
 test:
-	pytest
+	poetry run pytest
 
 coverage:
 	coverage run -m pytest

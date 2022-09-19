@@ -4,6 +4,7 @@ on:
     paths:
       - "**.py"
       - ".github/workflows/tests.yml"
+      - "pyproject.toml"
 
 jobs:
   build:
@@ -21,14 +22,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
       - name: set PYTHONPATH
         run: echo "PYTHONPATH=$GITHUB_WORKSPACE/mmr-backend" >> $GITHUB_ENV
+
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+
+      - name: Install dependencies
+        run: poetry install
 
       - name: Execute tests target
         run: make test

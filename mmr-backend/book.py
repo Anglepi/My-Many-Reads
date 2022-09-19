@@ -1,16 +1,18 @@
 from __future__ import annotations
+from dataclasses import dataclass
 from enum import Enum
 
 
+@dataclass(frozen=True)
 class Book:
-    def __init__(self, id: str, title: str, synopsis: str, author: str, genres: list[Book.Genre], publisher: str, publishing_date: str):
-        self.__id: str = id
-        self.__title: str = title
-        self.__synopsis: str = synopsis
-        self.__author: str = author
-        self.__genres: list[Book.Genre] = genres
-        self.__publisher: str = publisher
-        self.__publishing_date: str = publishing_date
+    ISBN: str
+    title: str
+    synopsis: str
+    author: list[str]
+    genres: list[Book.Genre]
+    publisher: str
+    publishing_date: str
+    edition: str
 
     def from_list(books):
         bookList: list[Book] = []
@@ -19,10 +21,10 @@ class Book:
         return bookList
 
     def from_dict(book):
-        return Book(book["id"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"])
+        return Book(book["ISBN"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"], book["edition"])
 
     def to_dict(self) -> dict:
-        return {"id": self.__id, "title": self.__title, "synopsis": self.__synopsis, "author": self.__author, "genres": self.__genres, "publisher": self.__publisher, "publishing_date": self.__publishing_date}
+        return {"ISBN": self.ISBN, "title": self.title, "synopsis": self.synopsis, "author": self.author, "genres": self.genres, "publisher": self.publisher, "publishing_date": self.publishing_date, "edition": self.edition}
 
     class Genre(Enum):
         ACTION = "Action"
