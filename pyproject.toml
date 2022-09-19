@@ -5,7 +5,7 @@ description = "Books and readers social platform to manage readings and find rec
 authors = ["Ángel Píñar Rivas"]
 license = "GNU General Public License v3.0"
 readme = "README.md"
-packages = [{include = "my_many_reads"}]
+packages = [{include = "mmr-backend"}]
 
 [tool.poetry.dependencies]
 python = "^3.7"
