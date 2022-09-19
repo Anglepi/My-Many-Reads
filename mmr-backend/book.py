@@ -12,6 +12,7 @@ class Book:
     genres: list[Book.Genre]
     publisher: str
     publishing_date: str
+    edition: str
 
     def fromList(books):
         bookList: list[Book] = []
@@ -20,10 +21,10 @@ class Book:
         return bookList
 
     def fromDict(book):
-        return Book(book["ISBN"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"])
+        return Book(book["ISBN"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"], book["edition"])
 
     def toDict(self) -> dict:
-        return {"ISBN": self.ISBN, "title": self.title, "synopsis": self.synopsis, "author": self.author, "genres": self.genres, "publisher": self.publisher, "publishing_date": self.publishing_date}
+        return {"ISBN": self.ISBN, "title": self.title, "synopsis": self.synopsis, "author": self.author, "genres": self.genres, "publisher": self.publisher, "publishing_date": self.publishing_date, "edition": self.edition}
 
     class Genre(Enum):
         ACTION = "Action"
