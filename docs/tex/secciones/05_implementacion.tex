@@ -1,1 +1,194 @@
 \chapter{Implementación}
+
+En este capítulo se describe el proceso de implementación junto con todos los elementos en los que éste se apoya, una descripción de todas las elecciones técnicas tomadas junto con su justificación.
+
+En primer lugar se muestra el listado de las historias de usuario generadas junto con sus correspondientes tareas, que dan forma a las unidades de trabajo refinadas. Tras esto, se encuentran todos los dilemas tecnológicos considerados, junto con la solución seleccionada y  una lista de alternativas brevemente definidas con el fin de proveer una justificación fundada y válida de la elección tomada.
+
+\subsection{Historias de usuario}
+
+Las historias de usuario se usan para definir los beneficios que ciertos tipos de usuarios desean obtener en determinadas situaciones. Cada una de estas historias de usuario representa un avance en la funcionalidad del sistema, y su desarrollo se compone de una a varias tareas.
+
+Partiendo de los requisitos previamente listados, refinándolos en historias de usuario, se puede dar paso a la elaboración de tareas que guíen la implementación del proyecto. Cabe aclarar que, como este desarrollo sigue una mentalidad ágil, las historias y tareas se han ido generando a corto plazo, por lo que la siguiente lista de historias de usuario y sus tareas se ha ido construyendo a lo largo del proceso de desarrollo.
+
+Algunas historias, como ya se verá a continuación, aparecen repetidas. Esto se debe a que su desarrollo ha abarcado más de un PMV, pero en cada uno de estos se tratan diferentes tareas, por lo que solo se citaran las que correspondan al PMV descrito.
+
+Así mismo cabe mencionar que el primer \textit{milestone} del proyecto se excluye de esta sección, pues está compuesto únicamente de documentación no directamente relacionada con las tareas de implementación.
+
+\subsubsection{PMV-1. Estructura de datos básica y base de la lógica de negocio}
+
+\begin{itemize}
+    \item \href{https://github.com/Anglepi/My-Many-Reads/issues/29}{\textbf{HU-1}} Solicitar información de libros \\
+    Como Sergio, lector en MMR, \\
+    quiero solicitar información sobre libros de una base de datos, \\
+    con el fin de saber si me pueden interesar según sus características.
+    \begin{itemize}
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/31}{\textbf{T-1.1}} Definir estructura básica de datos para los libros.
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/32}{\textbf{T-1.2}} Crear primera aproximación de BD de libros.
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/33}{\textbf{T-1.3}} Métodos para tratar las propiedades de los libros.
+    \end{itemize}
+    \item \href{https://github.com/Anglepi/My-Many-Reads/issues/30}{\textbf{HU-2}} Bibliotecas para gestionar lecturas
+    Como Sergio, lector en MMR, \\
+    quiero una biblioteca de libros de mi elección, \\
+    con el fin de gestionar mis lecturas.
+    \begin{itemize}
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/34}{\textbf{T-2.1}} Definir estructura básica de datos para las bibliotecas.
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/35}{\textbf{T-2.2}} Funcionalidad básica de gestión de bibliotecas.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Entorno de desarrollo}
+
+A continuación se describen todos los elementos que conforman el entorno de desarrollo, justificando las elecciones tomadas enfrentándolas a las alternativas encontradas e indicando el por qué de la decisión en base a la naturaleza de este proyecto.
+
+\subsubsection{Gestor de tareas}
+
+Un gestor de tareas permitirá automatizar ciertas tareas relacionadas con el desarrollo de manera más sencilla, como generación de documentación, ejecución de tests, etc. a través de un sencillo comando definido por el desarrollador.
+
+
+\textbf{Alternativa principal:} \href{https://www.pyinvoke.org/}{\textit{invoke}}.
+
+Muchas de las alternativas se investigaron una vez se tomó la elección del lenguaje de programación a usar, ya que en muchas ocasiones el gestor de tareas depende del lenguaje o funciona particularmente bien junto a éste. 
+
+En cuanto a los gestores de tareas genéricos, la mayoría los acababa descartando, principalmente debido a la sintaxis que empleaban o a que requerían la instalación de complementos adicionales que, probablemente, no usaría para otra cosa, por lo que me pareció inconveniente.
+
+\textit{Invoke} es una muy buena herramienta para gestión de tareas en Python. Mediante un fichero \textit{tasks.py} se definen las tareas a realizar, y dado que la sintaxis de python es muy conocida y para nada compleja, no es difícil de construir. Además se pueden ejecutar órdenes en la línea de comandos muy fácilmente, por lo que también es muy versátil.
+
+Muy probablemente habría sido la opción principal si se supiera desde el principio que se usaría Python para desarrollar el proyecto, dado que no tiene absolutamente nada que envidiarle a \textit{make}. Sin embargo éste se usaba desde el principio del proyecto, y dado que el cambio no aportaba ningún beneficio, se optó por descartar la opción.
+
+\textbf{Elección final:} \href{https://www.gnu.org/software/make/}{\textit{make}}.
+
+\textit{Make} es uno de los gestores de tareas más populares actualmente, muy probablemente debido a la sencillez de su uso e instalación y su versatilidad. El factor determinante para tomar esta decisión fue, principalmente, esta versatilidad, pues sabía que no solo lo usaría para gestionar actividades del desarrollo, sino para todo lo relacionado con la elaboración de este proyecto, incluida la documentación.
+
+Esta elección fue de las primeras que hubo de tomarse, mucho antes de comenzar el desarrollo, pues como es lo habitual, el proyecto comenzó por una documentación e investigación que sirviera para justificar la viabilidad del mismo, sin ser muy relevantes los detalles técnicos del mismo.
+
+Solo es necesario un fichero \href{https://github.com/Anglepi/My-Many-Reads/blob/main/Makefile}{\textit{Makefile}} en el que incluir las tareas a automatizar bajo sus nombres.
+
+\subsubsection{Editor de código}
+\label{Editor de código}
+
+Una vez seleccionado el lenguaje, la opción más común suele ser escoger uno de los \textit{IDEs} disponibles, pues hacen más cómodo el desarrollo. Sin embargo, esta decisión es más subjetiva puesto que no afecta directamente al software producido.
+
+En este caso, se ha optado más por un editor de código que un IDE, por gustos personales más el hecho de centralizar todo el trabajo en una misma aplicación, además de por transparencia con las acciones realizadas y, cómo no, simple costumbre.
+
+\textbf{Alternativa principal:} \href{https://www.sublimetext.com/}{\textit{Sublime Text}}.
+
+Es un editor muy popular, que además recibe actualizaciones de manera frecuente con notables mejoras.
+
+Una de sus ventajas es que no consume tantos recursos, pero dado que tengo la suerte de trabajar en una máquina de buenas prestaciones, este aspecto realmente no me supone un beneficio.
+
+Por otra parte, lo que me hizo descartar esta opción fue el proceso de búsqueda e instalación de complementos, que es bastante manual y tediosa, así como la ausencia de una terminal en el entorno de forma nativa.
+
+Cabe destacar que existen otras alternativas, IDEs para Python, que también pueden considerarse, como \href{https://docs.python.org/3/library/idle.html}{\textit{IDLE}}, que viene integrado, o \href{https://www.jetbrains.com/es-es/pycharm/}{\textit{PyCharm}} de \textit{JetBrains}, un equipo muy conocido por desarrollar muy buenos IDEs.
+
+Un \textit{IDE} sería ideal si solo se fuera a trabajar en código, pero dado que este proyecto también requiere de documentación y podría incluir una variedad de tecnologías a emplear, un simple editor de código con complementos es mucho más adecuado.
+
+\textbf{Elección final:} \href{https://code.visualstudio.com/}{\textit{Visual Studio Code}}.
+
+Es el editor más potente y, desgraciadamente, eso se nota cuando se utiliza en máquinas de bajas prestaciones. Sin embargo, ofrece muchísimas opciones de configuración base, detecta una gran cantidad de lenguajes a los que provee de un formato visual de apoyo y es propiedad de \textit{Microsoft}, por lo que se espera un buen mantenimiento y actualizaciones frecuentes.
+
+Destaca principalmente por ofrecer de forma nativa una terminal, que aunque por defecto usa la nativa del sistema en el que se encuentre instalado, es muy sencillo instalar y usar cualquier otra. Además existe una gama muy amplia de complementos gratuitos y desarrollados por la comunidad, muy fáciles de instalar y gestionar. 
+
+El propio editor te ofrece sugerencias cuando detecta el entorno en el que estás trabajando, y ni si quiera es necesario recurrir al navegador web para consultar información de éstos o instalarlos, pues su gestor de complementos ya satisface todas estas necesidades. Algunos de estos complementos útiles para el proyecto son:
+\begin{itemize}
+    \item \href{https://marketplace.visualstudio.com/items?itemName=ms-python.python}{Python}, que ofrece características propias del lenguaje como \textit{linting}, \textit{debugging} y formateo de código.
+    \item \href{https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens}{GitLens}, que aumenta las funcionalidades relacionadas con Git en el editor.
+\end{itemize}
+
+\subsubsection{Lenguaje de programación}
+
+Para esta decisión, el criterio principal es las capacidades del lenguaje en cuanto a la facilidad que ofrece para implementar las tareas necesarias (paquetes, módulos, complementos, etc.) junto con la eficiencia del mismo y la mantenibilidad a largo plazo.
+
+Por otra parte también se tiene en cuenta un componente subjetivo, pues se valora la comodidad del desarrollador con dicho lenguaje y las filosofías que éste trae consigo.
+
+\textbf{Alternativa:} \href{https://go.dev/}{\textit{Go}}.
+
+Me he decantado por poner esta alternativa ya que es la que tenía en mente al comienzo del proyecto. Sintácticamente es un lenguaje que me encanta, además del control de punteros explícito y otras características, y ya lo había probado anteriormente para desarrollar una API REST y me gustó bastante. Además, tiene al equipo de Google detrás, por lo que inspira bastante confianza.
+
+Es cierto que la \href{https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html}{velocidad del lenguaje} es importante, pero también lo son las utilidades que ofrece y el nivel de mantenimiento y actualizaciones que prolonga su ciclo de vida.
+
+Demuestra ser bastante más rápido que, por ejemplo, Python en \href{https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/go-python3.html}{bastantes situaciones}, pero por desgracia no encontré librerías prometedoras con utilidades para el tratamiento de datos que me permitieran, entre otras cosas, establecer correlaciones.
+
+\textbf{Elección final:} \href{https://www.python.org/}{\textit{Python 3}}.
+
+En un principio mi intención era tomar esta elección dándole bastante importancia a lo cómodo que me sentiría con un lenguaje en cuanto a gustos personales, ya que prefiero lenguajes tipados y más explícitos. Sin embargo, cuanto más avanzaba en las fases de diseño, más peso daba al sistema de recomendación. 
+
+Es evidente que necesitaría algún tipo de API para servir los datos, pero por otra parte también necesitaría buenas herramientas de tratamiento y análisis de datos para poder construir un buen algoritmo de recomendaciones automático. Esto me llevó a pensar que probablemente el lenguaje que buscaba fuera bastante popular, pues habría tener buenas bibliotecas de desarrollo de APIs y de tratamiento de datos, las cuales suelen estar relacionadas con una buena comunidad de desarrolladores.
+
+La decisión, como se indica arriba, fue Python. Este lenguaje he de admitir que no se adapta mucho a mis gustos personales en cuanto a sintaxis y entorno de paquetes, pero lo que ofrece me será de gran utilidad para este desarrollo.
+
+\subsubsection{Gestor de dependencias}
+
+Esta es una de las espinitas que tengo clavadas con respecto a Python. La gestión de dependencias es bastante tediosa, y si no se hace bien, puedes crear bastante caos en tu entorno de desarrollo.
+
+En cuanto a gestores de dependencias, aquellos que hayan trabajado con Python sabrán que existen una multitud de opciones diferentes, y cada cuál se escogía por mero gusto personal, por lo que por ahí circulan multitud de proyectos cada uno siendo gestionado e instalado de diferente manera.
+
+Finalmente se ha ido consensuando una buena práctica para estas gestiones, por lo que ésta ha de ser tenida en cuenta.
+
+\textbf{Alternativa:} \href{https://pipenv-es.readthedocs.io/es/latest/}{\textit{Pipenv}}
+
+En cuanto a uso, comandos y acciones gestionadas, es muy similar a otros como \textit{Poetry}, pero a diferencia de éste, no usa \textit{pyproject.toml}, especificado como estándar en la \href{https://peps.python.org/pep-0518/}{PEP-518}. Como no hay muchas diferencias notables entre ellas a nivel de funcionalidad, la opción quedó descartada por este último detalle, además de que las guías de la herramienta y la legibilidad del fichero \textit{pyproject.toml} me resultaron más atractivos que los de \textit{Pipenv}.
+
+\textbf{Elección final:} \href{https://python-poetry.org/}{\textit{Poetry}}
+
+\textit{Poetry} te permite gestionar todos los paquetes y dependencias mediante el uso del fichero denominado \href{https://github.com/Anglepi/My-Many-Reads/blob/main/pyproject.toml}{pyproject.toml}, y a través unos sencillos comandos te permite crear pequeños entornos virtuales donde se realizan todas las instalaciones de paquetes necesarias y abrir una instancia de \textit{shell} en dichos entornos.
+
+Su uso surgió como una \href{https://github.com/Anglepi/My-Many-Reads/pull/39#discussion_r974230463}{\textit{review action}} del primer \textit{pull request}, puesto que antes usaba el clásico \textit{requirements.txt} y actualmente no se considera la mejor práctica.
+
+\subsubsection{\textit{Test framework.}}
+
+Existen muchos marcos de test diferentes, cada uno de ellos con fortalezas y debilidades además de otras características que aportan atractivo según la metodología y mentalidad con la que se enfoque el desarrollo.
+
+\textbf{Alternativas:}
+
+Una opción muy popular es \href{https://robotframework.org/}{Robot Framework}, mediante el cual el programador define procesos y les otorga nombres empleando \textit{keywords} en lenguaje natural, lo que le permite construir tests para funcionalidades más complejas ordenando estas \textit{keywords}, dando lugar a una lista de pasos en lenguaje natural que definen una funcionalidad completa.
+
+Como salida ofrece, además del resultado en la línea de comandos, archivos en formato \textit{html} con la información en un formato gráfico más visual y organizado.
+
+Todo esto, a primera vista, suena muy llamativo, pero implica una carga extra de trabajo y un aumento de la deuda técnica que, en este caso, no me resultaba nada de interés, por lo que la descarté.
+
+\href{https://docs.python.org/3/library/unittest.html}{\textit{Python unittest}} es otra alternativa, muy similar a \textit{Pytest}, cuya diferencia principalmente es que requiere la importación de un módulo y los tests definidos deben ser estrictamente clases que hereden de una en el módulo importado, dentro de la cual se deben definir las funciones de \textit{testing}. Como la única diferencia notable es tener que escribir un poco más de código y no aporta más beneficios, \textit{unittest} quedó descartada.
+
+\textbf{Elección final:} \href{https://docs.Pytest.org/}{\textit{Pytest}}
+
+En este caso se ha escogido \textit{Pytest} por la sencillez de su uso, ya que el único requisito que hay que aplicar en el código es prefijar el nombre de ficheros, clases y funciones con \textit{test}. Este prefijo es el que el \textit{framework}, a través de la orden \textit{Pytest}, buscará para determinar qué debe ejecutar, y el resultado de dichas ejecuciones determinará el éxito o fallo del test.
+
+\textit{Pytest} por sí solo no ofrece utilidades para determinar la cobertura de los tests, es decir, las líneas de código y casos que ejecutan dichos tests, lo cual resulta de gran utilidad para determinar aquellas secciones o ramas de ejecución cuyo comportamiento no se está comprobando. Para ello se puede incluir \href{https://pypi.org/project/pytest-cov/}{un plugin} o instalar la herramienta \href{https://coverage.readthedocs.io/}{\textit{coverage}} por separado, ambas opciones siendo prácticamente similares.
+
+
+\subsubsection{Herramientas ajenas al código.}
+
+\textbf{Para escribir la documentación:} \href{https://www.latex-project.org/}{\textit{LaTeX}} junto a \href{https://www.markdownguide.org/getting-started/}{\textit{Markdown}}.
+
+Aunque LaTeX es algo más tedioso de usar puesto que la configuración inicial es mucho más compleja que cualquier procesador de textos, es una opción muy potente a la hora de construir documentos bien organizados. Si tuviera que elegir una alternativa, probablemente sería \href{https://workspace.google.com/intl/es/products/docs/}{Documentos de Google}, no es la más potente en cuanto a características de formato comparado con \href{https://www.microsoft.com/es-es/microsoft-365/word}{Microsoft Word} o su contraparte libre \href{https://es.libreoffice.org/descubre/writer/}{Writer}, pero está en la nube de forma nativa, lo cual resulta muy cómodo para trabajar desde cualquier lugar.
+
+Por otra parte está \textit{Markdown}. Se trata de un lenguaje de marcas para dar formato al texto muy popular, el cual se encuentra cada vez en más sitios web a disposición de sus usuarios. En el caso de este proyecto, utilizo \textit{Markdown} para toda la documentación que quiero que sea visible directamente en el \href{https://github.com/Anglepi/My-Many-Reads}{repositorio del proyecto}. Dado que no existen alternativas que estén tan extendidas, realmente no tiene competencia para su uso en sitios web.
+
+\textbf{Revisión ortográfica:} \href{http://aspell.net/}{\textit{aspell}}.
+
+La alternativa más potente es \href{https://www.antidote.info/en/}{\textit{Antidote} de \textit{Druide}}, que además de correcciones ortográficas ofrece comprobaciones gramaticales las cuales parecen ser bastante acertadas. Sin embargo, al ser una opción de pago, se ha descartado.
+
+\textit{Aspell} es un corrector ortográfico \textit{Open Source} que empleo para la corrección de mi documentación. El principal motivo de la elección de ésta es que, a parte de ser \textit{Open Source}, tiene soporte para ficheros de LaTeX. En el repositorio hay \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheck.sh}{un \textit{script}} que se encarga de su uso, apoyándose en un diccionario personalizado de \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheckDictionary.txt}{excepciones} ya que esta comprobación ortográfica es parte del proceso de integración, y si no supera esta comprobación no se permitirá la inclusión de los cambios a la rama principal.
+
+
+\subsection{Módulos importados}
+
+\textbf{Biblioteca de aserciones:} \href{https://github.com/assertpy/assertpy}{\textit{assertpy}}
+
+Una biblioteca con varias funciones de aserciones para encapsular todo el proceso de \textit{assert} junto con las comprobaciones pertinentes. Partiendo de la función \textit{assert\_that} y encadenando otras, permite construir aserciones en lenguaje casi natural.
+
+La alternativa más prometedora que consideré fue \href{https://github.com/grappa-py/grappa}{\textit{Grappa}}, con la cual también construyes las aserciones formando frases en lenguaje natural encadenando funciones. No hay mucha diferencia con assertpy en cuanto a características ofrecidas, así que por gustos personales me decanté por la otra opción.
+
+% SECCIÓN A DESARROLLAR EN EL FUTURO, DE MOMENTO SOLO SE USA COMO RECORDATORIO
+\subsection{El código implementado}
+
+\subsubsection{La API}
+
+Cosas de la representación de un libro y:
+
+\textbf{Almacenamiento de datos inmutables:} \href{https://docs.python.org/3/library/dataclasses.html}{\textit{Dataclasses}}
+
+Una \textit{dataclass}, o clase de datos, genera automáticamente ciertas funciones como el constructor, el comparador de igualdad y la representación de la instancia. Con esto, el programador ahorra bastante código que escribir, sin embargo este no es el motivo principal por el que, en este proyecto, se importa el módulo.
+
+Otra de las características que ofrece consiste en un conjunto de parámetros que se pueden indicar junto al \textit{decorator} que se emplea para generar una \textit{dataclass}. En concreto, \textit{frozen} permite asegurar que una clase sea inmutable, controlando que el valor otorgado a sus atributos tras crear el objeto no varía.
+
+Toda la funcionalidad que ofrece este módulo resulta de especial interés, por ejemplo, para la representación de la clase \textit{Book}, ya que sus atributos nunca deben cambiar.
