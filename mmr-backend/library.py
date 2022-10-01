@@ -22,7 +22,7 @@ class Library:
         return props
 
     def from_dict(library_data):
-        return Library(library_data["owner"], library_data["name"], library_data["entries"])
+        return Library(**library_data)
 
     class Entry:
         def __init__(self, book_id: str, score: int, status: Library.ReadingStatus):

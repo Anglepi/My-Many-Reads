@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from enum import Enum
 
 
@@ -15,18 +15,13 @@ class Book:
     edition: str
 
     def from_list(books):
-        bookList: list[Book] = []
-        for book in books:
-            bookList.append(Book.from_dict(book))
-        return bookList
+        return map(lambda book: Book.from_dict(book), books)
 
     def from_dict(book):
-        return Book(book["ISBN"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"], book["edition"])
+        return Book(**book)
 
     def to_dict(self):
-        props = {key.split("__")[-1]: value for (key,
-                                                 value) in self.__dict__.items()}
-        return props
+        return asdict(self)
 
     class Genre(Enum):
         ACTION = "Action"
