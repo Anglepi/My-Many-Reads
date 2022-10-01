@@ -16,8 +16,10 @@ class Library:
         ON_HOLD = "ON HOLD"
 
     def to_dict(self):
-        return {"owner": self.__owner, "name": self.__name,
-                "entries": Library.Entry.entries_to_dict(self.__entries)}
+        props = {key.split("__")[-1]: value for (key,
+                                                 value) in self.__dict__.items()}
+        props["entries"] = Library.Entry.entries_to_dict(props["entries"])
+        return props
 
     def from_dict(library_data):
         return Library(library_data["owner"], library_data["name"], library_data["entries"])

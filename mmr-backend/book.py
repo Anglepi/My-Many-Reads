@@ -23,8 +23,10 @@ class Book:
     def from_dict(book):
         return Book(book["ISBN"], book["title"], book["synopsis"], book["author"], book["genres"], book["publisher"], book["publishing_date"], book["edition"])
 
-    def to_dict(self) -> dict:
-        return {"ISBN": self.ISBN, "title": self.title, "synopsis": self.synopsis, "author": self.author, "genres": self.genres, "publisher": self.publisher, "publishing_date": self.publishing_date, "edition": self.edition}
+    def to_dict(self):
+        props = {key.split("__")[-1]: value for (key,
+                                                 value) in self.__dict__.items()}
+        return props
 
     class Genre(Enum):
         ACTION = "Action"
