@@ -1,3 +1,6 @@
+start:
+	poetry run uvicorn main:mmr --reload
+
 spellcheck:
 	./scripts/spellcheck.sh
 
