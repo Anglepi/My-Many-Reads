@@ -54,3 +54,7 @@ pytest
 dataclasses
 dataclass
 espinitas
+asincronía
+OpenAPI
+fastapi
+reimplementación
