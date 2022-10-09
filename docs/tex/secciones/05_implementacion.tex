@@ -178,6 +178,21 @@ Una biblioteca con varias funciones de aserciones para encapsular todo el proces
 
 La alternativa más prometedora que consideré fue \href{https://github.com/grappa-py/grappa}{\textit{Grappa}}, con la cual también construyes las aserciones formando frases en lenguaje natural encadenando funciones. No hay mucha diferencia con assertpy en cuanto a características ofrecidas, así que por gustos personales me decanté por la otra opción.
 
+\textbf{Framework para construir la API:} \href{https://fastapi.tiangolo.com/}{\textit{fastapi}}
+
+En Python existen muchas alternativas, y muy buenas, para construir una API. Todas parecen competir entre ellas en cuanto a velocidad, pues se publicitan mencionándola continuamente, pero en este caso también quise tener en cuenta la comodidad del desarrollo.
+
+Estas son las posibles alternativas que estudié antes de tomar una decisión:
+\begin{itemize}
+    \item \href{https://www.djangoproject.com/}{\textit{Django}} fue el primer \textit{framework} sobre el que me informé, pues lo había usado un poco y pensé que me podría ser de ayuda a la hora de construir un portal web en las fases posteriores del proyecto. Al investigar otras opciones lo descarté rápidamente por su sintaxis y porque transmite bastante sensación de acoplamiento entre la API y la parte web.
+    \item \href{https://flask.palletsprojects.com/en/2.2.x/}{\textit{Flask}}, del cual se habla lo suficiente como para que yo, siendo un novato en Python, haya oído hablar de éste. Su sintaxis es increíblemente sencilla y es muy fácil de instalar y usar, pero sin embargo no permite asincronía, lo cual es bastante probable que acabara convirtiéndose en una penalización notable de rendimiento.
+    \item \href{https://quart.palletsprojects.com/en/latest/}{\textit{Quart}} es, literalmente, una reimplementación de \textit{Flask} que permite asincronía.
+\end{itemize}
+
+Finalmente me decidí por \textit{fastapi}. Permite asincronía y, al igual que \textit{Flask} y \textit{Quart} es increíblemente fácil de usar. Estas características colocan a \textit{fastapi} a la par con \textit{Quart}. Probé un poco ambos inicialmente, sin notar aparente diferencia hasta que al probar \textit{fastapi} desde el navegador vi que te generaba, en \textit{/docs}, la \textit{OpenAPI Specification} con todas las rutas disponibles junto con una herramienta para probarlas.
+
+Esto para mi supuso bastante ahorro de trabajo, pues para comprobar manualmente el funcionamiento de la API no tendría que recurrir a escribir muchas llamadas \textit{curl} en la terminal o instalarme aplicaciones como \href{https://www.postman.com/}{\textit{Postman}} o \href{https://insomnia.rest/}{\textit{Insomnia}}.
+
 % SECCIÓN A DESARROLLAR EN EL FUTURO, DE MOMENTO SOLO SE USA COMO RECORDATORIO
 \subsection{El código implementado}
 
