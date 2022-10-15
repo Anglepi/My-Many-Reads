@@ -14,7 +14,7 @@ with open(data_path) as json_books:
     book_list: list[Book] = Book.from_list(books_data)
 
 libraries: list[Library] = [Library("user1", "myLibrary", list()), Library(
-    "user1", "myOtherLibrary", list()), Library("user2", "generic", list())]
+    "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry("RandomBook", 5, Library.ReadingStatus.COMPLETED)])]
 
 
 mmr = FastAPI()
@@ -45,7 +45,7 @@ async def get_libraries(user: str):
 @mmr.get("/libraries/{user}/{library}")
 async def get_library(user: str, library: str):
     library = find_library(user, library)
-    return library
+    return library.to_dict()
 
 
 @mmr.delete("/libraries/{user}/{library}")
