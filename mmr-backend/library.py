@@ -39,6 +39,15 @@ class Library:
         def entries_to_dict(entries: list[Library.Entry]):
             return list(map(Library.Entry.to_dict, entries))
 
+    def get_owner(self):
+        return self.__owner
+
+    def get_name(self):
+        return self.__name
+
+    def set_name(self, new_name: str):
+        self.__name = new_name
+
     def add_entry(self, entry: Library.Entry):
         self.__entries.append(entry)
 
