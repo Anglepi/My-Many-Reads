@@ -119,3 +119,51 @@ def test_delete_library():
     assert_that(response.status_code).is_equal_to(200)
     assert_that(libraries).is_not_equal_to(new_libraries)
     assert_that(new_libraries).is_equal_to([])
+
+
+def test_library_add_entry():
+    with TestClient(mmr) as client:
+        library = client.get("/libraries/user1/myLibrary").json()
+        response = client.post("/libraries/user1/myLibrary/testBook")
+        updated_library = client.get("/libraries/user1/myLibrary").json()
+
+    assert_that(response.status_code).is_equal_to(200)
+    assert_that(library).is_not_equal_to(updated_library)
+    assert_that(updated_library["entries"]).is_equal_to(
+        [{"book_id": "testBook", "score": None, "status": None}])
+
+
+def test_library_update_entry():
+    with TestClient(mmr) as client:
+        library = client.get("/libraries/user1/myLibrary").json()
+        response = client.put(
+            "/libraries/user1/myLibrary/testBook/10/COMPLETED")
+        updated_library = client.get("/libraries/user1/myLibrary").json()
+
+    assert_that(response.status_code).is_equal_to(200)
+    assert_that(library).is_not_equal_to(updated_library)
+    assert_that(updated_library["entries"]).is_equal_to(
+        [{"book_id": "testBook", "score": 10, "status": "COMPLETED"}])
+
+
+def test_remove_nonexistent_entry():
+    with TestClient(mmr) as client:
+        library = client.get("/libraries/user1/myLibrary").json()
+        response = client.delete(
+            "/libraries/user1/myLibrary/nonexistent")
+        updated_library = client.get("/libraries/user1/myLibrary").json()
+
+    assert_that(response.status_code).is_equal_to(200)
+    assert_that(library).is_equal_to(updated_library)
+
+
+def test_remove_nonexistent_entry():
+    with TestClient(mmr) as client:
+        library = client.get("/libraries/user1/myLibrary").json()
+        response = client.delete(
+            "/libraries/user1/myLibrary/testBook")
+        updated_library = client.get("/libraries/user1/myLibrary").json()
+
+    assert_that(response.status_code).is_equal_to(200)
+    assert_that(library).is_not_equal_to(updated_library)
+    assert_that(updated_library["entries"]).is_equal_to([])
