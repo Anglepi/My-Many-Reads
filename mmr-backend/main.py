@@ -13,8 +13,8 @@ with open(data_path) as json_books:
     books_data = json.load(json_books)
     book_list: list[Book] = Book.from_list(books_data)
 
-libraries: list[Library] = [Library("user1", "myLibrary"), Library(
-    "user1", "myOtherLibrary"), Library("user2", "generic")]
+libraries: list[Library] = [Library("user1", "myLibrary", list()), Library(
+    "user1", "myOtherLibrary", list()), Library("user2", "generic", list())]
 
 
 mmr = FastAPI()

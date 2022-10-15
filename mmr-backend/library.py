@@ -3,7 +3,7 @@ from enum import Enum
 
 
 class Library:
-    def __init__(self, owner, name: str, entries: list[Library.Entry] = list()):
+    def __init__(self, owner, name: str, entries: list[Library.Entry]):
         self.__owner = owner
         self.__name: str = name
         self.__entries: list[Library.Entry] = entries
