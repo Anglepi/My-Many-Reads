@@ -4,8 +4,7 @@ from main import mmr
 import os
 import json
 from book import Book
-
-client = TestClient(mmr)
+from library import Library
 
 
 current_dir = os.path.dirname(__file__)
@@ -22,7 +21,8 @@ def check_response(response, status, body):
 
 
 def test_api_initialized():
-    response = client.get("/")
+    with TestClient(mmr) as client:
+        response = client.get("/")
     expected_status = 200
     expected_body = {"message": "Hello World!"}
 
@@ -30,7 +30,8 @@ def test_api_initialized():
 
 
 def test_get_books():
-    response = client.get("/books")
+    with TestClient(mmr) as client:
+        response = client.get("/books")
     expected_status = 200
     expected_body = list(map(lambda book: book.to_dict(), book_list))
 
@@ -38,7 +39,8 @@ def test_get_books():
 
 
 def test_get_book():
-    response = client.get("/books/ABookId")
+    with TestClient(mmr) as client:
+        response = client.get("/books/ABookId")
     expected_status = 200
     expected_body = [book_list[0].to_dict()]
 
@@ -46,7 +48,8 @@ def test_get_book():
 
 
 def test_get_book_not_found():
-    response = client.get("/books/IJustMadeThisUp")
+    with TestClient(mmr) as client:
+        response = client.get("/books/IJustMadeThisUp")
     expected_status = 200
     expected_body = []
 
