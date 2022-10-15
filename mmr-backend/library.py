@@ -25,7 +25,7 @@ class Library:
         return Library(**library_data)
 
     class Entry:
-        def __init__(self, book_id: str, score: int, status: Library.ReadingStatus):
+        def __init__(self, book_id: str, score: int = None, status: Library.ReadingStatus = None):
             self.__book_id: str = book_id
             self.__score: int = score
             self.__status: Library.ReadingStatus = status
