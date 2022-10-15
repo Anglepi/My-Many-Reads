@@ -64,3 +64,6 @@ class Library:
 
     def get_entries(self):
         return self.__entries
+
+    def __eq__(self, other: Library) -> bool:
+        self.__name == other.__name and self.__owner == other.__owner
