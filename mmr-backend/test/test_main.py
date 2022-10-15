@@ -88,10 +88,22 @@ def test_create_library():
         [{"owner": "userTest", "name": "libraryTest", "entries": []}])
 
 
+def test_update_library():
+    with TestClient(mmr) as client:
+        libraries = client.get("/libraries/userTest").json()
+        response = client.put("/libraries/userTest/libraryTest/newNameTest")
+        new_libraries = client.get("/libraries/userTest").json()
+
+    assert_that(response.status_code).is_equal_to(200)
+    assert_that(libraries).is_not_equal_to(new_libraries)
+    assert_that(new_libraries).is_equal_to(
+        [{"owner": "userTest", "name": "newNameTest", "entries": []}])
+
+
 def test_delete_nonexistent_library():
     with TestClient(mmr) as client:
         libraries = client.get("/libraries/userTest").json()
-        response = client.delete("/libraries/userTest/nonexistent")
+        response = client.delete("/libraries/userTest/libraryTest")
         new_libraries = client.get("/libraries/userTest").json()
 
     assert_that(response.status_code).is_equal_to(200)
@@ -101,7 +113,7 @@ def test_delete_nonexistent_library():
 def test_delete_library():
     with TestClient(mmr) as client:
         libraries = client.get("/libraries/userTest").json()
-        response = client.delete("/libraries/userTest/libraryTest")
+        response = client.delete("/libraries/userTest/newNameTest")
         new_libraries = client.get("/libraries/userTest").json()
 
     assert_that(response.status_code).is_equal_to(200)
