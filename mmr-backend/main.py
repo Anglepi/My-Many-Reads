@@ -66,6 +66,24 @@ async def create_library(user: str, library: str):
     libraries.append(Library(user, library, list()))
 
 
+@mmr.post("/libraries/{user}/{library}/{isbn}")
+async def add_library_entry(user: str, library: str, isbn: str):
+    library = find_library(user, library)
+    library.add_entry(Library.Entry(isbn))
+
+
+@mmr.delete("/libraries/{user}/{library}/{isbn}")
+async def add_library_entry(user: str, library: str, isbn: str):
+    library = find_library(user, library)
+    library.remove_entry(isbn)
+
+
+@mmr.put("/libraries/{user}/{library}/{isbn}/{score}/{status}")
+async def add_library_entry(user: str, library: str, isbn: str, score: int, status: Library.ReadingStatus):
+    library = find_library(user, library)
+    library.update_entry(isbn, Library.Entry(isbn, score, status))
+
+
 def find_library(owner: str, name: str) -> Library:
     occurrencies = list(filter(
         lambda lib: lib.get_owner() == owner and lib.get_name() == name, libraries))
