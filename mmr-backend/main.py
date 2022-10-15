@@ -63,7 +63,7 @@ async def update_library_name(user: str, library: str, new_name: str):
 
 @mmr.post("/libraries/{user}/{library}")
 async def create_library(user: str, library: str):
-    libraries.append(Library(user, library))
+    libraries.append(Library(user, library, list()))
 
 
 def find_library(owner: str, name: str) -> Library:
