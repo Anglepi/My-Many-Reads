@@ -20,11 +20,6 @@ libraries: list[Library] = [Library("user1", "myLibrary", list()), Library(
 mmr = FastAPI()
 
 
-@mmr.get("/")
-async def root():
-    return {"message": "Hello World!"}
-
-
 @mmr.get("/books")
 async def get_books():
     return list(map(lambda book: Book.to_dict(book), book_list))

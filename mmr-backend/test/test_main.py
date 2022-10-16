@@ -20,15 +20,6 @@ def check_response(response, status, body):
     assert_that(response.json()).is_equal_to(body)
 
 
-def test_api_initialized():
-    with TestClient(mmr) as client:
-        response = client.get("/")
-    expected_status = 200
-    expected_body = {"message": "Hello World!"}
-
-    check_response(response, expected_status, expected_body)
-
-
 def test_get_books():
     with TestClient(mmr) as client:
         response = client.get("/books")
