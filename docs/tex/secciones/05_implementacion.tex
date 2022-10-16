@@ -254,6 +254,26 @@ Esto para mi supuso bastante ahorro de trabajo, pues para comprobar manualmente 
 \begin{itemize}
     \item \textit{/books}
     \item \textit{/books/\{isbn\}}
+    \item \textit{/libraries/\{user\}}
+    \item \textit{/libraries/\{user\}/\{library\}}
+\end{itemize}
+
+\textbf{POST}
+\begin{itemize}
+    \item \textit{/libraries/\{user\}/\{library\}}
+    \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
+\end{itemize}
+
+\textbf{PUT}
+\begin{itemize}
+    \item \textit{/libraries/\{user\}/\{library\}/\{new\_name\}}
+    \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}/\{score\}/\{status\}}
+\end{itemize}
+
+\textbf{DELETE}
+\begin{itemize}
+    \item \textit{/libraries/\{user\}/\{library\}}
+    \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
 \end{itemize}
 
 Cosas de la representación de un libro y:
