@@ -234,6 +234,18 @@ Esto para mi supuso bastante ahorro de trabajo, pues para comprobar manualmente 
         \item publishing\_date: string
         \item edition: string
     \end{itemize}
+    \item \textbf{Library}
+    \begin{itemize}
+        \item name: string
+        \item owner: string
+        \item entries: list<Entry>
+    \end{itemize}
+    \item \textbf{Entry}
+    \begin{itemize}
+        \item book\_id: string
+        \item score: int
+        \item status: list<one of ["PLAN TO READ", "CURRENTLY READING", "COMPLETED", "DROPPED", "ON HOLD"]>
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{\textit{Endpoints.}}
