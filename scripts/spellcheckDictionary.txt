@@ -58,3 +58,4 @@ asincronía
 OpenAPI
 fastapi
 reimplementación
+fi
