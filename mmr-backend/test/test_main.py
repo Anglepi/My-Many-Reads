@@ -148,7 +148,7 @@ def test_remove_nonexistent_entry():
     assert_that(library).is_equal_to(updated_library)
 
 
-def test_remove_nonexistent_entry():
+def test_remove_existent_entry():
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.delete(
