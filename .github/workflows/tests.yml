@@ -1,5 +1,6 @@
 name: Run all test files
 on:
+  pull-request:
   push:
     paths:
       - "**.py"
