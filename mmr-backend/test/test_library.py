@@ -18,7 +18,9 @@ def test_create_library():
     library = Library(owner, name, [])
 
     # Then
-    assert_that(json.dumps(library.to_dict())).is_equal_to(expected_library)
+    assert_that(library.get_owner()).is_equal_to(owner)
+    assert_that(library.get_name()).is_equal_to(name)
+    assert_that(library.get_entries()).is_equal_to([])
 
 
 def test_create_library_from_dict():
