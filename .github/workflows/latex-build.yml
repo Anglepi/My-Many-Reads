@@ -1,7 +1,7 @@
 name: Build PDF
 
 on:
-  pull-request:
+  pull_request:
   push:
     paths:
       - ".github/workflows/latex-build.yml"
