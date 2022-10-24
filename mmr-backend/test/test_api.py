@@ -1,6 +1,6 @@
 from assertpy import assert_that
 from fastapi.testclient import TestClient
-from main import mmr
+from api import mmr
 import os
 import json
 from book import Book

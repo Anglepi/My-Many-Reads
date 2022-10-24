@@ -1,5 +1,5 @@
 start:
-	poetry run uvicorn main:mmr --reload
+	poetry run uvicorn api:mmr --reload
 
 spellcheck:
 	./scripts/spellcheck.sh
