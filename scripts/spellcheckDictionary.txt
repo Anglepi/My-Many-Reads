@@ -60,3 +60,7 @@ fastapi
 reimplementación
 fi
 isbn
+RESTful
+api
+linter
+mypy
