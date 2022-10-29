@@ -3,7 +3,7 @@ from book import Book
 from library import Library
 import os
 import json
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status
 
 # For testing...
 current_dir = os.path.dirname(__file__)
@@ -60,15 +60,18 @@ async def update_library_name(user: str, library_name: str, new_name: str) -> No
 
 
 @mmr.post("/libraries/{user}/{library_name}")
-async def create_library(user: str, library_name: str) -> None:
+async def create_library(user: str, library_name: str, response: Response) -> None:
     libraries.append(Library(user, library_name, list()))
+    response.status_code = status.HTTP_201_CREATED
+    response.headers["location"] = "/libraries/"+user+"/"+library_name
 
 
 @mmr.post("/libraries/{user}/{library_name}/{isbn}")
-async def add_library_entry(user: str, library_name: str, isbn: str) -> None:
+async def add_library_entry(user: str, library_name: str, isbn: str, response: Response) -> None:
     library: Optional[Library] = find_library(user, library_name)
     if library:
         library.add_entry(Library.Entry(isbn))
+        response.status_code = status.HTTP_201_CREATED
 
 
 @mmr.delete("/libraries/{user}/{library_name}/{isbn}")
