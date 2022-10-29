@@ -4,8 +4,8 @@ from typing import Optional
 
 
 class Library:
-    def __init__(self, owner, name: str, entries: list[Library.Entry]) -> None:
-        self.__owner = owner
+    def __init__(self, owner: str, name: str, entries: list[Library.Entry]) -> None:
+        self.__owner: str = owner
         self.__name: str = name
         self.__entries: list[Library.Entry] = entries
 
@@ -23,11 +23,11 @@ class Library:
         return props
 
     @staticmethod
-    def from_dict(library_data) -> Library:
+    def from_dict(library_data: dict) -> Library:
         return Library(**library_data)
 
     class Entry:
-        def __init__(self, book_id: str, score: int = None, status: Library.ReadingStatus = None) -> None:
+        def __init__(self, book_id: str, score: Optional[int] = None, status: Optional[Library.ReadingStatus] = None) -> None:
             self.__book_id: str = book_id
             self.__score: Optional[int] = score
             self.__status: Optional[Library.ReadingStatus] = status

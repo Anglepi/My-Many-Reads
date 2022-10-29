@@ -15,11 +15,11 @@ class Book:
     edition: str
 
     @staticmethod
-    def from_list(books) -> list[Book]:
+    def from_list(books: list[dict]) -> list[Book]:
         return list(map(lambda book: Book.from_dict(book), books))
 
     @staticmethod
-    def from_dict(book) -> Book:
+    def from_dict(book: dict) -> Book:
         return Book(**book)
 
     def to_dict(self) -> dict:
