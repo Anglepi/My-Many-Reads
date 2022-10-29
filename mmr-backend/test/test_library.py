@@ -12,7 +12,6 @@ def test_create_library():
     # Given
     owner = "Sergio"
     name = "Libros de historia"
-    expected_library = '{"owner": "Sergio", "name": "Libros de historia", "entries": []}'
 
     # When
     library = Library(owner, name, [])

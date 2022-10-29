@@ -1,9 +1,10 @@
 from __future__ import annotations
 from enum import Enum
+from typing import Optional
 
 
 class Library:
-    def __init__(self, owner, name: str, entries: list[Library.Entry]):
+    def __init__(self, owner, name: str, entries: list[Library.Entry]) -> None:
         self.__owner = owner
         self.__name: str = name
         self.__entries: list[Library.Entry] = entries
@@ -15,55 +16,59 @@ class Library:
         DROPPED = "DROPPED"
         ON_HOLD = "ON HOLD"
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         props = {key.split("__")[-1]: value for (key,
                                                  value) in self.__dict__.items()}
         props["entries"] = Library.Entry.entries_to_dict(props["entries"])
         return props
 
-    def from_dict(library_data):
+    @staticmethod
+    def from_dict(library_data) -> Library:
         return Library(**library_data)
 
     class Entry:
-        def __init__(self, book_id: str, score: int = None, status: Library.ReadingStatus = None):
+        def __init__(self, book_id: str, score: int = None, status: Library.ReadingStatus = None) -> None:
             self.__book_id: str = book_id
-            self.__score: int = score
-            self.__status: Library.ReadingStatus = status
+            self.__score: Optional[int] = score
+            self.__status: Optional[Library.ReadingStatus] = status
 
-        def get_book_id(self):
+        def get_book_id(self) -> str:
             return self.__book_id
 
-        def to_dict(self):
+        def to_dict(self) -> dict:
             return {"book_id": self.__book_id, "score": self.__score, "status": self.__status}
 
-        def entries_to_dict(entries: list[Library.Entry]):
+        @staticmethod
+        def entries_to_dict(entries: list[Library.Entry]) -> list[dict]:
             return list(map(Library.Entry.to_dict, entries))
 
-    def get_owner(self):
+    def get_owner(self) -> str:
         return self.__owner
 
-    def get_name(self):
+    def get_name(self) -> str:
         return self.__name
 
-    def set_name(self, new_name: str):
+    def set_name(self, new_name: str) -> None:
         self.__name = new_name
 
-    def add_entry(self, entry: Library.Entry):
+    def add_entry(self, entry: Library.Entry) -> None:
         self.__entries.append(entry)
 
-    def update_entry(self, book_id: str, new_entry: Library.Entry):
+    def update_entry(self, book_id: str, new_entry: Library.Entry) -> None:
         for index, entry in enumerate(self.__entries):
             if (entry.get_book_id() == book_id):
                 self.__entries[index] = new_entry
                 break
 
-    def remove_entry(self, book_id: str):
+    def remove_entry(self, book_id: str) -> None:
         for entry in self.__entries:
             if (entry.get_book_id() == book_id):
                 self.__entries.remove(entry)
 
-    def get_entries(self):
+    def get_entries(self) -> list[Library.Entry]:
         return self.__entries
 
-    def __eq__(self, other: Library) -> bool:
-        self.__name == other.__name and self.__owner == other.__owner
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Library):
+            return NotImplemented
+        return self.__name == other.__name and self.__owner == other.__owner

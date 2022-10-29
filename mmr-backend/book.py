@@ -14,13 +14,15 @@ class Book:
     publishing_date: str
     edition: str
 
-    def from_list(books):
+    @staticmethod
+    def from_list(books) -> list[Book]:
         return list(map(lambda book: Book.from_dict(book), books))
 
-    def from_dict(book):
+    @staticmethod
+    def from_dict(book) -> Book:
         return Book(**book)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return asdict(self)
 
     class Genre(Enum):
