@@ -204,6 +204,8 @@ La alternativa más prometedora que consideré fue \href{https://github.com/grap
 
 \textbf{Framework para construir la API:} \href{https://fastapi.tiangolo.com/}{\textit{fastapi}}
 
+La naturaleza de este proyecto hace que lo más cómodo apropiado sea construir una API RESTful, ya que es más flexible y ligero que su alternativa principal: SOAP. En contexto de REST, la información gestionada o \textit{recursos} como se les conoce en este tipo de sistema es fácilmente identificable. Además, su uso y diseño es muy fácil e inteligible. Se especifica en mayor detalle en su correspondiente sección (ver \nameref{api}).
+
 En Python existen muchas alternativas, y muy buenas, para construir una API. Todas parecen competir entre ellas en cuanto a velocidad, pues se publicitan mencionándola continuamente, pero en este caso también quise tener en cuenta la comodidad del desarrollo.
 
 Estas son las posibles alternativas que estudié antes de tomar una decisión:
@@ -221,6 +223,9 @@ Esto para mi supuso bastante ahorro de trabajo, pues para comprobar manualmente 
 \section{El código implementado}
 
 \subsection{La API}
+\label{api}
+
+Se ha diseñado una API RESTful por el fácil acceso a los \textit{endpoints} implementados, la clara identificación de los diferentes recursos disponibles y la sencillez con la que se realizan las diferentes peticiones, gracias a todos los estándares bien definidos y muy conocidos a día de hoy, que permiten el acceso a diferentes recursos y funcionalidades sin apenas complejidad.
 
 \subsubsection{\textit{Endpoints.}}
 
