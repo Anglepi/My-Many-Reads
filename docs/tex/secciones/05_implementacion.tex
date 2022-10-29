@@ -217,6 +217,8 @@ Estas son las posibles alternativas que estudié antes de tomar una decisión:
 
 Finalmente me decidí por \textit{fastapi}. Permite asincronía y, al igual que \textit{Flask} y \textit{Quart} es increíblemente fácil de usar. Estas características colocan a \textit{fastapi} a la par con \textit{Quart}. Probé un poco ambos inicialmente, sin notar aparente diferencia hasta que al probar \textit{fastapi} desde el navegador vi que te generaba, en \textit{/docs}, la \textit{OpenAPI Specification} con todas las rutas disponibles junto con una herramienta para probarlas.
 
+Gracias a que \textit{fastapi} es compatible con funciones asíncronas, se permiten asignar funciones asíncronas a los \textit{endpoints} implementados, por lo que estas llamadas no serán bloqueantes, lo que significa que se podrán realizar varias llamadas antes de que la primera finalice. Básicamente, siempre que las especificaciones internas lo permitan, es buena idea que los diferentes \textit{endpoints} sean asíncronos para evitar bloqueos, pero sin embargo esto no siempre es posible ya que existen algunos casos en los que la asincronicidad no está permitida, por ejemplo en algunas operaciones realizadas con bases de datos.
+
 Esto para mi supuso bastante ahorro de trabajo, pues para comprobar manualmente el funcionamiento de la API no tendría que recurrir a escribir muchas llamadas \textit{curl} en la terminal o instalarme aplicaciones como \href{https://www.postman.com/}{\textit{Postman}} o \href{https://insomnia.rest/}{\textit{Insomnia}}.
 
 % SECCIÓN A DESARROLLAR EN EL FUTURO, DE MOMENTO SOLO SE USA COMO RECORDATORIO
