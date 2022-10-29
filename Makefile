@@ -1,3 +1,6 @@
+start:
+	poetry run uvicorn api:mmr --reload
+
 spellcheck:
 	./scripts/spellcheck.sh
 
@@ -14,6 +17,8 @@ doc:
 	bibtex proyecto; \
 	pdflatex proyecto.tex;
 	mv docs/tex/proyecto.pdf .
+
+docs: doc
 
 cleandoc:
 	rm proyecto.pdf docs/tex/*.log docs/tex/*.aux docs/tex/*.bbl docs/tex/*.blg docs/tex/*.lof docs/tex/*.lot docs/tex/*.out docs/tex/*.toc

@@ -4,7 +4,7 @@ En este capítulo se describe el proceso de implementación junto con todos los 
 
 En primer lugar se muestra el listado de las historias de usuario generadas junto con sus correspondientes tareas, que dan forma a las unidades de trabajo refinadas. Tras esto, se encuentran todos los dilemas tecnológicos considerados, junto con la solución seleccionada y  una lista de alternativas brevemente definidas con el fin de proveer una justificación fundada y válida de la elección tomada.
 
-\subsection{Historias de usuario}
+\section{Historias de usuario}
 
 Las historias de usuario se usan para definir los beneficios que ciertos tipos de usuarios desean obtener en determinadas situaciones. Cada una de estas historias de usuario representa un avance en la funcionalidad del sistema, y su desarrollo se compone de una a varias tareas.
 
@@ -14,7 +14,7 @@ Algunas historias, como ya se verá a continuación, son técnicas. Esto se debe
 
 Así mismo cabe mencionar que el primer \textit{milestone} del proyecto se excluye de esta sección, pues está compuesto únicamente de documentación no directamente relacionada con las tareas de implementación.
 
-\subsubsection{PMV-1. Estructura de datos básica y base de la lógica de negocio}
+\subsection{PMV-1. Gestión básica de libros y bibliotecas.}
 
 \begin{itemize}
     \item \href{https://github.com/Anglepi/My-Many-Reads/issues/29}{\textbf{HU-1}} Solicitar información de libros \\
@@ -36,13 +36,18 @@ Así mismo cabe mencionar que el primer \textit{milestone} del proyecto se exclu
     \end{itemize}
 \end{itemize}
 
-\subsubsection{PMV-2. Implementación de la API y sistema de recomendaciones}
+\subsection{PMV-2. Implementación de la API y sistema de recomendaciones}
 
 \begin{itemize}
     \item \href{https://github.com/Anglepi/My-Many-Reads/issues/45}{\textbf{HT-3}} Creación de la API. \\
     Es necesario tener una API para realizar todas las tareas de consulta y tratamiento de datos pertinentes sobre las entidades del sistema. \\
     Se utilizara tanto para alimentar el sistema web que se desarrolle en el futuro como para \\
-    permitir a los consumidores de información realizar sus consultas
+    permitir a los consumidores de información realizar sus consultas.
+    \begin{itemize}
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/46}{\textbf{T-3.1}} Escoger un framework para la API e implementar un ejemplo de uso.
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/47}{\textbf{T-3.2}} \textit{Endpoints} para los libros.
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/48}{\textbf{T-3.2}} \textit{Endpoints} para las bibliotecas.
+    \end{itemize}
     \item \href{https://github.com/Anglepi/My-Many-Reads/issues/49}{\textbf{HU-4}} Sistema de recomendaciones manuales. \\
     Como Sergio, lector en MMR, \\
     quiero relacionar dos libros mediante una recomendación personal, \\
@@ -53,11 +58,11 @@ Así mismo cabe mencionar que el primer \textit{milestone} del proyecto se exclu
     con el fin de ayudarme a decidir mis lecturas.
 \end{itemize}
 
-\subsection{Entorno de desarrollo}
+\section{Entorno de desarrollo}
 
 A continuación se describen todos los elementos que conforman el entorno de desarrollo, justificando las elecciones tomadas enfrentándolas a las alternativas encontradas e indicando el por qué de la decisión en base a la naturaleza de este proyecto.
 
-\subsubsection{Gestor de tareas}
+\subsection{Gestor de tareas}
 
 Un gestor de tareas permitirá automatizar ciertas tareas relacionadas con el desarrollo de manera más sencilla, como generación de documentación, ejecución de tests, etc. a través de un sencillo comando definido por el desarrollador.
 
@@ -80,7 +85,7 @@ Esta elección fue de las primeras que hubo de tomarse, mucho antes de comenzar 
 
 Solo es necesario un fichero \href{https://github.com/Anglepi/My-Many-Reads/blob/main/Makefile}{\textit{Makefile}} en el que incluir las tareas a automatizar bajo sus nombres.
 
-\subsubsection{Editor de código}
+\subsection{Editor de código}
 \label{Editor de código}
 
 Una vez seleccionado el lenguaje, la opción más común suele ser escoger uno de los \textit{IDEs} disponibles, pues hacen más cómodo el desarrollo. Sin embargo, esta decisión es más subjetiva puesto que no afecta directamente al software producido.
@@ -111,7 +116,7 @@ El propio editor te ofrece sugerencias cuando detecta el entorno en el que está
     \item \href{https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens}{GitLens}, que aumenta las funcionalidades relacionadas con Git en el editor.
 \end{itemize}
 
-\subsubsection{Lenguaje de programación}
+\subsection{Lenguaje de programación}
 
 Para esta decisión, el criterio principal es las capacidades del lenguaje en cuanto a la facilidad que ofrece para implementar las tareas necesarias (paquetes, módulos, complementos, etc.) junto con la eficiencia del mismo y la mantenibilidad a largo plazo.
 
@@ -133,7 +138,7 @@ Es evidente que necesitaría algún tipo de API para servir los datos, pero por 
 
 La decisión, como se indica arriba, fue Python. Este lenguaje he de admitir que no se adapta mucho a mis gustos personales en cuanto a sintaxis y entorno de paquetes, pero lo que ofrece me será de gran utilidad para este desarrollo.
 
-\subsubsection{Gestor de dependencias}
+\subsection{Gestor de dependencias}
 
 Esta es una de las espinitas que tengo clavadas con respecto a Python. La gestión de dependencias es bastante tediosa, y si no se hace bien, puedes crear bastante caos en tu entorno de desarrollo.
 
@@ -151,7 +156,7 @@ En cuanto a uso, comandos y acciones gestionadas, es muy similar a otros como \t
 
 Su uso surgió como una \href{https://github.com/Anglepi/My-Many-Reads/pull/39#discussion_r974230463}{\textit{review action}} del primer \textit{pull request}, puesto que antes usaba el clásico \textit{requirements.txt} y actualmente no se considera la mejor práctica.
 
-\subsubsection{\textit{Test framework.}}
+\subsection{\textit{Test framework.}}
 
 Existen muchos marcos de test diferentes, cada uno de ellos con fortalezas y debilidades además de otras características que aportan atractivo según la metodología y mentalidad con la que se enfoque el desarrollo.
 
@@ -172,7 +177,7 @@ En este caso se ha escogido \textit{Pytest} por la sencillez de su uso, ya que e
 \textit{Pytest} por sí solo no ofrece utilidades para determinar la cobertura de los tests, es decir, las líneas de código y casos que ejecutan dichos tests, lo cual resulta de gran utilidad para determinar aquellas secciones o ramas de ejecución cuyo comportamiento no se está comprobando. Para ello se puede incluir \href{https://pypi.org/project/pytest-cov/}{un plugin} o instalar la herramienta \href{https://coverage.readthedocs.io/}{\textit{coverage}} por separado, ambas opciones siendo prácticamente similares.
 
 
-\subsubsection{Herramientas ajenas al código.}
+\subsection{Herramientas ajenas al código.}
 
 \textbf{Para escribir la documentación:} \href{https://www.latex-project.org/}{\textit{LaTeX}} junto a \href{https://www.markdownguide.org/getting-started/}{\textit{Markdown}}.
 
@@ -187,7 +192,7 @@ La alternativa más potente es \href{https://www.antidote.info/en/}{\textit{Anti
 \textit{Aspell} es un corrector ortográfico \textit{Open Source} que empleo para la corrección de mi documentación. El principal motivo de la elección de ésta es que, a parte de ser \textit{Open Source}, tiene soporte para ficheros de LaTeX. En el repositorio hay \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheck.sh}{un \textit{script}} que se encarga de su uso, apoyándose en un diccionario personalizado de \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheckDictionary.txt}{excepciones} ya que esta comprobación ortográfica es parte del proceso de integración, y si no supera esta comprobación no se permitirá la inclusión de los cambios a la rama principal.
 
 
-\subsection{Módulos importados}
+\section{Módulos importados}
 
 \textbf{Biblioteca de aserciones:} \href{https://github.com/assertpy/assertpy}{\textit{assertpy}}
 
@@ -195,10 +200,68 @@ Una biblioteca con varias funciones de aserciones para encapsular todo el proces
 
 La alternativa más prometedora que consideré fue \href{https://github.com/grappa-py/grappa}{\textit{Grappa}}, con la cual también construyes las aserciones formando frases en lenguaje natural encadenando funciones. No hay mucha diferencia con assertpy en cuanto a características ofrecidas, así que por gustos personales me decanté por la otra opción.
 
-% SECCIÓN A DESARROLLAR EN EL FUTURO, DE MOMENTO SOLO SE USA COMO RECORDATORIO
-\subsection{El código implementado}
+\textbf{Framework para construir la API:} \href{https://fastapi.tiangolo.com/}{\textit{fastapi}}
 
-\subsubsection{La API}
+En Python existen muchas alternativas, y muy buenas, para construir una API. Todas parecen competir entre ellas en cuanto a velocidad, pues se publicitan mencionándola continuamente, pero en este caso también quise tener en cuenta la comodidad del desarrollo.
+
+Estas son las posibles alternativas que estudié antes de tomar una decisión:
+\begin{itemize}
+    \item \href{https://www.djangoproject.com/}{\textit{Django}} fue el primer \textit{framework} sobre el que me informé, pues lo había usado un poco y pensé que me podría ser de ayuda a la hora de construir un portal web en las fases posteriores del proyecto. Al investigar otras opciones lo descarté rápidamente por su sintaxis y porque transmite bastante sensación de acoplamiento entre la API y la parte web.
+    \item \href{https://flask.palletsprojects.com/en/2.2.x/}{\textit{Flask}}, del cual se habla lo suficiente como para que yo, siendo un novato en Python, haya oído hablar de éste. Su sintaxis es increíblemente sencilla y es muy fácil de instalar y usar, pero sin embargo no permite asincronía, lo cual es bastante probable que acabara convirtiéndose en una penalización notable de rendimiento.
+    \item \href{https://quart.palletsprojects.com/en/latest/}{\textit{Quart}} es, literalmente, una reimplementación de \textit{Flask} que permite asincronía.
+\end{itemize}
+
+Finalmente me decidí por \textit{fastapi}. Permite asincronía y, al igual que \textit{Flask} y \textit{Quart} es increíblemente fácil de usar. Estas características colocan a \textit{fastapi} a la par con \textit{Quart}. Probé un poco ambos inicialmente, sin notar aparente diferencia hasta que al probar \textit{fastapi} desde el navegador vi que te generaba, en \textit{/docs}, la \textit{OpenAPI Specification} con todas las rutas disponibles junto con una herramienta para probarlas.
+
+Esto para mi supuso bastante ahorro de trabajo, pues para comprobar manualmente el funcionamiento de la API no tendría que recurrir a escribir muchas llamadas \textit{curl} en la terminal o instalarme aplicaciones como \href{https://www.postman.com/}{\textit{Postman}} o \href{https://insomnia.rest/}{\textit{Insomnia}}.
+
+% SECCIÓN A DESARROLLAR EN EL FUTURO, DE MOMENTO SOLO SE USA COMO RECORDATORIO
+\section{El código implementado}
+
+\subsection{La API}
+
+\subsubsection{\textit{Endpoints.}}
+
+\textbf{GET}
+\begin{itemize}
+    \item Books:
+    \begin{itemize}
+        \item \textit{/books}
+        \item \textit{/books/\{isbn\}}
+    \end{itemize}
+    \item Libraries:
+    \begin{itemize}
+        \item \textit{/libraries/\{user\}}
+        \item \textit{/libraries/\{user\}/\{library\}}
+    \end{itemize}
+\end{itemize}
+
+\textbf{POST}
+\begin{itemize}
+    \item Libraries:
+    \begin{itemize}
+        \item \textit{/libraries/\{user\}/\{library\}}
+        \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
+    \end{itemize}
+\end{itemize}
+
+\textbf{PUT}
+\begin{itemize}
+    \item Libraries:
+    \begin{itemize}
+        \item \textit{/libraries/\{user\}/\{library\}/\{new\_name\}}
+        \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}/\{score\}/\{status\}}
+    \end{itemize}
+\end{itemize}
+
+\textbf{DELETE}
+\begin{itemize}
+    \item Libraries:
+    \begin{itemize}
+        \item \textit{/libraries/\{user\}/\{library\}}
+        \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
+    \end{itemize}
+\end{itemize}
 
 Cosas de la representación de un libro y:
 

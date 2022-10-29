@@ -15,10 +15,12 @@ def test_create_library():
     expected_library = '{"owner": "Sergio", "name": "Libros de historia", "entries": []}'
 
     # When
-    library = Library(owner, name)
+    library = Library(owner, name, [])
 
     # Then
-    assert_that(json.dumps(library.to_dict())).is_equal_to(expected_library)
+    assert_that(library.get_owner()).is_equal_to(owner)
+    assert_that(library.get_name()).is_equal_to(name)
+    assert_that(library.get_entries()).is_equal_to([])
 
 
 def test_create_library_from_dict():
@@ -52,7 +54,7 @@ def test_add_entry():
     # Given
     owner = "Sergio"
     name = "Libros de historia"
-    library = Library(owner, name)
+    library = Library(owner, name, [])
     entry = get_sample_entries()[0]
     expected_library = '{"owner": "Sergio", "name": "Libros de historia", "entries": [{"book_id": "first book id", "score": 7, "status": "PLAN TO READ"}]}'
 

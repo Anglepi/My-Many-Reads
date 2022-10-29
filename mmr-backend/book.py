@@ -15,7 +15,7 @@ class Book:
     edition: str
 
     def from_list(books):
-        return map(lambda book: Book.from_dict(book), books)
+        return list(map(lambda book: Book.from_dict(book), books))
 
     def from_dict(book):
         return Book(**book)

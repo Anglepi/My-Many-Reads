@@ -3,7 +3,7 @@ from enum import Enum
 
 
 class Library:
-    def __init__(self, owner, name: str, entries: list[Library.Entry] = list()):
+    def __init__(self, owner, name: str, entries: list[Library.Entry]):
         self.__owner = owner
         self.__name: str = name
         self.__entries: list[Library.Entry] = entries
@@ -25,7 +25,7 @@ class Library:
         return Library(**library_data)
 
     class Entry:
-        def __init__(self, book_id: str, score: int, status: Library.ReadingStatus):
+        def __init__(self, book_id: str, score: int = None, status: Library.ReadingStatus = None):
             self.__book_id: str = book_id
             self.__score: int = score
             self.__status: Library.ReadingStatus = status
@@ -38,6 +38,15 @@ class Library:
 
         def entries_to_dict(entries: list[Library.Entry]):
             return list(map(Library.Entry.to_dict, entries))
+
+    def get_owner(self):
+        return self.__owner
+
+    def get_name(self):
+        return self.__name
+
+    def set_name(self, new_name: str):
+        self.__name = new_name
 
     def add_entry(self, entry: Library.Entry):
         self.__entries.append(entry)
@@ -55,3 +64,6 @@ class Library:
 
     def get_entries(self):
         return self.__entries
+
+    def __eq__(self, other: Library) -> bool:
+        self.__name == other.__name and self.__owner == other.__owner
