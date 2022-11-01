@@ -73,7 +73,9 @@ def test_create_library():
         response = client.post("/libraries/userTest/libraryTest")
         new_libraries = client.get("/libraries/userTest").json()
 
-    assert_that(response.status_code).is_equal_to(200)
+    assert_that(response.status_code).is_equal_to(201)
+    assert_that(response.headers["location"]).is_equal_to(
+        "/libraries/userTest/libraryTest")
     assert_that(libraries).is_not_equal_to(new_libraries)
     assert_that(new_libraries).is_equal_to(
         [{"owner": "userTest", "name": "libraryTest", "entries": []}])
@@ -118,7 +120,7 @@ def test_library_add_entry():
         response = client.post("/libraries/user1/myLibrary/testBook")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
-    assert_that(response.status_code).is_equal_to(200)
+    assert_that(response.status_code).is_equal_to(201)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
         [{"book_id": "testBook", "score": None, "status": None}])

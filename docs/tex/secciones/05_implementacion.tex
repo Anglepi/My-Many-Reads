@@ -138,6 +138,10 @@ Es evidente que necesitaría algún tipo de API para servir los datos, pero por 
 
 La decisión, como se indica arriba, fue Python. Este lenguaje he de admitir que no se adapta mucho a mis gustos personales en cuanto a sintaxis y entorno de paquetes, pero lo que ofrece me será de gran utilidad para este desarrollo.
 
+Para evitar algunos posibles errores y apoyar la producción de código más legible, he instalado en mi entorno de desarrollo el \textit{linter} \href{http://mypy-lang.org/}{\textit{mypy}}, con algunas \href{https://github.com/Anglepi/My-Many-Reads/blob/main/.mypy.ini}{reglas configuradas} para hacer la revisión más estricta. Este \textit{linter} fuerza que las funciones y argumentos tengan los tipos correctos, con lo que se consigue algo así como crear un \textit{typescript} de Python.
+
+Éste no es el único \textit{linter} viable. Una de las ventajas de Visual Studio Code es que te ofrece herramientas para seleccionar diferentes \textit{linters} y gestiona su instalación por ti, ofreciéndote las recomendaciones más populares. Cada una de estas suele destacar por centrase en algún aspecto, como por ejemplo \href{https://pypi.org/project/pylint/}{\textit{pylint}}, que se centra en la calidad del código y ofrece sugerencias para refactorizar con respecto a los estándares, y sin ningún problema se puede usar junto a \textit{mypy}, por lo que no es mala idea instalarlo también, con algo de \href{https://github.com/Anglepi/My-Many-Reads/blob/main/.pylintrc.ini}{configuración}.
+
 \subsection{Gestor de dependencias}
 
 Esta es una de las espinitas que tengo clavadas con respecto a Python. La gestión de dependencias es bastante tediosa, y si no se hace bien, puedes crear bastante caos en tu entorno de desarrollo.
@@ -200,7 +204,9 @@ Una biblioteca con varias funciones de aserciones para encapsular todo el proces
 
 La alternativa más prometedora que consideré fue \href{https://github.com/grappa-py/grappa}{\textit{Grappa}}, con la cual también construyes las aserciones formando frases en lenguaje natural encadenando funciones. No hay mucha diferencia con assertpy en cuanto a características ofrecidas, así que por gustos personales me decanté por la otra opción.
 
-\textbf{Framework para construir la API:} \href{https://fastapi.tiangolo.com/}{\textit{fastapi}}
+\textbf{Framework para construir la API:} \href{https://fastapi.tiangolo.com/}{\textit{FastAPI}}
+
+La naturaleza de este proyecto hace que lo más cómodo apropiado sea construir una API RESTful, ya que es más flexible y ligero que su alternativa principal: SOAP. En contexto de REST, la información gestionada o \textit{recursos} como se les conoce en este tipo de sistema es fácilmente identificable. Además, su uso y diseño es muy fácil e inteligible. Se especifica en mayor detalle en su correspondiente sección (ver \nameref{api}).
 
 En Python existen muchas alternativas, y muy buenas, para construir una API. Todas parecen competir entre ellas en cuanto a velocidad, pues se publicitan mencionándola continuamente, pero en este caso también quise tener en cuenta la comodidad del desarrollo.
 
@@ -211,7 +217,9 @@ Estas son las posibles alternativas que estudié antes de tomar una decisión:
     \item \href{https://quart.palletsprojects.com/en/latest/}{\textit{Quart}} es, literalmente, una reimplementación de \textit{Flask} que permite asincronía.
 \end{itemize}
 
-Finalmente me decidí por \textit{fastapi}. Permite asincronía y, al igual que \textit{Flask} y \textit{Quart} es increíblemente fácil de usar. Estas características colocan a \textit{fastapi} a la par con \textit{Quart}. Probé un poco ambos inicialmente, sin notar aparente diferencia hasta que al probar \textit{fastapi} desde el navegador vi que te generaba, en \textit{/docs}, la \textit{OpenAPI Specification} con todas las rutas disponibles junto con una herramienta para probarlas.
+Finalmente me decidí por \textit{FastAPI}. Permite asincronía y, al igual que \textit{Flask} y \textit{Quart} es increíblemente fácil de usar. Estas características colocan a \textit{FastAPI} a la par con \textit{Quart}. Probé un poco ambos inicialmente, sin notar aparente diferencia hasta que al probar \textit{FastAPI} desde el navegador vi que te generaba, en \textit{/docs}, la \textit{OpenAPI Specification} con todas las rutas disponibles junto con una herramienta para probarlas.
+
+Gracias a que \textit{FastAPI} es compatible con funciones asíncronas, se permiten asignar funciones asíncronas a los \textit{endpoints} implementados, por lo que estas llamadas no serán bloqueantes, lo que significa que se podrán realizar varias llamadas antes de que la primera finalice. Básicamente, siempre que las especificaciones internas lo permitan, es buena idea que los diferentes \textit{endpoints} sean asíncronos para evitar bloqueos, pero sin embargo esto no siempre es posible ya que existen algunos casos en los que la asincronía no está permitida, por ejemplo en algunas operaciones realizadas con bases de datos.
 
 Esto para mi supuso bastante ahorro de trabajo, pues para comprobar manualmente el funcionamiento de la API no tendría que recurrir a escribir muchas llamadas \textit{curl} en la terminal o instalarme aplicaciones como \href{https://www.postman.com/}{\textit{Postman}} o \href{https://insomnia.rest/}{\textit{Insomnia}}.
 
@@ -219,6 +227,9 @@ Esto para mi supuso bastante ahorro de trabajo, pues para comprobar manualmente 
 \section{El código implementado}
 
 \subsection{La API}
+\label{api}
+
+Se ha diseñado una API RESTful por el fácil acceso a los \textit{endpoints} implementados, la clara identificación de los diferentes recursos disponibles y la sencillez con la que se realizan las diferentes peticiones, gracias a todos los estándares bien definidos y muy conocidos a día de hoy, que permiten el acceso a diferentes recursos y funcionalidades sin apenas complejidad.
 
 \subsubsection{\textit{Endpoints.}}
 
