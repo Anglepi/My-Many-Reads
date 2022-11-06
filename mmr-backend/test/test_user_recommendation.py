@@ -57,3 +57,15 @@ def test_has_book():
 
     assert_that(recommendation.has_book("ISBN1")).is_true()
     assert_that(recommendation.has_book("ISBN4")).is_false()
+
+
+def test_vote_comment():
+    recommendation = UserRecommendation(
+        ("ISBN1", "ISBN2"), UserRecommendation.UserComment("userA", "Both are cool"))
+    expected_dict = {"books": ["ISBN1", "ISBN2"], "comments": [
+        {"author": "userA", "comment": "Both are cool", "score": 1}]}
+
+    recommendation.vote_comment("userA")
+    recommendation.vote_comment("userB")
+
+    assert_that(recommendation.to_dict()).is_equal_to(expected_dict)
