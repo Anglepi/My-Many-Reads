@@ -9,9 +9,19 @@ class UserRecommendation:
 
     class UserComment:
         def __init__(self, user: str, comment: str):
-            self.__user = user
+            self.__author = user
             self.__comment = comment
             self.__score = 0
+
+        def to_dict(self) -> dict:
+            return {"author": self.__author, "comment": self.__comment, "score": self.__score}
+
+        @staticmethod
+        def entries_to_dict(entries: list[UserRecommendation.UserComment]) -> list[dict]:
+            return list(map(UserRecommendation.UserComment.to_dict, entries))
+
+    def to_dict(self) -> dict:
+        return {"books": self.__books, "comments": UserRecommendation.UserComment.entries_to_dict(self.__comments)}
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, UserRecommendation):
