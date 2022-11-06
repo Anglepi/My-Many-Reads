@@ -20,6 +20,9 @@ class UserRecommendation:
         def entries_to_dict(entries: list[UserRecommendation.UserComment]) -> list[dict]:
             return list(map(UserRecommendation.UserComment.to_dict, entries))
 
+    def add_comment(self, comment: UserComment) -> None:
+        self.__comments.append(comment)
+
     def to_dict(self) -> dict:
         return {"books": self.__books, "comments": UserRecommendation.UserComment.entries_to_dict(self.__comments)}
 
