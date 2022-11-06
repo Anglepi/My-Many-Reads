@@ -49,3 +49,11 @@ def test_cannot_add_multiple_comments():
     recommendation.add_comment(new_comment)
 
     assert_that(recommendation.to_dict()).is_equal_to(expected_dict)
+
+
+def test_has_book():
+    recommendation = UserRecommendation(
+        ("ISBN1", "ISBN2"), UserRecommendation.UserComment("userA", "Both are cool"))
+
+    assert_that(recommendation.has_book("ISBN1")).is_true()
+    assert_that(recommendation.has_book("ISBN4")).is_false()

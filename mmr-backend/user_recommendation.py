@@ -23,6 +23,9 @@ class UserRecommendation:
         def entries_to_dict(entries: list[UserRecommendation.UserComment]) -> list[dict]:
             return list(map(UserRecommendation.UserComment.to_dict, entries))
 
+    def has_book(self, isbn: str) -> bool:
+        return isbn in self.__books
+
     def add_comment(self, comment: UserComment) -> None:
         occurrences = list(
             filter(lambda current_comment: current_comment.get_author() == comment.get_author(), self.__comments))
