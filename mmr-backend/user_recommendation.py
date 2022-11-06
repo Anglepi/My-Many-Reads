@@ -11,3 +11,8 @@ class UserRecommendation:
             self.__user = user
             self.__comment = comment
             self.__score = 0
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, UserRecommendation):
+            return NotImplemented
+        return self.__books == other.__books
