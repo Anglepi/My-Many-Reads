@@ -12,6 +12,7 @@ def test_recommendation_equality():
 
     assert_that(recommendation1).is_equal_to(recommendation2)
     assert_that(recommendation1).is_not_equal_to(recommendation3)
+    assert_that(recommendation1).is_not_equal_to("potatoes")
 
 
 def test_recommendation_dict():
