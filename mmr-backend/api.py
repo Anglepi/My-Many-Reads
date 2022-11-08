@@ -1,6 +1,7 @@
 from typing import Iterable, Optional
 from book import Book
 from library import Library
+from user_recommendation import UserRecommendation
 import os
 import json
 from fastapi import FastAPI, Response, status
@@ -15,9 +16,19 @@ with open(data_path) as json_books:
 
 libraries: list[Library] = [Library("user1", "myLibrary", list()), Library(
     "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry("RandomBook", 5, Library.ReadingStatus.COMPLETED)])]
+mock_recommendations: list[UserRecommendation] = [UserRecommendation(
+    (book_list[0].ISBN, book_list[1].ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to second book")),
+    UserRecommendation(
+    (book_list[0].ISBN, book_list[2].ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to third book"))]
+mock_recommendations[0].add_comment(
+    UserRecommendation.UserComment("RandomGuy", "They are both cool"))
 
 
 mmr = FastAPI()
+
+#
+# BOOKS
+#
 
 
 @mmr.get("/books")
@@ -30,6 +41,10 @@ async def get_book(isbn: str) -> list[dict]:
     matching_book: Iterable = filter(lambda book: book.to_dict()[
         "ISBN"] == isbn, book_list)
     return list(matching_book)
+
+#
+# LIBRARIES
+#
 
 
 @mmr.get("/libraries/{user}")
@@ -86,6 +101,19 @@ async def update_library_entry(user: str, library_name: str, isbn: str, score: i
     library: Optional[Library] = find_library(user, library_name)
     if library:
         library.update_entry(isbn, Library.Entry(isbn, score, status))
+
+#
+# USER RECOMMENDATIONS
+#
+
+
+@mmr.get("/userRecommendations/{book}")
+async def get_recommendations_for_book(book: str) -> list[dict]:
+    # More than likely to be replaced with query filter when DB is implemented
+    recommendations_for_book = filter(
+        lambda recommendation: recommendation.has_book(book), mock_recommendations)
+
+    return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))
 
 
 def find_library(owner: str, name: str) -> Optional[Library]:

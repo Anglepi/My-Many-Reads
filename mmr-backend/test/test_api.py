@@ -160,3 +160,31 @@ def test_remove_existent_entry():
     assert_that(response.status_code).is_equal_to(200)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to([])
+
+
+def test_user_recommendations_for_book():
+    with TestClient(mmr) as client:
+        recommendations1 = client.get(
+            "/userRecommendations/ThirdBookId")
+        recommendations2 = client.get(
+            "/userRecommendations/NotExistent")
+    expected_status = 200
+    expected_body1 = [
+        {
+            "books": [
+                "ABookId",
+                "ThirdBookId"
+            ],
+            "comments": [
+                {
+                    "author": "Recommender",
+                    "comment": "first book is similar to third book",
+                    "score": 0
+                }
+            ]
+        }
+    ]
+    expected_body2 = []
+
+    check_response(recommendations1, expected_status, expected_body1)
+    check_response(recommendations2, expected_status, expected_body2)
