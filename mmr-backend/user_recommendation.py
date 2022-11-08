@@ -27,11 +27,14 @@ class UserRecommendation:
             return list(map(UserRecommendation.UserComment.to_dict, entries))
 
     def vote_comment(self, author: str) -> None:
-        comments = list(
-            filter(lambda current_comment: current_comment.get_author() == author, self.__comments))
+        comments = self.get_author_comments(author)
 
         if len(comments):
             comments[0].vote()
+
+    def get_author_comments(self, author: str) -> list[UserComment]:
+        return list(
+            filter(lambda current_comment: current_comment.get_author() == author, self.__comments))
 
     def has_book(self, isbn: str) -> bool:
         return isbn in self.__books

@@ -60,6 +60,16 @@ def test_has_book():
     assert_that(recommendation.has_book("ISBN4")).is_false()
 
 
+def test_get_author_comments():
+    user_comment = UserRecommendation.UserComment("userA", "Both are cool")
+    recommendation = UserRecommendation(
+        ("ISBN1", "ISBN2"), user_comment)
+
+    assert_that(recommendation.get_author_comments("userA")[
+                0].to_dict()).is_equal_to(user_comment.to_dict())
+    assert_that(recommendation.get_author_comments("NonExistent")).is_empty()
+
+
 def test_vote_comment():
     recommendation = UserRecommendation(
         ("ISBN1", "ISBN2"), UserRecommendation.UserComment("userA", "Both are cool"))
