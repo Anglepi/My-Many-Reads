@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from api import mmr
 import os
 import json
+import copy
 from book import Book
 from library import Library
 
@@ -216,11 +217,15 @@ def test_add_user_recommendation_new():
             "/userRecommendations/SecondBookId/ThirdBookId/username/comment")
         new_recommendations = client.get(
             "/userRecommendations/SecondBookId").json()
+    expected_new_recommendations = copy.deepcopy(existing_recommendations)
+    expected_new_recommendations.append(
+        {"books": ["SecondBookId", "ThirdBookId"], "comments": [{"author": "username", "comment": "comment", "score": 0}]})
 
     assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
     assert_that(response.status_code).is_equal_to(201)
     assert_that(response.headers["location"]).is_equal_to(
         "/userRecommendations/SecondBookId/ThirdBookId/username")
+    assert_that(new_recommendations).is_equal_to(expected_new_recommendations)
 
 
 def test_add_user_recommendation_existing():
@@ -231,8 +236,12 @@ def test_add_user_recommendation_existing():
             "/userRecommendations/ABookId/ThirdBookId/username/comment")
         new_recommendations = client.get(
             "/userRecommendations/ABookId").json()
+    expected_new_recommendations = copy.deepcopy(existing_recommendations)
+    expected_new_recommendations[1]["comments"].append(
+        {"author": "username", "comment": "comment", "score": 0})
 
     assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
     assert_that(response.status_code).is_equal_to(201)
     assert_that(response.headers["location"]).is_equal_to(
         "/userRecommendations/ABookId/ThirdBookId/username")
+    assert_that(new_recommendations).is_equal_to(expected_new_recommendations)
