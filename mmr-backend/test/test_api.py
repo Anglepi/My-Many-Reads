@@ -188,3 +188,51 @@ def test_user_recommendations_for_book():
 
     check_response(recommendations1, expected_status, expected_body1)
     check_response(recommendations2, expected_status, expected_body2)
+
+
+def test_add_user_recommendation_duplicated_books():
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/userRecommendations/ABookId/ABookId/username/comment")
+
+    check_response(response, 400, {
+                   "error": "Can't recommend a book with itself"})
+
+
+def test_add_user_recommendation_missing_book():
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/userRecommendations/ABookId/NonExistentBook/username/comment")
+
+    check_response(response, 404, {
+                   "error": "Can't find some of the indicated books"})
+
+
+def test_add_user_recommendation_new():
+    with TestClient(mmr) as client:
+        existing_recommendations = client.get(
+            "/userRecommendations/SecondBookId").json()
+        response = client.post(
+            "/userRecommendations/SecondBookId/ThirdBookId/username/comment")
+        new_recommendations = client.get(
+            "/userRecommendations/SecondBookId").json()
+
+    assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
+    assert_that(response.status_code).is_equal_to(201)
+    assert_that(response.headers["location"]).is_equal_to(
+        "/userRecommendations/SecondBookId/ThirdBookId/username")
+
+
+def test_add_user_recommendation_existing():
+    with TestClient(mmr) as client:
+        existing_recommendations = client.get(
+            "/userRecommendations/ABookId").json()
+        response = client.post(
+            "/userRecommendations/ABookId/ThirdBookId/username/comment")
+        new_recommendations = client.get(
+            "/userRecommendations/ABookId").json()
+
+    assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
+    assert_that(response.status_code).is_equal_to(201)
+    assert_that(response.headers["location"]).is_equal_to(
+        "/userRecommendations/ABookId/ThirdBookId/username")

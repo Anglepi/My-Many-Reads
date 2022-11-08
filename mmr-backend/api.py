@@ -110,10 +110,38 @@ async def update_library_entry(user: str, library_name: str, isbn: str, score: i
 @mmr.get("/userRecommendations/{book}")
 async def get_recommendations_for_book(book: str) -> list[dict]:
     # More than likely to be replaced with query filter when DB is implemented
-    recommendations_for_book = filter(
+    recommendations_for_book: Iterable[UserRecommendation] = filter(
         lambda recommendation: recommendation.has_book(book), mock_recommendations)
 
     return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))
+
+
+@mmr.post("/userRecommendations/{book1}/{book2}/{user}/{comment}")
+async def add_user_recommendation(book1: str, book2: str, user: str, comment: str, response: Response) -> Optional[dict]:
+    existing_recommendation: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
+        book1) and recommendation.has_book(book2), mock_recommendations))
+
+    if book1 == book2:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {"error": "Can't recommend a book with itself"}
+
+    existing_books: list[Book] = list(
+        filter(lambda book: book.ISBN == book1 or book.ISBN == book2, mock_book_list))
+    if len(existing_books) != 2:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"error": "Can't find some of the indicated books"}
+
+    if len(existing_recommendation) > 0:
+        existing_recommendation[0].add_comment(
+            UserRecommendation.UserComment(user, comment))
+    else:
+        mock_recommendations.append(UserRecommendation(
+            (book1, book2), UserRecommendation.UserComment(user, comment)))
+
+    response.status_code = status.HTTP_201_CREATED
+    response.headers["location"] = "/userRecommendations/" + \
+        "/".join((book1, book2, user))
+    return None
 
 
 def find_library(owner: str, name: str) -> Optional[Library]:
