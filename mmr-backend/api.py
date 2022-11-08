@@ -12,14 +12,14 @@ sample_data_path = "test/sample-data/books.json"
 data_path = os.path.join(current_dir, sample_data_path)
 with open(data_path) as json_books:
     books_data = json.load(json_books)
-    book_list: list[Book] = Book.from_list(books_data)
+    mock_book_list: list[Book] = Book.from_list(books_data)
 
-libraries: list[Library] = [Library("user1", "myLibrary", list()), Library(
+mock_libraries: list[Library] = [Library("user1", "myLibrary", list()), Library(
     "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry("RandomBook", 5, Library.ReadingStatus.COMPLETED)])]
 mock_recommendations: list[UserRecommendation] = [UserRecommendation(
-    (book_list[0].ISBN, book_list[1].ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to second book")),
+    (mock_book_list[0].ISBN, mock_book_list[1].ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to second book")),
     UserRecommendation(
-    (book_list[0].ISBN, book_list[2].ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to third book"))]
+    (mock_book_list[0].ISBN, mock_book_list[2].ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to third book"))]
 mock_recommendations[0].add_comment(
     UserRecommendation.UserComment("RandomGuy", "They are both cool"))
 
@@ -33,13 +33,13 @@ mmr = FastAPI()
 
 @mmr.get("/books")
 async def get_books() -> list[dict]:
-    return list(map(lambda book: Book.to_dict(book), book_list))
+    return list(map(lambda book: Book.to_dict(book), mock_book_list))
 
 
 @mmr.get("/books/{isbn}")
 async def get_book(isbn: str) -> list[dict]:
     matching_book: Iterable = filter(lambda book: book.to_dict()[
-        "ISBN"] == isbn, book_list)
+        "ISBN"] == isbn, mock_book_list)
     return list(matching_book)
 
 #
@@ -50,7 +50,7 @@ async def get_book(isbn: str) -> list[dict]:
 @mmr.get("/libraries/{user}")
 async def get_libraries(user: str) -> list[dict]:
     libraries_from_user = filter(
-        lambda lib: lib.get_owner() == user, libraries)
+        lambda lib: lib.get_owner() == user, mock_libraries)
     return list(map(lambda lib: lib.to_dict(), libraries_from_user))
 
 
@@ -64,7 +64,7 @@ async def get_library(user: str, library_name: str) -> dict:
 async def delete_library(user: str, library_name: str) -> None:
     library: Optional[Library] = find_library(user, library_name)
     if library:
-        libraries.remove(library)
+        mock_libraries.remove(library)
 
 
 @mmr.put("/libraries/{user}/{library_name}/{new_name}")
@@ -76,7 +76,7 @@ async def update_library_name(user: str, library_name: str, new_name: str) -> No
 
 @mmr.post("/libraries/{user}/{library_name}")
 async def create_library(user: str, library_name: str, response: Response) -> None:
-    libraries.append(Library(user, library_name, list()))
+    mock_libraries.append(Library(user, library_name, list()))
     response.status_code = status.HTTP_201_CREATED
     response.headers["location"] = "/libraries/"+user+"/"+library_name
 
@@ -118,6 +118,6 @@ async def get_recommendations_for_book(book: str) -> list[dict]:
 
 def find_library(owner: str, name: str) -> Optional[Library]:
     occurrencies = list(filter(
-        lambda lib: lib.get_owner() == owner and lib.get_name() == name, libraries))
+        lambda lib: lib.get_owner() == owner and lib.get_name() == name, mock_libraries))
 
     return occurrencies[0] if len(occurrencies) else None
