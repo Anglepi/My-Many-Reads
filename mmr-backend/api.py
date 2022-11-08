@@ -116,6 +116,26 @@ async def get_recommendations_for_book(book: str) -> list[dict]:
     return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))
 
 
+@mmr.post("/userRecommendations/{book1}/{book2}/{user}")
+async def vote_user_recommendation(book1: str, book2: str, user: str, response: Response) -> Optional[dict]:
+    existing_recommendation: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
+        book1) and recommendation.has_book(book2) and len(recommendation.get_author_comments(user)), mock_recommendations))
+
+    if book1 == book2:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {"error": "Recommendations must be from different books"}
+
+    if len(existing_recommendation):
+        existing_recommendation[0].vote_comment(user)
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"error": "Recommendation or comment does not exist"}
+
+    response.status_code = status.HTTP_201_CREATED
+    response.headers["location"] = "/userRecommendations/" + book1
+    return None
+
+
 @mmr.post("/userRecommendations/{book1}/{book2}/{user}/{comment}")
 async def add_user_recommendation(book1: str, book2: str, user: str, comment: str, response: Response) -> Optional[dict]:
     existing_recommendation: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
@@ -131,7 +151,7 @@ async def add_user_recommendation(book1: str, book2: str, user: str, comment: st
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"error": "Can't find some of the indicated books"}
 
-    if len(existing_recommendation) > 0:
+    if len(existing_recommendation):
         existing_recommendation[0].add_comment(
             UserRecommendation.UserComment(user, comment))
     else:

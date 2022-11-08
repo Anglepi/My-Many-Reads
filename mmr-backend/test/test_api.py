@@ -209,6 +209,42 @@ def test_add_user_recommendation_missing_book():
                    "error": "Can't find some of the indicated books"})
 
 
+def test_vote_user_recommendation():
+    with TestClient(mmr) as client:
+        existing_recommendations = client.get(
+            "/userRecommendations/ABookId").json()
+        response = client.post(
+            "/userRecommendations/ABookId/SecondBookId/Recommender")
+        new_recommendations = client.get(
+            "/userRecommendations/ABookId").json()
+
+    previous_score = existing_recommendations[0]["comments"][0]["score"]
+    new_score = new_recommendations[0]["comments"][0]["score"]
+
+    assert_that(response.status_code).is_equal_to(201)
+    assert_that(response.headers["location"]).is_equal_to(
+        "/userRecommendations/ABookId")
+    assert_that(new_score).is_equal_to(previous_score+1)
+
+
+def test_vote_user_bad_recommendation():
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/userRecommendations/ABookId/ABookId/Recommender")
+
+    check_response(response, 400, {
+                   "error": "Recommendations must be from different books"})
+
+
+def test_vote_user_recommendation_missing_author():
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/userRecommendations/ABookId/SecondBookId/ThisUserHasNotCommentedHere")
+
+    check_response(response, 404, {
+                   "error": "Recommendation or comment does not exist"})
+
+
 def test_add_user_recommendation_new():
     with TestClient(mmr) as client:
         existing_recommendations = client.get(
