@@ -293,21 +293,6 @@ Para cada pareja de libros, los usuarios podrán escribir un comentario para jus
 
 Al momento de crear una recomendación se indica el comentario a incluir y el usuario autor. Dicho comentario tendrá una puntuación inicial igual a cero, que incrementará según otros usuarios lo voten. Si la pareja de libros no tenía ninguna recomendación previa, se creará con el comentario concreto, y si existía, simplemente se añadirá dicho comentario.
 
-Esta es la estructura de datos resultante:
-
-\begin{lstlisting}
-class UserRecommendation:
-    def __init__(self, books: Tuple[str, str], user_comment: UserRecommendation.UserComment) -> None:
-        self.__books = sorted(books)
-        self.__comments = [user_comment]
-    
-    class UserComment:
-        def __init__(self, user: str, comment: str):
-            self.__author = user
-            self.__comment = comment
-            self.__score = 0
-\end{lstlisting}
-
 Cada recomendación, por tanto, queda compuesta de una pareja de libros identificados por su \textit{ISBN}. Con el fin de encontrar recomendaciones concretas con mayor facilidad, esta pareja se ordena al momento de almacenarse.
 
 Adicionalmente, se almacena una lista de comentarios. Cada uno de estos comentarios se identifica por su autor, contiene el texto indicado y una puntuación.
