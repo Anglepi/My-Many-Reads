@@ -107,7 +107,7 @@ async def update_library_entry(user: str, library_name: str, isbn: str, score: i
 #
 
 
-@mmr.get("/userRecommendations/{book}")
+@mmr.get("/recommendations/{book}")
 async def get_recommendations_for_book(book: str) -> list[dict]:
     # More than likely to be replaced with query filter when DB is implemented
     recommendations_for_book: Iterable[UserRecommendation] = filter(
@@ -116,7 +116,7 @@ async def get_recommendations_for_book(book: str) -> list[dict]:
     return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))
 
 
-@mmr.post("/userRecommendations/{book1}/{book2}/{user}")
+@mmr.post("/recommendations/{book1}/{book2}/{user}")
 async def vote_user_recommendation(book1: str, book2: str, user: str, response: Response) -> Optional[dict]:
     existing_recommendation: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
         book1) and recommendation.has_book(book2) and len(recommendation.get_author_comments(user)), mock_recommendations))
@@ -132,11 +132,11 @@ async def vote_user_recommendation(book1: str, book2: str, user: str, response: 
         return {"error": "Recommendation or comment does not exist"}
 
     response.status_code = status.HTTP_201_CREATED
-    response.headers["location"] = "/userRecommendations/" + book1
+    response.headers["location"] = "/recommendations/" + book1
     return None
 
 
-@mmr.post("/userRecommendations/{book1}/{book2}/{user}/{comment}")
+@mmr.post("/recommendations/{book1}/{book2}/{user}/{comment}")
 async def add_user_recommendation(book1: str, book2: str, user: str, comment: str, response: Response) -> Optional[dict]:
     existing_recommendation: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
         book1) and recommendation.has_book(book2), mock_recommendations))
@@ -159,7 +159,7 @@ async def add_user_recommendation(book1: str, book2: str, user: str, comment: st
             (book1, book2), UserRecommendation.UserComment(user, comment)))
 
     response.status_code = status.HTTP_201_CREATED
-    response.headers["location"] = "/userRecommendations/" + \
+    response.headers["location"] = "/recommendations/" + \
         "/".join((book1, book2, user))
     return None
 
