@@ -245,6 +245,10 @@ Se ha diseñado una API RESTful por el fácil acceso a los \textit{endpoints} im
         \item \textit{/libraries/\{user\}}
         \item \textit{/libraries/\{user\}/\{library\}}
     \end{itemize}
+    \item User Recommendations:
+    \begin{itemize}
+        \item \textit{/userRecommendations/\{book\}}
+    \end{itemize}
 \end{itemize}
 
 \textbf{POST}
@@ -253,6 +257,11 @@ Se ha diseñado una API RESTful por el fácil acceso a los \textit{endpoints} im
     \begin{itemize}
         \item \textit{/libraries/\{user\}/\{library\}}
         \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
+    \end{itemize}
+    \item User Recommendations:
+    \begin{itemize}
+        \item \textit{/userRecommendations/\{book1\}/\{book2\}/\{user\}}
+        \item \textit{/userRecommendations/\{book1\}/\{book2\}/\{user\}/\{comment\}}
     \end{itemize}
 \end{itemize}
 
