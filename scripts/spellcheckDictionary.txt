@@ -68,3 +68,8 @@ refactorizar
 pylint
 FastAPI
 linters
+UserComment
+UserRecommendation
+userRecommendations
+init
+str
