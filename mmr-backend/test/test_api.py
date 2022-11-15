@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from api import mmr
 import os
 import json
+import copy
 from book import Book
 from library import Library
 
@@ -160,3 +161,123 @@ def test_remove_existent_entry():
     assert_that(response.status_code).is_equal_to(200)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to([])
+
+
+def test_user_recommendations_for_book():
+    with TestClient(mmr) as client:
+        recommendations1 = client.get(
+            "/recommendations/ThirdBookId")
+        recommendations2 = client.get(
+            "/recommendations/NotExistent")
+    expected_status = 200
+    expected_body1 = [
+        {
+            "books": [
+                "ABookId",
+                "ThirdBookId"
+            ],
+            "comments": [
+                {
+                    "author": "Recommender",
+                    "comment": "first book is similar to third book",
+                    "score": 0
+                }
+            ]
+        }
+    ]
+    expected_body2 = []
+
+    check_response(recommendations1, expected_status, expected_body1)
+    check_response(recommendations2, expected_status, expected_body2)
+
+
+def test_add_user_recommendation_duplicated_books():
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/recommendations/ABookId/ABookId/username/comment")
+
+    check_response(response, 400, {
+                   "error": "Can't recommend a book with itself"})
+
+
+def test_add_user_recommendation_missing_book():
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/recommendations/ABookId/NonExistentBook/username/comment")
+
+    check_response(response, 404, {
+                   "error": "Can't find some of the indicated books"})
+
+
+def test_vote_user_recommendation():
+    with TestClient(mmr) as client:
+        existing_recommendations = client.get(
+            "/recommendations/ABookId").json()
+        response = client.post(
+            "/recommendations/ABookId/SecondBookId/Recommender")
+        new_recommendations = client.get(
+            "/recommendations/ABookId").json()
+
+    previous_score = existing_recommendations[0]["comments"][0]["score"]
+    new_score = new_recommendations[0]["comments"][0]["score"]
+
+    assert_that(response.status_code).is_equal_to(201)
+    assert_that(response.headers["location"]).is_equal_to(
+        "/recommendations/ABookId")
+    assert_that(new_score).is_equal_to(previous_score+1)
+
+
+def test_vote_user_bad_recommendation():
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/recommendations/ABookId/ABookId/Recommender")
+
+    check_response(response, 400, {
+                   "error": "Recommendations must be from different books"})
+
+
+def test_vote_user_recommendation_missing_author():
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/recommendations/ABookId/SecondBookId/ThisUserHasNotCommentedHere")
+
+    check_response(response, 404, {
+                   "error": "Recommendation or comment does not exist"})
+
+
+def test_add_user_recommendation_new():
+    with TestClient(mmr) as client:
+        existing_recommendations = client.get(
+            "/recommendations/SecondBookId").json()
+        response = client.post(
+            "/recommendations/SecondBookId/ThirdBookId/username/comment")
+        new_recommendations = client.get(
+            "/recommendations/SecondBookId").json()
+    expected_new_recommendations = copy.deepcopy(existing_recommendations)
+    expected_new_recommendations.append(
+        {"books": ["SecondBookId", "ThirdBookId"], "comments": [{"author": "username", "comment": "comment", "score": 0}]})
+
+    assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
+    assert_that(response.status_code).is_equal_to(201)
+    assert_that(response.headers["location"]).is_equal_to(
+        "/recommendations/SecondBookId/ThirdBookId/username")
+    assert_that(new_recommendations).is_equal_to(expected_new_recommendations)
+
+
+def test_add_user_recommendation_existing():
+    with TestClient(mmr) as client:
+        existing_recommendations = client.get(
+            "/recommendations/ABookId").json()
+        response = client.post(
+            "/recommendations/ABookId/ThirdBookId/username/comment")
+        new_recommendations = client.get(
+            "/recommendations/ABookId").json()
+    expected_new_recommendations = copy.deepcopy(existing_recommendations)
+    expected_new_recommendations[1]["comments"].append(
+        {"author": "username", "comment": "comment", "score": 0})
+
+    assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
+    assert_that(response.status_code).is_equal_to(201)
+    assert_that(response.headers["location"]).is_equal_to(
+        "/recommendations/ABookId/ThirdBookId/username")
+    assert_that(new_recommendations).is_equal_to(expected_new_recommendations)

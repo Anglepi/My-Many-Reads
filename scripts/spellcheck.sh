@@ -17,7 +17,7 @@ SpellcheckFile() {
 
 foundError=false
 
-for file in $(find ../. -name "*.md" -o -name "*.tex"); do
+for file in $(find ../. -name "*.md" -o -name "*.tex" -and -not -name "proyecto.tex"); do
     linesBeforeCheck=$(cat $results | wc -l)
     SpellcheckFile $file
     linesAfterCheck=$(cat $results | wc -l)
