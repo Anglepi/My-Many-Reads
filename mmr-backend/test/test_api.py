@@ -63,7 +63,7 @@ def test_get_library():
         response = client.get("/libraries/user2/generic")
     expected_status = 200
     expected_body = {"owner": "user2", "name": "generic", "entries": [
-        {"book_id": "RandomBook", "score": 5, "status": "COMPLETED"}]}
+        {"book": book_list[0].to_dict(), "score": 5, "status": "COMPLETED"}]}
 
     check_response(response, expected_status, expected_body)
 
@@ -118,26 +118,26 @@ def test_delete_library():
 def test_library_add_entry():
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
-        response = client.post("/libraries/user1/myLibrary/testBook")
+        response = client.post("/libraries/user1/myLibrary/ABookId")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     assert_that(response.status_code).is_equal_to(201)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
-        [{"book_id": "testBook", "score": None, "status": None}])
+        [{"book": book_list[0].to_dict(), "score": None, "status": None}])
 
 
 def test_library_update_entry():
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.put(
-            "/libraries/user1/myLibrary/testBook/10/COMPLETED")
+            "/libraries/user1/myLibrary/ABookId/10/COMPLETED")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     assert_that(response.status_code).is_equal_to(200)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
-        [{"book_id": "testBook", "score": 10, "status": "COMPLETED"}])
+        [{"book": book_list[0].to_dict(), "score": 10, "status": "COMPLETED"}])
 
 
 def test_remove_nonexistent_entry():
@@ -155,7 +155,7 @@ def test_remove_existent_entry():
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.delete(
-            "/libraries/user1/myLibrary/testBook")
+            "/libraries/user1/myLibrary/ABookId")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     assert_that(response.status_code).is_equal_to(200)
