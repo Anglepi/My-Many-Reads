@@ -12,7 +12,7 @@ class LibraryStats:
     def gather_info(self, entries: list[dict]) -> None:
         score_weight: float = 0.1
         self.__authors: dict[str, float] = {}
-        self.__genres: dict[str, float] = {}
+        self.__genres: dict[Book.Genre, float] = {}
 
         for entry in entries:
             score_value: float = score_weight * entry["score"]
@@ -26,3 +26,16 @@ class LibraryStats:
                 if genre not in self.__genres:
                     self.__genres[genre] = 0
                 self.__genres[genre] += score_value
+
+    def score_book(self, book: Book) -> float:
+        score: float = 0
+
+        for author in book.authors:
+            if author in self.__authors:
+                score += self.__authors[author]
+
+        for genre in book.genres:
+            if genre in self.__genres:
+                score += self.__genres[genre]
+
+        return score
