@@ -10,7 +10,7 @@ class LibraryStats:
         self.gather_info(entries_read)
 
     def gather_info(self, entries: list[dict]) -> None:
-        score_weight: float = 0.1
+        score_weight: float = 1
         self.__authors: dict[str, float] = {}
         self.__genres: dict[Book.Genre, float] = {}
 
