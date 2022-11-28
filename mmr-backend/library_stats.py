@@ -1,4 +1,5 @@
 from library import Library
+from book import Book
 
 
 class LibraryStats:
@@ -16,7 +17,7 @@ class LibraryStats:
         for entry in entries:
             score_value: float = score_weight * entry["score"]
 
-            for author in entry["book"]["author"]:
+            for author in entry["book"]["authors"]:
                 if author not in self.__authors:
                     self.__authors[author] = 0
                 self.__authors[author] += score_value
