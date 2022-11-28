@@ -16,12 +16,17 @@ with open(data_path) as json_books:
 
 def test_score_book():
     # Given
-    library: Library = Library("user", "name", [Library.Entry(book_list[0], 2, Library.ReadingStatus.DROPPED), Library.Entry(
+    library1: Library = Library("user", "name", [Library.Entry(
+        book_list[0], 2, Library.ReadingStatus.DROPPED)])
+    stats1: LibraryStats = LibraryStats(library1)
+    library2: Library = Library("user", "name", [Library.Entry(book_list[0], 2, Library.ReadingStatus.DROPPED), Library.Entry(
         book_list[1], 10, Library.ReadingStatus.CURRENTLY_READING), Library.Entry(book_list[2], 0, Library.ReadingStatus.PLAN_TO_READ)])
-    stats: LibraryStats = LibraryStats(library)
+    stats2: LibraryStats = LibraryStats(library2)
 
     # When
-    score = stats.score_book(book_list[2])
+    score1 = stats1.score_book(book_list[2])
+    score2 = stats2.score_book(book_list[2])
 
     # Then
-    assert_that(score).is_equal_to(36)
+    assert_that(score1).is_equal_to(6)
+    assert_that(score2).is_equal_to(36)
