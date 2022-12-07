@@ -28,5 +28,25 @@
     "publisher": "Nova editorial",
     "publishing_date": "2019-10-28",
     "edition": "5th edition"
+  },
+  {
+    "ISBN": "FourthBookId",
+    "title": "Recommendations Paradise",
+    "synopsis": "Some random descriptivie text about the book",
+    "authors": ["Angel Píñar"],
+    "genres": ["Fantasy", "Science", "Historical"],
+    "publisher": "Nova editorial",
+    "publishing_date": "2019-10-28",
+    "edition": "5th edition"
+  },
+  {
+    "ISBN": "FifthBookId",
+    "title": "The Spanish Omelette Hero",
+    "synopsis": "Some random descriptivie text about the book",
+    "authors": ["Angel Píñar"],
+    "genres": ["Art", "Manga", "Thriller"],
+    "publisher": "Nova editorial",
+    "publishing_date": "2019-10-28",
+    "edition": "5th edition"
   }
 ]
