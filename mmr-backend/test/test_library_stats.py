@@ -30,3 +30,18 @@ def test_score_book():
     # Then
     assert_that(score1).is_equal_to(6)
     assert_that(score2).is_equal_to(36)
+
+
+def test_recommendations():
+    # Given
+    library: Library = Library("user", "name", [Library.Entry(
+        book_list[2], 7, Library.ReadingStatus.COMPLETED)])
+    stats: LibraryStats = LibraryStats(library)
+    expected_recommendations = [
+        (book_list[0], 21), (book_list[1], 21), (book_list[3], 7), (book_list[4], 0)]
+
+    # When
+    recommendations = stats.get_recommendations(book_list)
+
+    # Then
+    assert_that(recommendations).is_equal_to(expected_recommendations)

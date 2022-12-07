@@ -4,6 +4,8 @@ from book import Book
 
 class LibraryStats:
     def __init__(self, library: Library) -> None:
+        self.__library = library
+
         entries_read: list[dict] = list(map(Library.Entry.to_dict, filter(
             lambda entry: entry.is_read(), library.get_entries())))
 
@@ -39,3 +41,14 @@ class LibraryStats:
                 score += self.__genres[genre]
 
         return score
+
+    def get_recommendations(self, books: list[Book]) -> list[tuple[Book, float]]:
+        new_books: list[Book] = list(filter(
+            lambda book: not self.__library.has_book(book), books))
+
+        scored_books: list[tuple[Book, float]] = list(map(
+            lambda book: (book, self.score_book(book)), new_books))
+
+        scored_books = sorted(scored_books, key=lambda x: x[1], reverse=True)
+
+        return scored_books[:10]
