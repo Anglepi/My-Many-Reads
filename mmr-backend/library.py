@@ -73,6 +73,12 @@ class Library:
     def get_entries(self) -> list[Library.Entry]:
         return self.__entries
 
+    def has_book(self, book: Book) -> bool:
+        for entry in self.__entries:
+            if (entry.get_book_id() == book.ISBN):
+                return True
+        return False
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Library):
             return NotImplemented

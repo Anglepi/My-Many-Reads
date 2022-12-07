@@ -114,5 +114,25 @@ def test_update_entry():
     assert_that(json.dumps(library.to_dict())).is_equal_to(expected_library)
 
 
+def test_has_book():
+    # Given
+    owner = "An owner"
+    name = "library name"
+    with open(data_path) as json_books:
+        books_data = json.load(json_books)
+        book_list: list[Book] = Book.from_list(books_data)
+
+    entries = get_sample_entries(book_list[0], book_list[1])
+    expected_library = '{"owner": "An owner", "name": "library name", "entries": [{"book": '+json.dumps(book_list[0].to_dict(
+    ))+', "score": 7, "status": "PLAN TO READ"}, {"book": '+json.dumps(book_list[1].to_dict())+', "score": 10, "status": "COMPLETED"}]}'
+
+    # When
+    library = Library(owner, name, entries)
+    result = library.has_book(book_list[0])
+
+    # Then
+    assert_that(result).is_true()
+
+
 def get_sample_entries(book1: Book, book2: Book):
     return [Library.Entry(book1, 7, "PLAN TO READ"), Library.Entry(book2, 10, "COMPLETED")]
