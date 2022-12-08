@@ -1,6 +1,7 @@
 from typing import Iterable, Optional
 from book import Book
 from library import Library
+from library_stats import LibraryStats
 from user_recommendation import UserRecommendation
 import os
 import json
@@ -115,6 +116,17 @@ async def get_recommendations_for_book(book: str) -> list[dict]:
         lambda recommendation: recommendation.has_book(book), mock_recommendations)
 
     return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))
+
+
+@mmr.get("/recommendations/{user}/{library_name}")
+async def get_recommendations_for_library(user: str, library_name: str) -> list[tuple[Book, float]]:
+    library: Optional[Library] = find_library(user, library_name)
+
+    if not library:
+        return []
+    stats: LibraryStats = LibraryStats(library)
+
+    return stats.get_recommendations(mock_book_list)
 
 
 @mmr.post("/recommendations/{book1}/{book2}/{user}")

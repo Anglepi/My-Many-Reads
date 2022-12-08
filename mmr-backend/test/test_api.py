@@ -281,3 +281,16 @@ def test_add_user_recommendation_existing():
     assert_that(response.headers["location"]).is_equal_to(
         "/recommendations/ABookId/ThirdBookId/username")
     assert_that(new_recommendations).is_equal_to(expected_new_recommendations)
+
+
+def test_recommendations_from_library():
+    # Given
+    expected_recommendaitons = [
+        [book_list[1].to_dict(), 15], [book_list[2].to_dict(), 15], [book_list[3].to_dict(), 5], [book_list[4].to_dict(), 0]]
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get("/recommendations/user2/generic")
+
+    # Then
+    check_response(response, 200, expected_recommendaitons)
