@@ -308,7 +308,7 @@ Mediante algo de lógica se controla fácilmente la creación de recomendaciones
 
 Para elaborar un algoritmo que pueda hacer sugerencias de manera automática para los usuarios, es necesario en primer lugar ser capaz de determinar los gustos de dicho usuario. Para ello, dado que un usuario puede organizar sus lecturas en varias bibliotecas, se van a generar las recomendaciones en base a los gustos definidos en una biblioteca específica, aportando mayor versatilidad a los usuarios de cara a la búsqueda de nuevas lecturas.
 
-Este algoritmo de recomendaciones ofrece como resultado una lista ordenada de libros ordenados de mayor a menor relevancia con respecto a la biblioteca especificada. Para construir esta lista se sigue un proceso que puede dividirse en tres pasos principales:
+Este algoritmo de recomendaciones ofrece como resultado una lista de libros ordenados de mayor a menor relevancia con respecto a la biblioteca especificada. Para construir esta lista se sigue un proceso que puede dividirse en tres pasos principales:
 
 \begin{enumerate}
     \item Se generan unas estadísticas generales de la biblioteca, agrupando toda la información proveniente de los libros que la componen que se considere relevante para determinar los gustos. Las dos propiedades más evidentes son los géneros y los autores, por lo que se pueden agrupar una lista de cada uno de ellos junto con el número de apariciones de éstos en la biblioteca, ponderados según la puntuación otorgada por el usuario al libro.
