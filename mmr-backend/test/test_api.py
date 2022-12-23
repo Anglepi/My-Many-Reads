@@ -294,3 +294,16 @@ def test_recommendations_from_library():
 
     # Then
     check_response(response, 200, expected_recommendaitons)
+
+
+def test_recommendations_from_library_not_found():
+    # Given
+    expected_response = {"error": "Library or user not found"}
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get(
+            "/recommendations/ThisUserDoesNotExist/IMadeThisUp")
+
+    # Then
+    check_response(response, 404, expected_response)

@@ -1,4 +1,4 @@
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 from book import Book
 from library import Library
 from library_stats import LibraryStats
@@ -119,11 +119,12 @@ async def get_recommendations_for_book(book: str) -> list[dict]:
 
 
 @mmr.get("/recommendations/{user}/{library_name}")
-async def get_recommendations_for_library(user: str, library_name: str) -> list[tuple[Book, float]]:
+async def get_recommendations_for_library(user: str, library_name: str, response: Response) -> Union[list[tuple[Book, float]], dict]:
     library: Optional[Library] = find_library(user, library_name)
 
     if not library:
-        return []
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"error": "Library or user not found"}
     stats: LibraryStats = LibraryStats(library)
 
     return stats.get_recommendations(mock_book_list)
