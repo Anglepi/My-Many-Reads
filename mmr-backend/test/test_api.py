@@ -22,58 +22,80 @@ def check_response(response, status, body):
 
 
 def test_get_books():
-    with TestClient(mmr) as client:
-        response = client.get("/books")
+    # Given
     expected_status = 200
     expected_body = list(map(lambda book: book.to_dict(), book_list))
 
+    # When
+    with TestClient(mmr) as client:
+        response = client.get("/books")
+
+    # Then
     check_response(response, expected_status, expected_body)
 
 
 def test_get_book():
-    with TestClient(mmr) as client:
-        response = client.get("/books/ABookId")
+    # Given
     expected_status = 200
     expected_body = [book_list[0].to_dict()]
 
+    # When
+    with TestClient(mmr) as client:
+        response = client.get("/books/ABookId")
+
+    # Then
     check_response(response, expected_status, expected_body)
 
 
 def test_get_book_not_found():
-    with TestClient(mmr) as client:
-        response = client.get("/books/IJustMadeThisUp")
+    # Given
     expected_status = 200
     expected_body = []
 
+    # When
+    with TestClient(mmr) as client:
+        response = client.get("/books/IJustMadeThisUp")
+
+    # Then
     check_response(response, expected_status, expected_body)
 
 
 def test_get_libraries():
-    with TestClient(mmr) as client:
-        response = client.get("/libraries/user1")
+    # Given
     expected_status = 200
     expected_body = [{"owner": "user1", "name": "myLibrary", "entries": []}, {
         "owner": "user1", "name": "myOtherLibrary", "entries": []}]
 
+    # When
+    with TestClient(mmr) as client:
+        response = client.get("/libraries/user1")
+
+    # Then
     check_response(response, expected_status, expected_body)
 
 
 def test_get_library():
-    with TestClient(mmr) as client:
-        response = client.get("/libraries/user2/generic")
+    # Given
     expected_status = 200
     expected_body = {"owner": "user2", "name": "generic", "entries": [
         {"book_id": "RandomBook", "score": 5, "status": "COMPLETED"}]}
 
+    # When
+    with TestClient(mmr) as client:
+        response = client.get("/libraries/user2/generic")
+
+    # Then
     check_response(response, expected_status, expected_body)
 
 
 def test_create_library():
+    # Given - When
     with TestClient(mmr) as client:
         libraries = client.get("/libraries/userTest").json()
         response = client.post("/libraries/userTest/libraryTest")
         new_libraries = client.get("/libraries/userTest").json()
 
+    # Then
     assert_that(response.status_code).is_equal_to(201)
     assert_that(response.headers["location"]).is_equal_to(
         "/libraries/userTest/libraryTest")
@@ -83,11 +105,13 @@ def test_create_library():
 
 
 def test_update_library():
+    # Given - When
     with TestClient(mmr) as client:
         libraries = client.get("/libraries/userTest").json()
         response = client.put("/libraries/userTest/libraryTest/newNameTest")
         new_libraries = client.get("/libraries/userTest").json()
 
+    # Then
     assert_that(response.status_code).is_equal_to(200)
     assert_that(libraries).is_not_equal_to(new_libraries)
     assert_that(new_libraries).is_equal_to(
@@ -95,32 +119,38 @@ def test_update_library():
 
 
 def test_delete_nonexistent_library():
+    # Given - When
     with TestClient(mmr) as client:
         libraries = client.get("/libraries/userTest").json()
         response = client.delete("/libraries/userTest/libraryTest")
         new_libraries = client.get("/libraries/userTest").json()
 
+    # Then
     assert_that(response.status_code).is_equal_to(200)
     assert_that(libraries).is_equal_to(new_libraries)
 
 
 def test_delete_library():
+    # Given - When
     with TestClient(mmr) as client:
         libraries = client.get("/libraries/userTest").json()
         response = client.delete("/libraries/userTest/newNameTest")
         new_libraries = client.get("/libraries/userTest").json()
 
+    # Then
     assert_that(response.status_code).is_equal_to(200)
     assert_that(libraries).is_not_equal_to(new_libraries)
     assert_that(new_libraries).is_equal_to([])
 
 
 def test_library_add_entry():
+    # Given - When
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.post("/libraries/user1/myLibrary/testBook")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
+    # Then
     assert_that(response.status_code).is_equal_to(201)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
@@ -128,12 +158,14 @@ def test_library_add_entry():
 
 
 def test_library_update_entry():
+    # Given - When
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.put(
             "/libraries/user1/myLibrary/testBook/10/COMPLETED")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
+    # Then
     assert_that(response.status_code).is_equal_to(200)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
@@ -141,34 +173,34 @@ def test_library_update_entry():
 
 
 def test_remove_nonexistent_entry():
+    # Given - When
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.delete(
             "/libraries/user1/myLibrary/nonexistent")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
+    # Then
     assert_that(response.status_code).is_equal_to(200)
     assert_that(library).is_equal_to(updated_library)
 
 
 def test_remove_existent_entry():
+    # Given - When
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.delete(
             "/libraries/user1/myLibrary/testBook")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
+    # Then
     assert_that(response.status_code).is_equal_to(200)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to([])
 
 
 def test_user_recommendations_for_book():
-    with TestClient(mmr) as client:
-        recommendations1 = client.get(
-            "/recommendations/ThirdBookId")
-        recommendations2 = client.get(
-            "/recommendations/NotExistent")
+    # Given
     expected_status = 200
     expected_body1 = [
         {
@@ -187,29 +219,42 @@ def test_user_recommendations_for_book():
     ]
     expected_body2 = []
 
+    # When
+    with TestClient(mmr) as client:
+        recommendations1 = client.get(
+            "/recommendations/ThirdBookId")
+        recommendations2 = client.get(
+            "/recommendations/NotExistent")
+
+    # Then
     check_response(recommendations1, expected_status, expected_body1)
     check_response(recommendations2, expected_status, expected_body2)
 
 
 def test_add_user_recommendation_duplicated_books():
+    # Given - When
     with TestClient(mmr) as client:
         response = client.post(
             "/recommendations/ABookId/ABookId/username/comment")
 
+    # Then
     check_response(response, 400, {
                    "error": "Can't recommend a book with itself"})
 
 
 def test_add_user_recommendation_missing_book():
+    # Given - When
     with TestClient(mmr) as client:
         response = client.post(
             "/recommendations/ABookId/NonExistentBook/username/comment")
 
+    # Then
     check_response(response, 404, {
                    "error": "Can't find some of the indicated books"})
 
 
 def test_vote_user_recommendation():
+    # Given - When
     with TestClient(mmr) as client:
         existing_recommendations = client.get(
             "/recommendations/ABookId").json()
@@ -217,10 +262,10 @@ def test_vote_user_recommendation():
             "/recommendations/ABookId/SecondBookId/Recommender")
         new_recommendations = client.get(
             "/recommendations/ABookId").json()
-
     previous_score = existing_recommendations[0]["comments"][0]["score"]
     new_score = new_recommendations[0]["comments"][0]["score"]
 
+    # Then
     assert_that(response.status_code).is_equal_to(201)
     assert_that(response.headers["location"]).is_equal_to(
         "/recommendations/ABookId")
@@ -228,24 +273,29 @@ def test_vote_user_recommendation():
 
 
 def test_vote_user_bad_recommendation():
+    # Given - When
     with TestClient(mmr) as client:
         response = client.post(
             "/recommendations/ABookId/ABookId/Recommender")
 
+    # Then
     check_response(response, 400, {
                    "error": "Recommendations must be from different books"})
 
 
 def test_vote_user_recommendation_missing_author():
+    # Given - When
     with TestClient(mmr) as client:
         response = client.post(
             "/recommendations/ABookId/SecondBookId/ThisUserHasNotCommentedHere")
 
+    # Then
     check_response(response, 404, {
                    "error": "Recommendation or comment does not exist"})
 
 
 def test_add_user_recommendation_new():
+    # Given - When
     with TestClient(mmr) as client:
         existing_recommendations = client.get(
             "/recommendations/SecondBookId").json()
@@ -257,6 +307,7 @@ def test_add_user_recommendation_new():
     expected_new_recommendations.append(
         {"books": ["SecondBookId", "ThirdBookId"], "comments": [{"author": "username", "comment": "comment", "score": 0}]})
 
+    # Then
     assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
     assert_that(response.status_code).is_equal_to(201)
     assert_that(response.headers["location"]).is_equal_to(
@@ -265,6 +316,7 @@ def test_add_user_recommendation_new():
 
 
 def test_add_user_recommendation_existing():
+    # Given - When
     with TestClient(mmr) as client:
         existing_recommendations = client.get(
             "/recommendations/ABookId").json()
@@ -276,6 +328,7 @@ def test_add_user_recommendation_existing():
     expected_new_recommendations[1]["comments"].append(
         {"author": "username", "comment": "comment", "score": 0})
 
+    # Then
     assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
     assert_that(response.status_code).is_equal_to(201)
     assert_that(response.headers["location"]).is_equal_to(
