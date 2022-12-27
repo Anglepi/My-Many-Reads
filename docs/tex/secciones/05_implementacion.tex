@@ -61,6 +61,11 @@ Así mismo cabe mencionar que el primer \textit{milestone} del proyecto se exclu
     Como Sergio, lector en MMR, \\
     quiero consultar recomendaciones en base a una de mis bibliotecas, \\
     con el fin de ayudarme a decidir mis lecturas.
+    \begin{itemize}
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/66}{\textbf{HU-5.1}} Encontrar una estructura de datos que represente la recopilación de características de los libros de una biblioteca.
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/67}{\textbf{HU-5.2}} Medir el nivel de correlación entre un libro y una biblioteca, de acuerdo a sus características recopiladas, para calcular su nivel de similitud.
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/68}{\textbf{HU-5.3}} Crear una lista de recomendaciones a partir de una librería y un conjunto de libros.
+    \end{itemize}
 \end{itemize}
 
 \section{Entorno de desarrollo}
@@ -253,6 +258,7 @@ Se ha diseñado una API RESTful por el fácil acceso a los \textit{endpoints} im
     \item Recommendations:
     \begin{itemize}
         \item \textit{/recommendations/\{book\}}
+        \item \textit{/recommendations/\{user\}/\{library\}}
     \end{itemize}
 \end{itemize}
 
@@ -316,6 +322,22 @@ Lidiar con el tercer punto es bastante sencillo una vez se ha definido la situac
 Finalmente, el último punto está bastante relacionado con el anterior. De la naturaleza de estas recomendaciones se comienza a sobreentender que para cada pareja de libros existe una lista de comentarios escritos por usuarios, por lo que lo único necesario a realizar será, en el momento de añadir un nuevo comentario, comprobar que de los ya existentes la lista correspondiente ninguno pertenece al nuevo autor.
 
 Con toda esta lógica ya controlada e incluida, el único aspecto a controlar es el de la votación, la cual tiene un proceso bastante sencillo, simplemente identificar el comentario objetivo e incrementar en uno su puntuación. Este proceso ganará en complejidad una vez se implementen las sesiones de usuarios, ya que habría que controlar que comentarios ha votado el usuario identificado con el fin de permitir que solo pueda votar una vez por comentario.
+
+\subsubsection{Recomendaciones automáticas}
+
+Para elaborar un algoritmo que pueda hacer sugerencias de manera automática para los usuarios, es necesario en primer lugar ser capaz de determinar los gustos de dicho usuario. Para ello, dado que un usuario puede organizar sus lecturas en varias bibliotecas, se van a generar las recomendaciones en base a los gustos definidos en una biblioteca específica, aportando mayor versatilidad a los usuarios de cara a la búsqueda de nuevas lecturas.
+
+Este algoritmo de recomendaciones ofrece como resultado una lista de libros ordenados de mayor a menor relevancia con respecto a la biblioteca especificada. Para construir esta lista se sigue un proceso que puede dividirse en tres pasos principales:
+
+\begin{enumerate}
+    \item Se generan unas características generales de una biblioteca objetivo, agrupando todas las características relevantes de los libros que la componen con el fin de calcular la afinidad de un libro respecto a ésta. Dos de las características más evidentes de un libro que pueden usarse para esta tarea son los géneros y los autores, ya que a partir de éstas se puede definir muy bien la temática de un libro y su estilo de escritura. Para hacer esta recopilación de características, se puede realizar un conteo de todos los géneros y autores pertenecientes a cada libro, ponderando cada una de estas apariciones con un valor derivado de la puntuación que el usuario dueño de esa biblioteca ha asignado al libro en concreto, ayudando así a resaltar los géneros y autores favoritos.
+    \item Mediante una función capaz de comparar un libro con estas características recopiladas, se otorga una puntuación de compatibilidad de un libro objetivo con respecto a una biblioteca, que hace las veces de correlación. Esta función comparará las propiedades del libro con las de las características recogidas, siempre teniendo en cuenta que no todas estas características son igual de valiosas para este proceso. Por ejemplo, los géneros de un libro son más representativos que, por ejemplo, la editorial.
+    \item Finalmente, con las características de una biblioteca y la función para puntuar libros respecto a estas se puede generar la lista de recomendaciones. Para ello, se filtra la lista de libros candidatos, pues debemos eliminar los que ya se encuentren en la biblioteca, y se puntúa cada uno de los restantes. Para construir el resultado, estos libros se ordenan por puntuación, facilitando así devolver un subconjunto de los más relevantes.
+\end{enumerate}
+
+Para medir la compatibilidad se pueden tener en cuenta una gran cantidad de propiedades de los libros, no solo géneros y autores, sino también fecha de publicación, similitudes entre las sinopsis, apariciones en bibliotecas similares de otros usuarios e incluso según las recomendaciones manuales.
+
+Conociendo ya todos estos aspectos, solo resta hacer algo de experimentación jugando con la inclusión de algunos o todos éstos parámetros y ajustando sus pesos hasta dar con un modelo satisfactorio.
 
 \subsection{Almacenamiento y representación de datos}
 

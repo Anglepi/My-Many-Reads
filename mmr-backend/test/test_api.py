@@ -78,7 +78,7 @@ def test_get_library():
     # Given
     expected_status = 200
     expected_body = {"owner": "user2", "name": "generic", "entries": [
-        {"book_id": "RandomBook", "score": 5, "status": "COMPLETED"}]}
+        {"book": book_list[0].to_dict(), "score": 5, "status": "COMPLETED"}]}
 
     # When
     with TestClient(mmr) as client:
@@ -147,14 +147,14 @@ def test_library_add_entry():
     # Given - When
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
-        response = client.post("/libraries/user1/myLibrary/testBook")
+        response = client.post("/libraries/user1/myLibrary/ABookId")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     # Then
     assert_that(response.status_code).is_equal_to(201)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
-        [{"book_id": "testBook", "score": None, "status": None}])
+        [{"book": book_list[0].to_dict(), "score": None, "status": None}])
 
 
 def test_library_update_entry():
@@ -162,14 +162,14 @@ def test_library_update_entry():
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.put(
-            "/libraries/user1/myLibrary/testBook/10/COMPLETED")
+            "/libraries/user1/myLibrary/ABookId/10/COMPLETED")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     # Then
     assert_that(response.status_code).is_equal_to(200)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
-        [{"book_id": "testBook", "score": 10, "status": "COMPLETED"}])
+        [{"book": book_list[0].to_dict(), "score": 10, "status": "COMPLETED"}])
 
 
 def test_remove_nonexistent_entry():
@@ -190,7 +190,7 @@ def test_remove_existent_entry():
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.delete(
-            "/libraries/user1/myLibrary/testBook")
+            "/libraries/user1/myLibrary/ABookId")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     # Then
@@ -334,3 +334,29 @@ def test_add_user_recommendation_existing():
     assert_that(response.headers["location"]).is_equal_to(
         "/recommendations/ABookId/ThirdBookId/username")
     assert_that(new_recommendations).is_equal_to(expected_new_recommendations)
+
+
+def test_recommendations_from_library():
+    # Given
+    expected_recommendaitons = [
+        [book_list[1].to_dict(), 15], [book_list[2].to_dict(), 15], [book_list[3].to_dict(), 5], [book_list[4].to_dict(), 0]]
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get("/recommendations/user2/generic")
+
+    # Then
+    check_response(response, 200, expected_recommendaitons)
+
+
+def test_recommendations_from_library_not_found():
+    # Given
+    expected_response = {"error": "Library or user not found"}
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get(
+            "/recommendations/ThisUserDoesNotExist/IMadeThisUp")
+
+    # Then
+    check_response(response, 404, expected_response)

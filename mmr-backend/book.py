@@ -8,7 +8,7 @@ class Book:
     ISBN: str
     title: str
     synopsis: str
-    author: list[str]
+    authors: list[str]
     genres: list[Book.Genre]
     publisher: str
     publishing_date: str

@@ -2,6 +2,8 @@ from __future__ import annotations
 from enum import Enum
 from typing import Optional
 
+from book import Book
+
 
 class Library:
     def __init__(self, owner: str, name: str, entries: list[Library.Entry]) -> None:
@@ -27,16 +29,19 @@ class Library:
         return Library(**library_data)
 
     class Entry:
-        def __init__(self, book_id: str, score: Optional[int] = None, status: Optional[Library.ReadingStatus] = None) -> None:
-            self.__book_id: str = book_id
+        def __init__(self, book: Book, score: Optional[int] = None, status: Optional[Library.ReadingStatus] = None) -> None:
+            self.__book: Book = book
             self.__score: Optional[int] = score
             self.__status: Optional[Library.ReadingStatus] = status
 
         def get_book_id(self) -> str:
-            return self.__book_id
+            return self.__book.ISBN
 
         def to_dict(self) -> dict:
-            return {"book_id": self.__book_id, "score": self.__score, "status": self.__status}
+            return {"book": self.__book.to_dict(), "score": self.__score, "status": self.__status}
+
+        def is_read(self) -> bool:
+            return self.__status != Library.ReadingStatus.PLAN_TO_READ
 
         @staticmethod
         def entries_to_dict(entries: list[Library.Entry]) -> list[dict]:
@@ -67,6 +72,12 @@ class Library:
 
     def get_entries(self) -> list[Library.Entry]:
         return self.__entries
+
+    def has_book(self, book: Book) -> bool:
+        for entry in self.__entries:
+            if (entry.get_book_id() == book.ISBN):
+                return True
+        return False
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Library):

@@ -1,6 +1,7 @@
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 from book import Book
 from library import Library
+from library_stats import LibraryStats
 from user_recommendation import UserRecommendation
 import os
 import json
@@ -15,7 +16,7 @@ with open(data_path) as json_books:
     mock_book_list: list[Book] = Book.from_list(books_data)
 
 mock_libraries: list[Library] = [Library("user1", "myLibrary", list()), Library(
-    "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry("RandomBook", 5, Library.ReadingStatus.COMPLETED)])]
+    "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry(mock_book_list[0], 5, Library.ReadingStatus.COMPLETED)])]
 mock_recommendations: list[UserRecommendation] = [UserRecommendation(
     (mock_book_list[0].ISBN, mock_book_list[1].ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to second book")),
     UserRecommendation(
@@ -37,10 +38,9 @@ async def get_books() -> list[dict]:
 
 
 @mmr.get("/books/{isbn}")
-async def get_book(isbn: str) -> list[dict]:
-    matching_book: Iterable = filter(lambda book: book.to_dict()[
-        "ISBN"] == isbn, mock_book_list)
-    return list(matching_book)
+async def get_book(isbn: str) -> list[Optional[Book]]:
+    book: Optional[Book] = find_book(isbn)
+    return [find_book(isbn)] if book else []
 
 #
 # LIBRARIES
@@ -84,8 +84,9 @@ async def create_library(user: str, library_name: str, response: Response) -> No
 @mmr.post("/libraries/{user}/{library_name}/{isbn}")
 async def add_library_entry(user: str, library_name: str, isbn: str, response: Response) -> None:
     library: Optional[Library] = find_library(user, library_name)
-    if library:
-        library.add_entry(Library.Entry(isbn))
+    book: Optional[Book] = find_book(isbn)
+    if library and book:
+        library.add_entry(Library.Entry(book))
         response.status_code = status.HTTP_201_CREATED
 
 
@@ -99,8 +100,9 @@ async def remove_library_entry(user: str, library_name: str, isbn: str) -> None:
 @mmr.put("/libraries/{user}/{library_name}/{isbn}/{score}/{status}")
 async def update_library_entry(user: str, library_name: str, isbn: str, score: int, status: Library.ReadingStatus) -> None:
     library: Optional[Library] = find_library(user, library_name)
-    if library:
-        library.update_entry(isbn, Library.Entry(isbn, score, status))
+    book: Optional[Book] = find_book(isbn)
+    if library and book:
+        library.update_entry(isbn, Library.Entry(book, score, status))
 
 #
 # USER RECOMMENDATIONS
@@ -114,6 +116,18 @@ async def get_recommendations_for_book(book: str) -> list[dict]:
         lambda recommendation: recommendation.has_book(book), mock_recommendations)
 
     return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))
+
+
+@mmr.get("/recommendations/{user}/{library_name}")
+async def get_recommendations_for_library(user: str, library_name: str, response: Response) -> Union[list[tuple[Book, float]], dict]:
+    library: Optional[Library] = find_library(user, library_name)
+
+    if not library:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"error": "Library or user not found"}
+    stats: LibraryStats = LibraryStats(library)
+
+    return stats.get_recommendations(mock_book_list)
 
 
 @mmr.post("/recommendations/{book1}/{book2}/{user}")
@@ -168,4 +182,10 @@ def find_library(owner: str, name: str) -> Optional[Library]:
     occurrencies = list(filter(
         lambda lib: lib.get_owner() == owner and lib.get_name() == name, mock_libraries))
 
+    return occurrencies[0] if len(occurrencies) else None
+
+
+def find_book(isbn: str) -> Optional[Book]:
+    occurrencies = list(filter(lambda book: book.to_dict()[
+        "ISBN"] == isbn, mock_book_list))
     return occurrencies[0] if len(occurrencies) else None
