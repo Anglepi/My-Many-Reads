@@ -32,9 +32,9 @@ class Book:
             isbn_code += 'X'
 
         if (len(isbn_code) == 10):
-            is_valid = Book.validate_isbn_10(isbn_code)
+            is_valid = Book.__validate_isbn_10(isbn_code)
         elif (len(isbn_code) == 13):
-            is_valid = Book.validate_isbn_13(isbn_code)
+            is_valid = Book.__validate_isbn_13(isbn_code)
 
         if is_valid:
             return True
@@ -42,7 +42,7 @@ class Book:
         raise Exception("Malformed ISBN")
 
     @staticmethod
-    def validate_isbn_10(isbn: str) -> bool:
+    def __validate_isbn_10(isbn: str) -> bool:
         sum: int = 0
         for i in range(10):
             current_number: int = 10 if isbn[i] == 'X' else int(isbn[i])
@@ -51,7 +51,7 @@ class Book:
         return not bool(sum % 11)
 
     @staticmethod
-    def validate_isbn_13(isbn: str) -> bool:
+    def __validate_isbn_13(isbn: str) -> bool:
         sum: int = 0
 
         for i in range(0, 12, 2):
