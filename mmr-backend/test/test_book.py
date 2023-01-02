@@ -13,7 +13,7 @@ def test_create_book_from_dict_and_transform_to_dict():
         # Given
         json_object = json.load(json_books)
         expected_book: dict = {
-            "ISBN": "ABookId",
+            "ISBN": "99921-58-10-7",
             "title": "A book",
             "synopsis": "Some random descriptivie text about the book",
             "authors": ["Cervantes"],
@@ -40,3 +40,48 @@ def test_create_book_from_list_and_transform_to_dict():
 
         # Then
         assert_that(list(map(Book.to_dict, book_list))).is_equal_to(books_data)
+
+
+def test_validate_isbn_10():
+    # Given
+    isbn_10 = "0-545-01022-5"
+
+    # When
+    result = Book.validate_isbn(isbn_10)
+
+    # Then
+    assert_that(result).is_true()
+
+
+def test_validate_isbn_13():
+    # Given
+    isbn_13 = "978-3-16-148410-0"
+
+    # When
+    result = Book.validate_isbn(isbn_13)
+
+    # Then
+    assert_that(result).is_true()
+
+
+def test_validate_isbn_with_x():
+    # Given
+    isbn_x = "0-9752298-0-X"
+
+    # When
+    result = Book.validate_isbn(isbn_x)
+
+    # Then
+    assert_that(result).is_true()
+
+
+def test_invalid_isbn_exception():
+    # Given
+    invalid_isbn = "0-9722298-0-X"
+
+    # When
+    try:
+        result = Book.validate_isbn(invalid_isbn)
+    except Exception as e:
+        # Then
+        assert_that(str(e)).is_equal_to("Malformed ISBN")

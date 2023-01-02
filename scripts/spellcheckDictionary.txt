@@ -73,3 +73,5 @@ UserRecommendation
 userRecommendations
 init
 str
+URI
+URIs
