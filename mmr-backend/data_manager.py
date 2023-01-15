@@ -1,5 +1,6 @@
 import json
 from book import Book
+from typing import Optional
 
 
 class DataManager:
@@ -18,3 +19,9 @@ class DataManager:
         books_data = json.load(self.connection)
         self.__disconnect()
         return Book.from_list(books_data)
+
+    def get_book(self, isbn: str) -> Optional[Book]:
+        books: list[Book] = self.get_books()
+        occurrencies = list(filter(lambda book: book.to_dict()[
+            "ISBN"] == isbn, books))
+        return occurrencies[0] if len(occurrencies) else None
