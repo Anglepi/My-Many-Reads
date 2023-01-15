@@ -39,8 +39,11 @@ async def get_books() -> list[Book]:
 
 
 @mmr.get("/books/{isbn}")
-async def get_book(isbn: str) -> Optional[Book]:
+async def get_book(isbn: str, response: Response) -> Union[Optional[Book], dict]:
     book: Optional[Book] = data_manager.get_book(isbn)
+    if not book:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"error": "Book not found"}
     return book
 
 #
