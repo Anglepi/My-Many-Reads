@@ -37,7 +37,7 @@ def test_get_books():
 def test_get_book():
     # Given
     expected_status = 200
-    expected_body = [book_list[0].to_dict()]
+    expected_body = book_list[0].to_dict()
 
     # When
     with TestClient(mmr) as client:
@@ -49,8 +49,8 @@ def test_get_book():
 
 def test_get_book_not_found():
     # Given
-    expected_status = 200
-    expected_body = []
+    expected_status = 404
+    expected_body = {"error": "Book not found"}
 
     # When
     with TestClient(mmr) as client:
