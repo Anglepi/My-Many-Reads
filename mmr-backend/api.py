@@ -1,5 +1,6 @@
 from typing import Iterable, Optional, Union
 from book import Book
+from data_manager import DataManager
 from library import Library
 from library_stats import LibraryStats
 from user_recommendation import UserRecommendation
@@ -11,10 +12,10 @@ from fastapi import FastAPI, Response, status
 current_dir = os.path.dirname(__file__)
 sample_data_path = "test/sample-data/books.json"
 data_path = os.path.join(current_dir, sample_data_path)
-with open(data_path) as json_books:
-    books_data = json.load(json_books)
-    mock_book_list: list[Book] = Book.from_list(books_data)
 
+data_manager: DataManager = DataManager(data_path)
+
+mock_book_list: list[Book] = data_manager.get_books()
 mock_libraries: list[Library] = [Library("user1", "myLibrary", list()), Library(
     "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry(mock_book_list[0], 5, Library.ReadingStatus.COMPLETED)])]
 mock_recommendations: list[UserRecommendation] = [UserRecommendation(
