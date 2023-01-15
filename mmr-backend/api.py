@@ -34,14 +34,14 @@ mmr = FastAPI()
 
 
 @mmr.get("/books")
-async def get_books() -> list[dict]:
-    return list(map(lambda book: Book.to_dict(book), mock_book_list))
+async def get_books() -> list[Book]:
+    return data_manager.get_books()
 
 
 @mmr.get("/books/{isbn}")
-async def get_book(isbn: str) -> list[Optional[Book]]:
-    book: Optional[Book] = find_book(isbn)
-    return [find_book(isbn)] if book else []
+async def get_book(isbn: str) -> Optional[Book]:
+    book: Optional[Book] = data_manager.get_book(isbn)
+    return book
 
 #
 # LIBRARIES
