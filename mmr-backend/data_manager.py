@@ -21,6 +21,7 @@ class DataManager:
         return Book.from_list(books_data)
 
     def get_book(self, isbn: str) -> Optional[Book]:
+        # To be replaced by an actual query
         books: list[Book] = self.get_books()
         occurrencies = list(filter(lambda book: book.to_dict()[
             "ISBN"] == isbn, books))
