@@ -53,14 +53,12 @@ async def get_book(isbn: str, response: Response) -> Union[Optional[Book], dict]
 
 @mmr.get("/libraries/{user}")
 async def get_libraries(user: str) -> list[dict]:
-    libraries_from_user = filter(
-        lambda lib: lib.get_owner() == user, mock_libraries)
-    return list(map(lambda lib: lib.to_dict(), libraries_from_user))
+    return data_manager.get_libraries_from_user(user)
 
 
 @mmr.get("/libraries/{user}/{library_name}")
 async def get_library(user: str, library_name: str) -> dict:
-    library: Optional[Library] = find_library(user, library_name)
+    library: Optional[Library] = data_manager.get_library(user, library_name)
     return library.to_dict() if library else {}
 
 
