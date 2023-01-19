@@ -74,7 +74,7 @@ async def update_library_name(user: str, library_name: str, new_name: str) -> No
 
 @mmr.post("/libraries/{user}/{library_name}")
 async def create_library(user: str, library_name: str, response: Response) -> None:
-    mock_libraries.append(Library(user, library_name, list()))
+    data_manager.create_library(user, library_name)
     response.status_code = status.HTTP_201_CREATED
     response.headers["location"] = "/libraries/"+user+"/"+library_name
 

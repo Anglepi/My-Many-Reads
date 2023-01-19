@@ -68,3 +68,9 @@ class DataManager:
         if library:
             library.set_name(new_name)
         self.__disconnect()
+
+    def create_library(self, user: str, library_name: str) -> None:
+        self.__connect()
+        # To be replaced by an actual query
+        self.fake_libraries.append(Library(user, library_name, list()))
+        self.__disconnect()
