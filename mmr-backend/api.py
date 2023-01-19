@@ -64,9 +64,7 @@ async def get_library(user: str, library_name: str) -> dict:
 
 @mmr.delete("/libraries/{user}/{library_name}")
 async def delete_library(user: str, library_name: str) -> None:
-    library: Optional[Library] = find_library(user, library_name)
-    if library:
-        mock_libraries.remove(library)
+    data_manager.delete_library(user, library_name)
 
 
 @mmr.put("/libraries/{user}/{library_name}/{new_name}")

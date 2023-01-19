@@ -52,3 +52,11 @@ class DataManager:
         ) == user and lib.get_name() == library_name, self.fake_libraries))
         self.__disconnect()
         return occurrencies[0] if len(occurrencies) else None
+
+    def delete_library(self, user: str, library_name: str) -> None:
+        self.__connect()
+        # To be replaced by an actual query
+        library: Optional[Library] = self.get_library(user, library_name)
+        if library:
+            self.fake_libraries.remove(library)
+        self.__disconnect()
