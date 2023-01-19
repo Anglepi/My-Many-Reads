@@ -12,15 +12,15 @@ class DataManager:
         self.connection = open(self._address)
 
         # Set up fake data until real database is implemented
-        self.fake_books = json.load(self.connection)
-        self.fake_libraries = [Library("user1", "myLibrary", list()), Library(
-            "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry(Book.from_dict(self.fake_books[0]), 5, Library.ReadingStatus.COMPLETED)])]
+        if not hasattr(self, 'fake_books'):
+            self.fake_books = json.load(self.connection)
+        if not hasattr(self, 'fake_libraries'):
+            self.fake_libraries = [Library("user1", "myLibrary", list()), Library(
+                "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry(Book.from_dict(self.fake_books[0]), 5, Library.ReadingStatus.COMPLETED)])]
 
     def __disconnect(self) -> None:
         if self.connection:
             self.connection.close()
-            del self.fake_books
-            del self.fake_libraries
 
     def get_books(self) -> list[Book]:
         self.__connect()
