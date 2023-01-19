@@ -60,3 +60,11 @@ class DataManager:
         if library:
             self.fake_libraries.remove(library)
         self.__disconnect()
+
+    def rename_library(self, user: str, library_name: str, new_name: str) -> None:
+        self.__connect()
+        # To be replaced by an actual query
+        library: Optional[Library] = self.get_library(user, library_name)
+        if library:
+            library.set_name(new_name)
+        self.__disconnect()

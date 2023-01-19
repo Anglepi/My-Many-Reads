@@ -69,9 +69,7 @@ async def delete_library(user: str, library_name: str) -> None:
 
 @mmr.put("/libraries/{user}/{library_name}/{new_name}")
 async def update_library_name(user: str, library_name: str, new_name: str) -> None:
-    library: Optional[Library] = find_library(user, library_name)
-    if library:
-        library.set_name(new_name)
+    data_manager.rename_library(user, library_name, new_name)
 
 
 @mmr.post("/libraries/{user}/{library_name}")
