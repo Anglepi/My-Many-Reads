@@ -1,7 +1,8 @@
 import json
 from book import Book
 from library import Library
-from typing import Optional
+from user_recommendation import UserRecommendation
+from typing import Iterable, Optional
 
 
 class DataManager:
@@ -17,6 +18,13 @@ class DataManager:
         if not hasattr(self, 'fake_libraries'):
             self.fake_libraries = [Library("user1", "myLibrary", list()), Library(
                 "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry(Book.from_dict(self.fake_books[0]), 5, Library.ReadingStatus.COMPLETED)])]
+        if not hasattr(self, 'fake_recommendations'):
+            self.fake_recommendations = [UserRecommendation(
+                (Book.from_dict(self.fake_books[0]).ISBN, Book.from_dict(self.fake_books[1]).ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to second book")),
+                UserRecommendation(
+                (Book.from_dict(self.fake_books[0]).ISBN, Book.from_dict(self.fake_books[2]).ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to third book"))]
+            self.fake_recommendations[0].add_comment(
+                UserRecommendation.UserComment("RandomGuy", "They are both cool"))
 
     def __disconnect(self) -> None:
         if self.connection:
@@ -109,3 +117,11 @@ class DataManager:
             library.update_entry(isbn, Library.Entry(book, score, status))
 
     # RECOMMENDATIONS
+
+    def get_recommendations_for_book(self, isbn: str) -> list[dict]:
+        self.__connect()
+        # To be replaced by an actual query
+        recommendations_for_book: Iterable[UserRecommendation] = filter(
+            lambda recommendation: recommendation.has_book(isbn), self.fake_recommendations)
+        self.__disconnect()
+        return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))

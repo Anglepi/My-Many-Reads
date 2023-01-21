@@ -100,13 +100,9 @@ async def update_library_entry(user: str, library_name: str, isbn: str, score: i
 #
 
 
-@mmr.get("/recommendations/{book}")
-async def get_recommendations_for_book(book: str) -> list[dict]:
-    # More than likely to be replaced with query filter when DB is implemented
-    recommendations_for_book: Iterable[UserRecommendation] = filter(
-        lambda recommendation: recommendation.has_book(book), mock_recommendations)
-
-    return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))
+@mmr.get("/recommendations/{isbn}")
+async def get_recommendations_for_book(isbn: str) -> list[dict]:
+    return data_manager.get_recommendations_for_book(isbn)
 
 
 @mmr.get("/recommendations/{user}/{library_name}")
