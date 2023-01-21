@@ -111,14 +111,15 @@ async def get_recommendations_for_book(book: str) -> list[dict]:
 
 @mmr.get("/recommendations/{user}/{library_name}")
 async def get_recommendations_for_library(user: str, library_name: str, response: Response) -> Union[list[tuple[Book, float]], dict]:
-    library: Optional[Library] = find_library(user, library_name)
+    library: Optional[Library] = data_manager.get_library(user, library_name)
+    books: list[Book] = data_manager.get_books()
 
     if not library:
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"error": "Library or user not found"}
     stats: LibraryStats = LibraryStats(library)
 
-    return stats.get_recommendations(mock_book_list)
+    return stats.get_recommendations(books)
 
 
 @mmr.post("/recommendations/{book1}/{book2}/{user}")
