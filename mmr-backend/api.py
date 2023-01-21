@@ -93,10 +93,7 @@ async def remove_library_entry(user: str, library_name: str, isbn: str) -> None:
 
 @mmr.put("/libraries/{user}/{library_name}/{isbn}/{score}/{status}")
 async def update_library_entry(user: str, library_name: str, isbn: str, score: int, status: Library.ReadingStatus) -> None:
-    library: Optional[Library] = find_library(user, library_name)
-    book: Optional[Book] = find_book(isbn)
-    if library and book:
-        library.update_entry(isbn, Library.Entry(book, score, status))
+    data_manager.update_library_entry(user, library_name, isbn, score, status)
 
 #
 # USER RECOMMENDATIONS

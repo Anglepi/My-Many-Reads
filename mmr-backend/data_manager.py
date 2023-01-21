@@ -98,4 +98,14 @@ class DataManager:
             library.add_entry(Library.Entry(book))
         return bool(book and library)
 
+    def update_library_entry(self, user: str, library_name: str, isbn: str, score: int, status: Library.ReadingStatus) -> None:
+        self.__connect()
+        # To be replaced by an actual query
+        book: Optional[Book] = self.get_book(isbn)
+        library: Optional[Library] = self.get_library(user, library_name)
+        self.__disconnect()
+
+        if book and library:
+            library.update_entry(isbn, Library.Entry(book, score, status))
+
     # RECOMMENDATIONS
