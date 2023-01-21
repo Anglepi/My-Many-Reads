@@ -1,8 +1,9 @@
+from __future__ import annotations
 import json
 from book import Book
 from library import Library
 from user_recommendation import UserRecommendation
-from typing import Iterable, Optional, Union
+from typing import Iterable, Optional
 
 
 class DataManager:
