@@ -74,3 +74,14 @@ class DataManager:
         # To be replaced by an actual query
         self.fake_libraries.append(Library(user, library_name, list()))
         self.__disconnect()
+
+    def add_library_entry(self, user: str, library_name: str, isbn: str) -> bool:
+        self.__connect()
+        # To be replaced by an actual query
+        book: Optional[Book] = self.get_book(isbn)
+        library: Optional[Library] = self.get_library(user, library_name)
+        self.__disconnect()
+
+        if book and library:
+            library.add_entry(Library.Entry(book))
+        return bool(book and library)
