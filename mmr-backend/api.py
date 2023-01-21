@@ -88,9 +88,7 @@ async def add_library_entry(user: str, library_name: str, isbn: str, response: R
 
 @mmr.delete("/libraries/{user}/{library_name}/{isbn}")
 async def remove_library_entry(user: str, library_name: str, isbn: str) -> None:
-    library: Optional[Library] = find_library(user, library_name)
-    if library:
-        library.remove_entry(isbn)
+    data_manager.remove_library_entry(user, library_name, isbn)
 
 
 @mmr.put("/libraries/{user}/{library_name}/{isbn}/{score}/{status}")

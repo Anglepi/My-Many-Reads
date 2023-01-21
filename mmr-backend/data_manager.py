@@ -22,6 +22,8 @@ class DataManager:
         if self.connection:
             self.connection.close()
 
+    # BOOKS
+
     def get_books(self) -> list[Book]:
         self.__connect()
         # To be replaced by an actual query
@@ -36,6 +38,8 @@ class DataManager:
             "ISBN"] == isbn, Book.from_list(self.fake_books)))
         self.__disconnect()
         return occurrencies[0] if len(occurrencies) else None
+
+    # LIBRARIES
 
     def get_libraries_from_user(self, user: str) -> list[dict]:
         self.__connect()
@@ -75,6 +79,14 @@ class DataManager:
         self.fake_libraries.append(Library(user, library_name, list()))
         self.__disconnect()
 
+    def remove_library_entry(self, user: str, library_name: str, isbn: str) -> None:
+        self.__connect()
+        # To be replaced by an actual query
+        library: Optional[Library] = self.get_library(user, library_name)
+        if library:
+            library.remove_entry(isbn)
+        self.__disconnect()
+
     def add_library_entry(self, user: str, library_name: str, isbn: str) -> bool:
         self.__connect()
         # To be replaced by an actual query
@@ -85,3 +97,5 @@ class DataManager:
         if book and library:
             library.add_entry(Library.Entry(book))
         return bool(book and library)
+
+    # RECOMMENDATIONS
