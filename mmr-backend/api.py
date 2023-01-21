@@ -118,23 +118,18 @@ async def get_recommendations_for_library(user: str, library_name: str, response
     return stats.get_recommendations(books)
 
 
-@mmr.post("/recommendations/{book1}/{book2}/{user}")
-async def vote_user_recommendation(book1: str, book2: str, user: str, response: Response) -> Optional[dict]:
-    existing_recommendation: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
-        book1) and recommendation.has_book(book2) and len(recommendation.get_author_comments(user)), mock_recommendations))
-
-    if book1 == book2:
+@mmr.post("/recommendations/{isbn1}/{isbn2}/{user}")
+async def vote_user_recommendation(isbn1: str, isbn2: str, user: str, response: Response) -> Optional[dict]:
+    if isbn1 == isbn2:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"error": "Recommendations must be from different books"}
 
-    if len(existing_recommendation):
-        existing_recommendation[0].vote_comment(user)
-    else:
+    if not data_manager.vote_user_recommendation(isbn1, isbn2, user):
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"error": "Recommendation or comment does not exist"}
 
     response.status_code = status.HTTP_201_CREATED
-    response.headers["location"] = "/recommendations/" + book1
+    response.headers["location"] = "/recommendations/" + isbn1
     return None
 
 
@@ -152,16 +147,3 @@ async def add_user_recommendation(isbn1: str, isbn2: str, user: str, comment: st
     response.headers["location"] = "/recommendations/" + \
         "/".join((isbn1, isbn2, user))
     return None
-
-
-def find_library(owner: str, name: str) -> Optional[Library]:
-    occurrencies = list(filter(
-        lambda lib: lib.get_owner() == owner and lib.get_name() == name, mock_libraries))
-
-    return occurrencies[0] if len(occurrencies) else None
-
-
-def find_book(isbn: str) -> Optional[Book]:
-    occurrencies = list(filter(lambda book: book.to_dict()[
-        "ISBN"] == isbn, mock_book_list))
-    return occurrencies[0] if len(occurrencies) else None

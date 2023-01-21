@@ -144,4 +144,25 @@ class DataManager:
         else:
             self.fake_recommendations.append(UserRecommendation(
                 (isbn1, isbn2), UserRecommendation.UserComment(user, comment)))
+        self.__disconnect()
         return True
+
+    def vote_user_recommendation(self, isbn1: str, isbn2: str, user: str) -> bool:
+        self.__connect()
+        book1: Optional[Book] = self.get_book(isbn1)
+        book2: Optional[Book] = self.get_book(isbn2)
+
+        if not (book1 and book2):
+            self.__disconnect()
+            return False
+
+        recommendations: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
+            isbn1) and recommendation.has_book(isbn2) and len(recommendation.get_author_comments(user)), self.fake_recommendations))
+
+        if len(recommendations):
+            recommendations[0].vote_comment(user)
+            self.__disconnect()
+            return True
+
+        self.__disconnect()
+        return False
