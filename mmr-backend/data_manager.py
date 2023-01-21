@@ -2,7 +2,7 @@ import json
 from book import Book
 from library import Library
 from user_recommendation import UserRecommendation
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 
 
 class DataManager:
@@ -125,3 +125,23 @@ class DataManager:
             lambda recommendation: recommendation.has_book(isbn), self.fake_recommendations)
         self.__disconnect()
         return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))
+
+    def create_user_recommendation(self, isbn1: str, isbn2: str, user: str, comment: str) -> bool:
+        self.__connect()
+        book1: Optional[Book] = self.get_book(isbn1)
+        book2: Optional[Book] = self.get_book(isbn2)
+
+        if not (book1 and book2):
+            self.__disconnect()
+            return False
+
+        recommendations: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
+            isbn1) and recommendation.has_book(isbn2), self.fake_recommendations))
+
+        if len(recommendations):
+            recommendations[0].add_comment(
+                UserRecommendation.UserComment(user, comment))
+        else:
+            self.fake_recommendations.append(UserRecommendation(
+                (isbn1, isbn2), UserRecommendation.UserComment(user, comment)))
+        return True
