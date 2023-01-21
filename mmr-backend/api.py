@@ -15,17 +15,6 @@ data_path = os.path.join(current_dir, sample_data_path)
 
 data_manager: DataManager = DataManager(data_path)
 
-mock_book_list: list[Book] = data_manager.get_books()
-mock_libraries: list[Library] = [Library("user1", "myLibrary", list()), Library(
-    "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry(mock_book_list[0], 5, Library.ReadingStatus.COMPLETED)])]
-mock_recommendations: list[UserRecommendation] = [UserRecommendation(
-    (mock_book_list[0].ISBN, mock_book_list[1].ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to second book")),
-    UserRecommendation(
-    (mock_book_list[0].ISBN, mock_book_list[2].ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to third book"))]
-mock_recommendations[0].add_comment(
-    UserRecommendation.UserComment("RandomGuy", "They are both cool"))
-
-
 mmr = FastAPI()
 
 #
