@@ -317,21 +317,11 @@ En esta primera versión de la API, cada \textit{endpoint} consultaba los datos 
 
 Fue a continuación, en el tercer PMV (ver \nameref{pmv3}) cuando se trabajó en solventar esta situación. Con un nuevo módulo llamado \textit{Data Manager} se movió todo el apartado de consulta de datos fuera de la API. Este gestor de datos se encarga de establecer una conexión con una base de datos, realizar una consulta determinada y devolver la información a la API, que ya se encargaría de delegar el procesamiento de está información a otros módulos según fuera necesario.
 
-Dado que la implementación de la base de datos fue uno de los últimos pasos de este PMV, al principio se seguían usando datos de pruebas almacenados en esta clase gestora. Sin embargo su implementación sí que pretendía emular una conexión con una base de datos, realizando la conexión a esta al principio de cada consulta y cerrándola siempre al final. En este punto se detectaron dos problemas dado el estado de desarrollo:
+Dado que la implementación de la base de datos fue uno de los últimos pasos de este PMV, al principio se seguían usando datos de pruebas almacenados en esta clase gestora. Sin embargo su implementación sí que pretendía emular una conexión con una base de datos, realizando la conexión a esta al principio de cada consulta y cerrándola siempre al final.
 
-\begin{enumerate}
-    \item Fue necesario refactorizar gran parte del código, pues hubo que llevar mucha funcionalidad de la API a esta nueva clase gestora. Esto planteó dudas sobre si la planificación del desarrollo de esta parte fue correcta.
-    \item Tras implementar varias funciones del \textit{data manager} destacó el hecho de que todas empezaban con establecer una conexión con la base de datos y debían asegurarse de realizar la desconexión al finalizar. Este código se repitió mucho, por lo que había que pensar en una solución.
-\end{enumerate}
+En este punto se detectó un problema. Fue necesario refactorizar gran parte del código, pues hubo que llevar mucha funcionalidad de la API a esta nueva clase gestora. Esto planteó dudas sobre si la planificación del desarrollo de esta parte fue correcta.
 
-Con respecto al primer problema, se trata de algo que no habría ocurrido si se hubiese desarrollado la base de datos en primer lugar, seguida de la clase gestora de datos y finalmente por la API. Por un momento al pensar en este nuevo orden de desarrollo sentí que había cometido un error notable, pero dicha sensación se esfumó al pensar que, con la cantidad de trabajo que esas partes hubieron requerido, no habría conseguido realizar ninguna entrega funcional a un supuesto cliente en mucho tiempo ya que nada de esto aportaría utilidades nuevas hasta que la API no estuviera incluida, y esto no encaja con la mentalidad ágil propuesta para este desarrollo.
-
-El segundo problema propuso un reto más técnico. Como cada función se encargaba de realizar la conexión y desconexión a la base de datos, había que tener extremo cuidado con asegurar la desconexión tras cada operación para no dejar conexiones \textit{zombie} activas. Asimismo, realizar llamadas a otras funciones dentro de éstas crearía conexiones redundantes, y esto no es lo más óptimo. Como solución a esto, surgieron varias ideas:
-
-\begin{itemize}
-    \item Crear una función que se encargara de la conexión, las llamadas concretas al resto de funciones y finalmente de la desconexión. Esto se podría hacer fácilmente con un \textit{switch-case statement}, sin embargo en Python no fueron añadidos hasta la versión 3.10, teniendo como alternativa una gran cantidad de sentencias \textit{if elif}, y en ese punto el proyecto daba soporte a la versión 3.9.
-    \item Realizar la conexión y desconexión a través de un \textit{middleware} de la API, ya que cada uno de sus \textit{endpoints} requiere de al menos una interacción con la base de datos. 
-\end{itemize}
+Esto no habría ocurrido si se hubiese desarrollado la base de datos en primer lugar, seguida de la clase gestora de datos y finalmente por la API. Por un momento al pensar en este nuevo orden de desarrollo sentí que había cometido un error notable, pero dicha sensación se esfumó al pensar que, con la cantidad de trabajo que esas partes hubieron requerido, no habría conseguido realizar ninguna entrega funcional a un supuesto cliente en mucho tiempo ya que nada de esto aportaría utilidades nuevas hasta que la API no estuviera incluida, y esto no encaja con la mentalidad ágil propuesta para este desarrollo.
 
 \subsection{Sistema de recomendaciones}
 
