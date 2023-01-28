@@ -37,6 +37,7 @@ Así mismo cabe mencionar que el primer \textit{milestone} del proyecto se exclu
 \end{itemize}
 
 \subsection{PMV-2. Implementación de la API y sistema de recomendaciones}
+\label{pmv2}
 
 \begin{itemize}
     \item \href{https://github.com/Anglepi/My-Many-Reads/issues/45}{\textbf{HT-3}} Creación de la API. \\
@@ -271,7 +272,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \end{itemize}
     \item Recommendations:
     \begin{itemize}
-        \item \textit{/recommendations/\{book\}}
+        \item \textit{/recommendations/\{isbn\}}
         \item \textit{/recommendations/\{user\}/\{library\}}
     \end{itemize}
 \end{itemize}
@@ -285,8 +286,8 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \end{itemize}
     \item Recommendations:
     \begin{itemize}
-        \item \textit{/recommendations/\{book1\}/\{book2\}/\{user\}}
-        \item \textit{/recommendations/\{book1\}/\{book2\}/\{user\}/\{comment\}}
+        \item \textit{/recommendations/\{isbn1\}/\{isbn2\}/\{user\}}
+        \item \textit{/recommendations/\{isbn1\}/\{isbn2\}/\{user\}/\{comment\}}
     \end{itemize}
 \end{itemize}
 
@@ -307,6 +308,20 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
         \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
     \end{itemize}
 \end{itemize}
+
+\subsubsection{Gestor de datos}
+
+La primera implementación de la API se introdujo en el segundo PMV (ver \nameref{pmv2}). En este momento, al ser una fase temprana del proyecto, se carecía de una base de datos, por lo que para poner este código a prueba se introdujeron datos de prueba y lógica en la propia API, aunque esto incumpla el principio de responsabilidad única.
+
+En esta primera versión de la API, cada \textit{endpoint} consultaba los datos almacenados en una variable global, realizaba las operaciones necesarias sobre estos y devolvía la respuesta con el mero objetivo de pasar los tests, pues en este momento no había base de datos como para ofrecer una funcionalidad real. Siguiendo el principio de responsabilidad única, el único trabajo del que debería encargarse la API es de recibir peticiones, delegar las acciones requeridas a otros módulos y devolver la respuesta correspondiente.
+
+Fue a continuación, en el tercer PMV (ver \nameref{pmv3}) cuando se trabajó en solventar esta situación. Con un nuevo módulo llamado \textit{Data Manager} se movió todo el apartado de consulta de datos fuera de la API. Este gestor de datos se encarga de establecer una conexión con una base de datos, realizar una consulta determinada y devolver la información a la API, que ya se encargaría de delegar el procesamiento de está información a otros módulos según fuera necesario.
+
+Dado que la implementación de la base de datos fue uno de los últimos pasos de este PMV, al principio se seguían usando datos de pruebas almacenados en esta clase gestora. Sin embargo su implementación sí que pretendía emular una conexión con una base de datos, realizando la conexión a esta al principio de cada consulta y cerrándola siempre al final.
+
+En este punto se detectó un problema. Fue necesario refactorizar gran parte del código, pues hubo que llevar mucha funcionalidad de la API a esta nueva clase gestora. Esto planteó dudas sobre si la planificación del desarrollo de esta parte fue correcta.
+
+Esto no habría ocurrido si se hubiese desarrollado la base de datos en primer lugar, seguida de la clase gestora de datos y finalmente por la API. Por un momento al pensar en este nuevo orden de desarrollo sentí que había cometido un error notable, pero dicha sensación se esfumó al pensar que, con la cantidad de trabajo que esas partes hubieron requerido, no habría conseguido realizar ninguna entrega funcional a un supuesto cliente en mucho tiempo ya que nada de esto aportaría utilidades nuevas hasta que la API no estuviera incluida, y esto no encaja con la mentalidad ágil propuesta para este desarrollo.
 
 \subsection{Sistema de recomendaciones}
 
