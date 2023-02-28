@@ -399,6 +399,17 @@ Si la intención fuera meramente almacenar libros, es decir, solo registros inde
 
 Sin embargo, este no es el caso de MMR, ya que debemos establecer relaciones entre bibliotecas, libros y recomendaciones para obtener información contextualizada que sea de utilidad.
 
+La siguiente elección será escoger el entorno y sistema gestor de base de datos a emplear. A groso modo, se pueden distinguir estas opciones:
+
+\begin{enumerate}
+    \item Instalar manualmente un SGBD en una máquina física o virtual. Por una parte tendría control completo sobre el entorno y la instalación, y por otra parte tendría que tener mi máquina siempre encendida y dedicada a eso en cuanto el proyecto pase a producción, y encargarme del mantenimiento.
+    \item Usar alguna plataforma online existente que se encargue de la gestión y mantenimiento.
+\end{enumerate}
+
+Hay dos factores a tener en cuenta que serán de utilidad a la hora de escoger una de estas opciones: los recursos a disposición y el tráfico esperado. Con poco tráfico, la tercera opción podría resultar más interesante, ya que se delega el mantenimiento y estos servicios online no suelen ser extremadamente caros con bajo tráfico.
+
+Si se disponen de los suficientes recursos, alguna de las dos primeras opciones podría ser más viable, ya que al gestionar y mantener tanto la máquina como el servicio se logra un control total tanto de hardware como de software lo que permite ajustar la cantidad exacta de recursos para lograr las prestaciones deseadas.
+
 \subsubsection{Clases que representan las entidades}
 
 Se emplean tres clases diferentes que representan entidades a partir de lo almacenado en la base de datos.
