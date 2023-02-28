@@ -395,7 +395,17 @@ Con respecto a la gestión de datos, se pueden distinguir dos aspectos diferente
 
 \subsubsection{Clases que representan las entidades}
 
-\textbf{Almacenamiento de datos inmutables:} \href{https://docs.python.org/3/library/dataclasses.html}{\textit{Dataclasses}}
+Se emplean tres clases diferentes que representan entidades a partir de lo almacenado en la base de datos.
+
+\begin{itemize}
+    \item \textit{Book}. Solamente contiene la información que representa un libro.
+    \item \textit{Library}. Se emplea para representar las bibliotecas, y contiene también funcionalidades para editar su información correctamente.
+    \item \textit{UserRecommendation}. Representa las recomendaciones entre dos libros creadas por usuarios. Como cada pareja de libros puede ser representada por diferentes usuarios, también se encarga de representar los diferentes comentarios escritos por los usuarios para justificar la recomendación entre ambos libros.
+\end{itemize}
+
+En el caso de los libros, la información es inmutable, pues nunca debería cambiar por ejemplo el ISBN o título de un libro. Si ocurre un cambio significativo por ejemplo en su sinopsis, lo normal es que esto se deba a una nueva edición del libro, por lo que se estaría refiriendo a una entidad totalmente nueva.
+
+Por tanto, para los libros, se ha empleado un módulo que facilita el almacenamiento de datos inmutables a través de  \href{https://docs.python.org/3/library/dataclasses.html}{\textit{Dataclasses}}.
 
 Una \textit{dataclass}, o clase de datos, genera automáticamente ciertas funciones como el constructor, el comparador de igualdad y la representación de la instancia. Con esto, el programador ahorra bastante código que escribir, sin embargo este no es el motivo principal por el que, en este proyecto, se importa el módulo.
 
