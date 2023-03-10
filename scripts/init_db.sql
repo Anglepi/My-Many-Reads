@@ -10,7 +10,8 @@ CREATE TABLE books (
 
 CREATE TABLE authors (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    birth_date TEXT NOT NULL
 );
 
 CREATE TABLE genres (
@@ -82,7 +83,7 @@ insert into books(isbn, title, synopsis, publisher, publishing_date, edition) va
 
 insert into book_genres(book_id, genre_id) values (1,1), (1,3), (2,1), (2,3), (3,1), (3,3), (4,3), (4,10), (4,8), (5,7), (5,9), (5,11);
 
-insert into authors(name) values ('Cervantes'), ('Manuel'), ('Ángel Píñar');
+insert into authors(name, birth_date) values ('Cervantes', '1547-09-29'), ('Manuel', '1987-11-13'), ('Ángel Píñar', '1984-01-01');
 
 insert into authored(book_id, author_id) values (1,1), (2,1), (2,2), (3,1), (4,3), (5,3);
 
