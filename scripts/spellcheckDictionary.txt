@@ -78,3 +78,8 @@ URIs
 pmv
 elif
 middleware
+Postgres
+SGBD
+contextualizada
+gb
+io
