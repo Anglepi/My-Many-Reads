@@ -1,6 +1,6 @@
 [
   {
-    "ISBN": "99921-58-10-7",
+    "isbn": "99921-58-10-7",
     "title": "A book",
     "synopsis": "Some random descriptivie text about the book",
     "authors": ["Cervantes"],
@@ -10,7 +10,7 @@
     "edition": "1st Edition"
   },
   {
-    "ISBN": "9971-5-0210-0",
+    "isbn": "9971-5-0210-0",
     "title": "A book: Reloaded",
     "synopsis": "Some random descriptivie text about the book",
     "authors": ["Cervantes", "Manuel"],
@@ -20,7 +20,7 @@
     "edition": "Special anniversary edition"
   },
   {
-    "ISBN": "0-9752298-0-X",
+    "isbn": "0-9752298-0-X",
     "title": "A book: Revoluitions",
     "synopsis": "Some random descriptivie text about the book",
     "authors": ["Cervantes"],
@@ -30,7 +30,7 @@
     "edition": "5th edition"
   },
   {
-    "ISBN": "960-425-059-0",
+    "isbn": "960-425-059-0",
     "title": "Recommendations Paradise",
     "synopsis": "Some random descriptivie text about the book",
     "authors": ["Angel Píñar"],
@@ -40,7 +40,7 @@
     "edition": "5th edition"
   },
   {
-    "ISBN": "80-902734-1-6",
+    "isbn": "80-902734-1-6",
     "title": "The Spanish Omelette Hero",
     "synopsis": "Some random descriptivie text about the book",
     "authors": ["Angel Píñar"],

@@ -17,9 +17,9 @@ class DataManager:
         self.fake_libraries = [Library("user1", "myLibrary", list()), Library(
             "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry(Book.from_dict(self.fake_books[0]), 5, Library.ReadingStatus.COMPLETED)])]
         self.fake_recommendations = [UserRecommendation(
-            (Book.from_dict(self.fake_books[0]).ISBN, Book.from_dict(self.fake_books[1]).ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to second book")),
+            (Book.from_dict(self.fake_books[0]).isbn, Book.from_dict(self.fake_books[1]).isbn), UserRecommendation.UserComment("Recommender", "first book is similar to second book")),
             UserRecommendation(
-            (Book.from_dict(self.fake_books[0]).ISBN, Book.from_dict(self.fake_books[2]).ISBN), UserRecommendation.UserComment("Recommender", "first book is similar to third book"))]
+            (Book.from_dict(self.fake_books[0]).isbn, Book.from_dict(self.fake_books[2]).isbn), UserRecommendation.UserComment("Recommender", "first book is similar to third book"))]
         self.fake_recommendations[0].add_comment(
             UserRecommendation.UserComment("RandomGuy", "They are both cool"))
 
@@ -33,7 +33,7 @@ class DataManager:
     def get_book(self, isbn: str) -> Optional[Book]:
         # To be replaced by an actual query
         occurrencies = list(filter(lambda book: book.to_dict()[
-            "ISBN"] == isbn, Book.from_list(self.fake_books)))
+            "isbn"] == isbn, Book.from_list(self.fake_books)))
         return occurrencies[0] if len(occurrencies) else None
 
     # LIBRARIES

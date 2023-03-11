@@ -1,6 +1,6 @@
 CREATE TABLE books (
     id SERIAL PRIMARY KEY,
-    ISBN TEXT UNIQUE,
+    isbn TEXT UNIQUE,
     title TEXT NOT NULL,
     synopsis TEXT NOT NULL,
     publisher TEXT NOT NULL,
