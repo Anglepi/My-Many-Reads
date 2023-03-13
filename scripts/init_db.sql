@@ -41,7 +41,7 @@ CREATE TYPE ReadingStatus AS ENUM ('PLAN_TO_READ', 'CURRENTLY_READING', 'COMPLET
 
 CREATE TABLE library_entries (
     id SERIAL PRIMARY KEY,
-    library_id INTEGER REFERENCES libraries (id),
+    library_id INTEGER REFERENCES libraries (id) ON DELETE CASCADE,
     book_id INTEGER REFERENCES books (id),
     score INTEGER,
     reading_status ReadingStatus NOT NULL DEFAULT ''
