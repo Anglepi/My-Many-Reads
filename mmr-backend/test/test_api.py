@@ -210,8 +210,8 @@ def test_user_recommendations_for_book():
             ],
             "comments": [
                 {
-                    "author": "Recommender",
-                    "comment": "first book is similar to third book",
+                    "author": "OtherGuy",
+                    "comment": "They are both entertaining",
                     "score": 0
                 }
             ]
