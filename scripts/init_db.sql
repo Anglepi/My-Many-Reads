@@ -93,4 +93,4 @@ insert into library_entries(library_id, book_id, score, reading_status) values (
 
 insert into user_recommendations(book1_id, book2_id) values (1,2), (1,3);
 
-insert into user_recommendation_comments(recommendation_id, author, comment) values (1, 'RandomGuy', 'They are both cool');
+insert into user_recommendation_comments(recommendation_id, author, comment) values (1, 'RandomGuy', 'They are both cool'), (2, 'OtherGuy', 'They are both entertaining');
