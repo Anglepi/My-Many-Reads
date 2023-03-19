@@ -136,7 +136,7 @@ def test_delete_library():
         libraries = client.get("/libraries/userTest").json()
         response = client.delete("/libraries/userTest/newNameTest")
         new_libraries = client.get("/libraries/userTest").json()
-
+        
     # Then
     assert_that(response.status_code).is_equal_to(200)
     assert_that(libraries).is_not_equal_to(new_libraries)
@@ -154,7 +154,7 @@ def test_library_add_entry():
     assert_that(response.status_code).is_equal_to(201)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
-        [{"book": book_list[0].to_dict(), "score": None, "status": None}])
+        [{"book": book_list[0].to_dict(), "score": 5, "status": "COMPLETED"}])
 
 
 def test_library_update_entry():
