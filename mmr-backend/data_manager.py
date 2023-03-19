@@ -99,7 +99,7 @@ class DataManager:
             "left join authors a on ad.author_id = a.id  " +
             "left join book_genres bg on b.id = bg.book_id  " +
             "left join genres g on g.id = bg.genre_id  " +
-            "where l.owner = %s and l.name = %s" +
+            "where l.owner = %s and l.name = %s " +
             "group by l.id, le.id, b.id " +
             "order by l.id;", (user, library_name))
         result = self._cur.fetchall()
