@@ -257,11 +257,11 @@ def test_vote_user_recommendation():
     # Given - When
     with TestClient(mmr) as client:
         existing_recommendations = client.get(
-            "/recommendations/99921-58-10-7").json()
+            "/recommendations/9971-5-0210-0").json()
         response = client.post(
-            "/recommendations/99921-58-10-7/9971-5-0210-0/Recommender")
+            "/recommendations/99921-58-10-7/9971-5-0210-0/RandomGuy")
         new_recommendations = client.get(
-            "/recommendations/99921-58-10-7").json()
+            "/recommendations/9971-5-0210-0").json()
     previous_score = existing_recommendations[0]["comments"][0]["score"]
     new_score = new_recommendations[0]["comments"][0]["score"]
 
