@@ -182,7 +182,7 @@ class DataManager:
                           "select * from rows " + 
                           "returning id", (isbn1, isbn2, user, comment))
         result = self._cur.fetchone()
-        return True if result["id"] else False
+        return True if result else False
 
     def vote_user_recommendation(self, isbn1: str, isbn2: str, user: str) -> bool:
         self._cur.execute("update user_recommendation_comments urc " + 
@@ -194,4 +194,4 @@ class DataManager:
                           "where ur.id = urc.recommendation_id and urc.author = %s " + 
                           "returning urc.id", (isbn1, isbn2, user))
         result = self._cur.fetchone()
-        return True if result["id"] else False
+        return True if result else False
