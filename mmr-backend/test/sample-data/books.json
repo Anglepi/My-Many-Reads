@@ -4,7 +4,7 @@
     "title": "A book",
     "synopsis": "Some random descriptivie text about the book",
     "authors": ["Cervantes"],
-    "genres": ["Fantasy", "Action"],
+    "genres": ["Action", "Fantasy"],
     "publisher": "Nova editorial",
     "publishing_date": "2017-10-28",
     "edition": "1st Edition"
@@ -14,7 +14,7 @@
     "title": "A book: Reloaded",
     "synopsis": "Some random descriptivie text about the book",
     "authors": ["Cervantes", "Manuel"],
-    "genres": ["Fantasy", "Action"],
+    "genres": ["Action", "Fantasy"],
     "publisher": "Nova editorial",
     "publishing_date": "2018-10-28",
     "edition": "Special anniversary edition"
@@ -24,7 +24,7 @@
     "title": "A book: Revoluitions",
     "synopsis": "Some random descriptivie text about the book",
     "authors": ["Cervantes"],
-    "genres": ["Fantasy", "Action"],
+    "genres": ["Action", "Fantasy"],
     "publisher": "Nova editorial",
     "publishing_date": "2019-10-28",
     "edition": "5th edition"
@@ -33,8 +33,8 @@
     "isbn": "960-425-059-0",
     "title": "Recommendations Paradise",
     "synopsis": "Some random descriptivie text about the book",
-    "authors": ["Angel Píñar"],
-    "genres": ["Fantasy", "Science", "Historical"],
+    "authors": ["Ángel Píñar"],
+    "genres": ["Fantasy", "Historical", "Science"],
     "publisher": "Nova editorial",
     "publishing_date": "2019-10-28",
     "edition": "5th edition"
@@ -43,7 +43,7 @@
     "isbn": "80-902734-1-6",
     "title": "The Spanish Omelette Hero",
     "synopsis": "Some random descriptivie text about the book",
-    "authors": ["Angel Píñar"],
+    "authors": ["Ángel Píñar"],
     "genres": ["Art", "Manga", "Thriller"],
     "publisher": "Nova editorial",
     "publishing_date": "2019-10-28",

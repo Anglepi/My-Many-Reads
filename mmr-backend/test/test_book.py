@@ -17,7 +17,7 @@ def test_create_book_from_dict_and_transform_to_dict():
             "title": "A book",
             "synopsis": "Some random descriptivie text about the book",
             "authors": ["Cervantes"],
-            "genres": ["Fantasy", "Action"],
+            "genres": ["Action", "Fantasy"],
             "publisher": "Nova editorial",
             "publishing_date": "2017-10-28",
             "edition": "1st Edition"
