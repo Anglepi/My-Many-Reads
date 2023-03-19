@@ -142,9 +142,10 @@ class DataManager:
         return True if success else False
 
     def update_library_entry(self, user: str, library_name: str, isbn: str, score: int, status: Library.ReadingStatus) -> None:
-        self._cur.execute("update library_entries set library_id = l.id, book_id = b.id, score=%s, reading_status=%s " +
+        self._cur.execute("update library_entries le set book_id = b.id, score=%s, reading_status=%s " +
                           "from books b, libraries l " +
-                          "where l.owner = %s AND l.name = %s AND b.isbn = %s)", (score, status, user, library_name, isbn))
+                          "where l.owner = %s AND l.name = %s AND b.isbn = %s " + 
+                          "AND le.library_id = l.id AND le.book_id = b.id", (score, status.value, user, library_name, isbn))
 
     # RECOMMENDATIONS
 
