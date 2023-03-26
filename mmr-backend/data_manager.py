@@ -9,6 +9,7 @@ from os import environ
 
 
 class DataManager:
+    AGGREGATED_VALUE_SEPARATOR = ';'
     def __init__(self, address: str) -> None:
         self._address = address
         connection = psycopg2.connect(host=environ.get("HOST"),
@@ -24,36 +25,36 @@ class DataManager:
     def get_books(self) -> list[Book]:
         self._cur.execute(
             "SELECT b.isbn, b.title, b.synopsis, b.publisher, b.publishing_date, b.edition, " +
-            "STRING_AGG(DISTINCT(a.name), ';') as authors, STRING_AGG(DISTINCT(g.genre), ';') " +
+            "STRING_AGG(DISTINCT(a.name), %s) as authors, STRING_AGG(DISTINCT(g.genre), %s) " +
             "as genres FROM books b " +
             "left join authored ad on b.id = ad.book_id " +
             "left join authors a on ad.author_id = a.id " +
             "left join book_genres bg on b.id = bg.book_id " +
             "left join genres g on g.id = bg.genre_id " +
-            "group by b.id;")
+            "group by b.id;", (DataManager.AGGREGATED_VALUE_SEPARATOR, DataManager.AGGREGATED_VALUE_SEPARATOR))
         result = self._cur.fetchall()
         for tuple in result:
-            tuple["authors"] = tuple["authors"].split(";")
-            tuple["genres"] = tuple["genres"].split(";")
+            tuple["authors"] = tuple["authors"].split(DataManager.AGGREGATED_VALUE_SEPARATOR)
+            tuple["genres"] = tuple["genres"].split(DataManager.AGGREGATED_VALUE_SEPARATOR)
         return Book.from_list(result)
 
     def get_book(self, isbn: str) -> Optional[Book]:
         self._cur.execute(
             "SELECT b.isbn, b.title, b.synopsis, b.publisher, b.publishing_date, b.edition, " +
-            "STRING_AGG(DISTINCT(a.name), ';') as authors, STRING_AGG(DISTINCT(g.genre), ';') " +
+            "STRING_AGG(DISTINCT(a.name), %s) as authors, STRING_AGG(DISTINCT(g.genre), %s) " +
             "as genres FROM books b " +
             "left join authored ad on b.id = ad.book_id " +
             "left join authors a on ad.author_id = a.id " +
             "left join book_genres bg on b.id = bg.book_id " +
             "left join genres g on g.id = bg.genre_id " +
             "where b.isbn = %s " +
-            "group by b.id;", (isbn, ))
+            "group by b.id;", (DataManager.AGGREGATED_VALUE_SEPARATOR, DataManager.AGGREGATED_VALUE_SEPARATOR, isbn))
         result = self._cur.fetchone()
         if not result:
             return None
 
-        result["authors"] = result["authors"].split(";")
-        result["genres"] = result["genres"].split(";")
+        result["authors"] = result["authors"].split(DataManager.AGGREGATED_VALUE_SEPARATOR)
+        result["genres"] = result["genres"].split(DataManager.AGGREGATED_VALUE_SEPARATOR)
         return result
 
     # LIBRARIES
@@ -62,7 +63,7 @@ class DataManager:
         self._cur.execute(
             "SELECT l.id, l.owner, l.name, le.score, le.reading_status, " +
             "b.isbn, b.title, b.synopsis, b.publisher, b.publishing_date, b.edition, " +
-            "STRING_AGG(DISTINCT(a.name), ';') as authors, STRING_AGG(DISTINCT(g.genre), ';') as genres " +
+            "STRING_AGG(DISTINCT(a.name), %s) as authors, STRING_AGG(DISTINCT(g.genre), %s) as genres " +
             "from libraries l " +
             "left join library_entries le on l.id = le.library_id " +
             "left join books b on b.id = le.book_id " +
@@ -72,7 +73,7 @@ class DataManager:
             "left join genres g on g.id = bg.genre_id  " +
             "where l.owner = %s " +
             "group by l.id, le.id, b.id " +
-            "order by l.id;", (user, ))
+            "order by l.id;", (DataManager.AGGREGATED_VALUE_SEPARATOR, DataManager.AGGREGATED_VALUE_SEPARATOR, user))
         result = self._cur.fetchall()
         libraries: dict[int, Library] = {}
         for tuple in result:
@@ -91,7 +92,7 @@ class DataManager:
         self._cur.execute(
             "SELECT l.id, l.owner, l.name, le.score, le.reading_status, " +
             "b.isbn, b.title, b.synopsis, b.publisher, b.publishing_date, b.edition, " +
-            "STRING_AGG(DISTINCT(a.name), ';') as authors, STRING_AGG(DISTINCT(g.genre), ';') as genres " +
+            "STRING_AGG(DISTINCT(a.name), %s) as authors, STRING_AGG(DISTINCT(g.genre), %s) as genres " +
             "from libraries l " +
             "left join library_entries le on l.id = le.library_id " +
             "left join books b on b.id = le.book_id " +
@@ -101,7 +102,7 @@ class DataManager:
             "left join genres g on g.id = bg.genre_id  " +
             "where l.owner = %s and l.name = %s " +
             "group by l.id, le.id, b.id " +
-            "order by l.id;", (user, library_name))
+            "order by l.id;", (DataManager.AGGREGATED_VALUE_SEPARATOR, DataManager.AGGREGATED_VALUE_SEPARATOR, user, library_name))
         result = self._cur.fetchall()
         if not result:
             return None
