@@ -10,12 +10,13 @@ from os import environ
 
 class DataManager:
     AGGREGATED_VALUE_SEPARATOR = ';'
+
     def __init__(self, address: str) -> None:
         self._address = address
         connection = psycopg2.connect(host=environ.get("HOST"),
-                                      database=environ.get("DATABASE"), 
-                                      user=environ.get("USER"), 
-                                      password=environ.get("PASSWORD"), 
+                                      database=environ.get("DATABASE"),
+                                      user=environ.get("USER"),
+                                      password=environ.get("PASSWORD"),
                                       port=environ.get("PORT"))
         self._cur = connection.cursor(
             cursor_factory=psycopg2.extras.RealDictCursor)
@@ -34,8 +35,10 @@ class DataManager:
             "group by b.id;", (DataManager.AGGREGATED_VALUE_SEPARATOR, DataManager.AGGREGATED_VALUE_SEPARATOR))
         result = self._cur.fetchall()
         for tuple in result:
-            tuple["authors"] = tuple["authors"].split(DataManager.AGGREGATED_VALUE_SEPARATOR)
-            tuple["genres"] = tuple["genres"].split(DataManager.AGGREGATED_VALUE_SEPARATOR)
+            tuple["authors"] = tuple["authors"].split(
+                DataManager.AGGREGATED_VALUE_SEPARATOR)
+            tuple["genres"] = tuple["genres"].split(
+                DataManager.AGGREGATED_VALUE_SEPARATOR)
         return Book.from_list(result)
 
     def get_book(self, isbn: str) -> Optional[Book]:
@@ -53,8 +56,10 @@ class DataManager:
         if not result:
             return None
 
-        result["authors"] = result["authors"].split(DataManager.AGGREGATED_VALUE_SEPARATOR)
-        result["genres"] = result["genres"].split(DataManager.AGGREGATED_VALUE_SEPARATOR)
+        result["authors"] = result["authors"].split(
+            DataManager.AGGREGATED_VALUE_SEPARATOR)
+        result["genres"] = result["genres"].split(
+            DataManager.AGGREGATED_VALUE_SEPARATOR)
         return result
 
     # LIBRARIES
@@ -145,7 +150,7 @@ class DataManager:
     def update_library_entry(self, user: str, library_name: str, isbn: str, score: int, status: Library.ReadingStatus) -> None:
         self._cur.execute("update library_entries le set book_id = b.id, score=%s, reading_status=%s " +
                           "from books b, libraries l " +
-                          "where l.owner = %s AND l.name = %s AND b.isbn = %s " + 
+                          "where l.owner = %s AND l.name = %s AND b.isbn = %s " +
                           "AND le.library_id = l.id AND le.book_id = b.id", (score, status.value, user, library_name, isbn))
 
     # RECOMMENDATIONS
@@ -174,25 +179,25 @@ class DataManager:
         return list(map(lambda recommendation: recommendation.to_dict(), recommendations.values()))
 
     def create_user_recommendation(self, isbn1: str, isbn2: str, user: str, comment: str) -> bool:
-        self._cur.execute("with rows as " + 
-                          "(insert into user_recommendations (book1_id, book2_id) " + 
-                          "select b1.id as book1_id, b2.id as book2_id from books b1 " + 
-                          "join books b2 on b1.isbn = %s and b2.isbn=%s " + 
-                          "returning id as recommendation_id, %s as author, %s as comment, 0 as score) " + 
-                          "insert into user_recommendation_comments (recommendation_id, author, comment, score) " + 
-                          "select * from rows " + 
+        self._cur.execute("with rows as " +
+                          "(insert into user_recommendations (book1_id, book2_id) " +
+                          "select b1.id as book1_id, b2.id as book2_id from books b1 " +
+                          "join books b2 on b1.isbn = %s and b2.isbn=%s " +
+                          "returning id as recommendation_id, %s as author, %s as comment, 0 as score) " +
+                          "insert into user_recommendation_comments (recommendation_id, author, comment, score) " +
+                          "select * from rows " +
                           "returning id", (isbn1, isbn2, user, comment))
         result = self._cur.fetchone()
         return True if result else False
 
     def vote_user_recommendation(self, isbn1: str, isbn2: str, user: str) -> bool:
-        self._cur.execute("update user_recommendation_comments urc " + 
-                          "set score = score + 1 " + 
-                          "from books b1 " + 
-                          "join books b2 on b1.isbn = %s and b2.isbn= %s " + 
-                          "join user_recommendations ur " + 
-                          "on (ur.book1_id = b1.id and ur.book2_id = b2.id) or (ur.book1_id = b2.id and ur.book2_id = b1.id) " + 
-                          "where ur.id = urc.recommendation_id and urc.author = %s " + 
+        self._cur.execute("update user_recommendation_comments urc " +
+                          "set score = score + 1 " +
+                          "from books b1 " +
+                          "join books b2 on b1.isbn = %s and b2.isbn= %s " +
+                          "join user_recommendations ur " +
+                          "on (ur.book1_id = b1.id and ur.book2_id = b2.id) or (ur.book1_id = b2.id and ur.book2_id = b1.id) " +
+                          "where ur.id = urc.recommendation_id and urc.author = %s " +
                           "returning urc.id", (isbn1, isbn2, user))
         result = self._cur.fetchone()
         return True if result else False
