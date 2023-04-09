@@ -178,15 +178,36 @@ class DataManager:
 
         return list(map(lambda recommendation: recommendation.to_dict(), recommendations.values()))
 
+    def __getOrCreateRecommendationsPair(self, isbn1: str, isbn2: str) -> Optional[int]:
+        self._cur.execute("select ur.id from user_recommendations ur " +
+                          "left join books b1 on b1.id = ur.book1_id " +
+                          "left join books b2 on b2.id = ur.book2_id " +
+                          "where " +
+                          "(b1.isbn = %s and b2.isbn = %s) " +
+                          "or  " +
+                          "(b2.isbn = %s and b1.isbn = %s)", (isbn1, isbn2, isbn1, isbn2))
+        result = self._cur.fetchone()
+
+        if not result:
+            self._cur.execute("insert into user_recommendations (book1_id, book2_id) " +
+                              "select b1.id as book1_id, b2.id as book2_id from books b1 " +
+                              "join books b2 on b1.isbn = %s and b2.isbn=%s " +
+                              "returning id", (isbn1, isbn2))
+            result = self._cur.fetchone()
+
+        return result["id"] if result else None
+
     def create_user_recommendation(self, isbn1: str, isbn2: str, user: str, comment: str) -> bool:
-        self._cur.execute("with rows as " +
-                          "(insert into user_recommendations (book1_id, book2_id) " +
-                          "select b1.id as book1_id, b2.id as book2_id from books b1 " +
-                          "join books b2 on b1.isbn = %s and b2.isbn=%s " +
-                          "returning id as recommendation_id, %s as author, %s as comment, 0 as score) " +
-                          "insert into user_recommendation_comments (recommendation_id, author, comment, score) " +
-                          "select * from rows " +
-                          "returning id", (isbn1, isbn2, user, comment))
+        recommendationPairId: Optional[int] = self.__getOrCreateRecommendationsPair(
+            isbn1, isbn2)
+
+        if not recommendationPairId:
+            return False
+
+        self._cur.execute("insert into user_recommendation_comments (recommendation_id, author, comment) " +
+                          "values " +
+                          "(%s, %s, %s) " +
+                          "returning id", (recommendationPairId, user, comment))
         result = self._cur.fetchone()
         return True if result else False
 

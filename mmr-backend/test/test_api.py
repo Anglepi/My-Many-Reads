@@ -136,7 +136,7 @@ def test_delete_library():
         libraries = client.get("/libraries/userTest").json()
         response = client.delete("/libraries/userTest/newNameTest")
         new_libraries = client.get("/libraries/userTest").json()
-        
+
     # Then
     assert_that(response.status_code).is_equal_to(200)
     assert_that(libraries).is_not_equal_to(new_libraries)
@@ -325,7 +325,7 @@ def test_add_user_recommendation_existing():
         new_recommendations = client.get(
             "/recommendations/99921-58-10-7").json()
     expected_new_recommendations = copy.deepcopy(existing_recommendations)
-    expected_new_recommendations[1]["comments"].append(
+    expected_new_recommendations[0]["comments"].append(
         {"author": "username", "comment": "comment", "score": 0})
 
     # Then
