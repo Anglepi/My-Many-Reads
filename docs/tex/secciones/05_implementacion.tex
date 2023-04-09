@@ -385,38 +385,36 @@ Para medir la compatibilidad se pueden tener en cuenta una gran cantidad de prop
 
 Conociendo ya todos estos aspectos, solo resta hacer algo de experimentación jugando con la inclusión de algunos o todos éstos parámetros y ajustando sus pesos hasta dar con un modelo satisfactorio.
 
-\subsection{Almacenamiento y representación de datos}
+\subsection{Representación y almacenamiento de datos}
 
 Una parte fundamental de este proyecto son los datos, pues para perfeccionar su principal atractivo, las recomendaciones, será necesario realizar procesamientos con grandes cantidades de libros, y tampoco debemos olvidar funcionalidades más básicas como la de permitir a los usuarios almacenar y gestionar sus propias bibliotecas.
 
-Con respecto a la gestión de datos, se pueden distinguir dos aspectos diferentes a tratar. El primero de ellos sería todo lo relacionado con la base de datos en la que se almacena dicha información, mientras que el segundo sería la definición y estructura de las diferentes clases que representen las entidades almacenadas, como por ejemplo los libros.
+Estudiando la información recopilada hasta ahora, como los \hyperref[user journeys]{\textit{user journeys}}, los \hyperref[problemas de los usuarios]{problemas detectados} y teniendo presente el \hyperref[Estado del arte]{estado del arte} se pueden extraer las siguientes entidades fundamentales que son susceptibles a ser almacenadas de forma persistente, y sin las cuales no se podrían cumplimentar unos objetivos mínimos:
 
-\subsubsection{La base de datos}
+\begin{itemize}
+    \item Libros.
+    \item Bibliotecas.
+    \item Recomendaciones de usuarios.
+\end{itemize}
 
-En base a las necesidades del proyecto hay que decidir que tipo de base de datos resulta de mayor interés. En cuanto al tipo de base de datos, existen bastantes que destacan en función del tipo de uso que se le vaya a dar, pero las dos que podrían resultar más interesantes para este tipo de plataforma son las relacionales y no relacionales.
-
-Si la intención fuera meramente almacenar libros, es decir, solo registros independientes, una base de datos no relacional sería la mejor opción. Al no existir relaciones entre diferentes entidades, estas bases de datos son mucho más rápidas a la hora de realizar consultas.
-
-Sin embargo, este no es el caso de MMR, ya que debemos establecer relaciones entre bibliotecas, libros y recomendaciones para obtener información contextualizada que sea de utilidad.
-
-La siguiente elección será escoger el entorno y sistema gestor de base de datos a emplear. A grosso modo, se pueden distinguir estas opciones:
+Para encontrar los diferentes atributos de un libro que resulten de interés se pueden explorar bases de datos ya existentes de libros, que proporcionan una idea de qué tipo de atributos se pueden usar para definir un libro. Dado que \textit{My Many Reads} es una plataforma para lectores que permite consultar recomendaciones de libros, ensencialmente hay que fijarse en dos tipos de atributos: 
 
 \begin{enumerate}
-    \item Instalar manualmente un SGBD en una máquina física o virtual. Por una parte tendría control completo sobre el entorno y la instalación, y por otra parte tendría que tener mi máquina siempre encendida y dedicada a eso en cuanto el proyecto pase a producción, y encargarme del mantenimiento.
-    \item Usar alguna plataforma online existente que se encargue de la gestión y mantenimiento.
+    \item Aquellos que definan y puedan afectar a la temática y estilo del libro.
+    \item Los que aporten información que pueda resultar de utilidad para un usuario lector cualquiera, como las traducciones disponibles o fechas de publicación.
 \end{enumerate}
 
-Hay dos factores a tener en cuenta que serán de utilidad a la hora de escoger una de estas opciones: los recursos a disposición y el tráfico esperado. Con poco tráfico, la segunda opción podría resultar más interesante, ya que se delega el mantenimiento y estos servicios online no suelen ser extremadamente caros con bajo tráfico.
+Sin olvidarnos de aquellas propiedades que nos permitan identificar libros concretos, en este caso el ISBN es un buen candidato.
 
-Si se disponen de los suficientes recursos, alguna de las dos primeras opciones podría ser más viable, ya que al gestionar y mantener tanto la máquina como el servicio se logra un control total tanto de hardware como de software lo que permite ajustar la cantidad exacta de recursos para lograr las prestaciones deseadas.
+En el caso de los atributos de las bibliotecas, estudiando el concepto de éstas que se ha ido formando a lo largo del análisis del problema y sus posibles soluciones, se puede llegar a la conclusión de que una biblioteca es una lista de libros con un nombre, asociada y gestionada por un usuario, que puede calificar y categorizar cada una de las entradas de la lista. Por lo tanto, la biblioteca consiste en: un nombre, un dueño, una lista cuyos elementos son un libro, una calificación y un estado.
 
-Dado el estado del proyecto, la segunda opción es la más viable, puesto que existen multitud de servicios gratuitos que se encargan de la gestión, y serán más que suficientes en las primeras etapas del proyecto. Para llevar esta idea a cabo, vamos a recurrir a \href{https://bit.io/}{\textit{bit.io}}, que ofrece de forma gratuita hasta 3 bases de datos diferentes y 3gb de almacenamiento, poniendo a nuestra disposición acceso y consultas a través de Postgres, interfaz de usuario o API.
+Para las recomendaciones, la aproximación es similar a la de las bibliotecas. Una recomendación establece una relación entre dos libros a través de una justificación escrita por un usuario. Estudiando en mayor profundidad este concepto se llega a la conclusión de que no es necesario repetir la relación entre dos libros por cada justificación de usuario, por lo que por cada relación entre libros podemos simplemente tener un listado de justificaciones de usuario.
 
-Básicamente, esta plataforma permite fácilmente crear una base de datos PostgreSQL y pone a disposición de sus usuarios métodos de conexión muy sencillos de usar. Adicionalmente, la documentación y guía de uso ofrecida es muy clara, incluyendo tanto imágenes como vídeos que apoyan las explicaciones expuestas sobre cómo realizar las acciones que ofrece la plataforma.
+Ya sabiendo esto, el primer paso será definir las diferentes clases que representen estas entidades en el código, permitiendo así realizar algunas pruebas iniciales que sean de ayuda para detectar posibles problemas con las entidades y atributos definidos antes de que se conviertan en un problema mayor que afecte también al segundo paso: la definición de una base de datos.
 
 \subsubsection{Clases que representan las entidades}
 
-Se emplean tres clases diferentes que representan entidades a partir de lo almacenado en la base de datos.
+Dadas las tres entidades mencionadas anteriormente, y como ya se ha indicado, el siguiente paso es crear un conjunto de clases que sirvan para representar estas entidades:
 
 \begin{itemize}
     \item \textit{Book}. Solamente contiene la información que representa un libro.
@@ -426,10 +424,50 @@ Se emplean tres clases diferentes que representan entidades a partir de lo almac
 
 En el caso de los libros, la información es inmutable, pues nunca debería cambiar por ejemplo el ISBN o título de un libro. Si ocurre un cambio significativo por ejemplo en su sinopsis, lo normal es que esto se deba a una nueva edición del libro, por lo que se estaría refiriendo a una entidad totalmente nueva.
 
-Por tanto, para los libros, se ha empleado un módulo que facilita el almacenamiento de datos inmutables a través de  \href{https://docs.python.org/3/library/dataclasses.html}{\textit{Dataclasses}}.
+Por tanto, para los libros, se ha empleado un módulo que facilita el almacenamiento de datos inmutables a través de \href{https://docs.python.org/3/library/dataclasses.html}{\textit{Dataclasses}}.
 
 Una \textit{dataclass}, o clase de datos, genera automáticamente ciertas funciones como el constructor, el comparador de igualdad y la representación de la instancia. Con esto, el programador ahorra bastante código que escribir, sin embargo este no es el motivo principal por el que, en este proyecto, se importa el módulo.
 
 Otra de las características que ofrece consiste en un conjunto de parámetros que se pueden indicar junto al \textit{decorator} que se emplea para generar una \textit{dataclass}. En concreto, \textit{frozen} permite asegurar que una clase sea inmutable, controlando que el valor otorgado a sus atributos tras crear el objeto no varía.
 
 Toda la funcionalidad que ofrece este módulo resulta de especial interés, por ejemplo, para la representación de la clase \textit{Book}, ya que sus atributos nunca deben cambiar.
+
+\subsubsection{La base de datos}
+
+En base a las necesidades del proyecto hay que decidir que tipo de base de datos resulta de mayor interés. En cuanto al tipo de base de datos, existen bastantes que destacan en función del tipo de uso que se le vaya a dar: relacionales, clave-valor, orientadas a documentos, a grafos... Cada una de estas posee unas características que las hacen más adecuadas.
+
+\begin{itemize}
+    \item Relacionales. En éstas, la información se representa en forma de tablas con diferentes columnas y filas, permitiendo relacionar diferentes tablas entre sí a través de sus campos identificadores.
+    \item Clave-valor. A través de una clave única se almacena la información necesaria. Cada clave almacena un valor, cuyo esquema o estructura de atributos no tiene por qué coincidir con el del resto de valores almacenados en otras claves. Se suelen usar, por ejemplo, en carritos de compra o para almacenar las sesiones de los usuarios.
+    \item Orientadas a documentos. Almacena un conjunto de documentos de tipo JSON. Permite crear diferentes colecciones de documentos y predefinir un esquema con algo de flexibilidad para éstas. Este tipo de base de datos surge a raíz de las clave-valor, a las que se le añade algo de complejidad. Se suelen usar, por ejemplo, para catálogos de artículos.
+    \item Orientadas a grafos. Se centran en almacenar las relaciones y navegar por ellas. Como su nombre indica, se pueden ver como grafos en los que sus nodos son entidades de datos y las diferentes aristas que conectan nodos como las relaciones. Son bastante frecuentes en redes sociales y algunos sistemas de recomendaciones
+\end{itemize}
+
+Si la intención fuera meramente almacenar libros, es decir, solo registros independientes, una base de datos \textbf{orientada a documentos} sería la mejor opción. Al no existir relaciones entre diferentes entidades, estas bases de datos son mucho más rápidas a la hora de realizar consultas y tienen la complejidad justa y necesaria.
+
+Las \textbf{orientadas a grafos} son bastante llamativas para este caso, pues en parte \textit{My Many Reads} puede verse como una red social, y además ofrece recomendaciones. Sin embargo hay que tener en cuenta el panorama al completo de esta situación, pues no existe una solución perfecta para resolver cada problema. Mediante una base de datos orientada a grafos se puede construir fácilmente un sistema de recomendaciones que se base en lecturas de otros usuarios, lo cual es un tipo de solución que puede ser muy buena o muy mala.
+
+Para explicar esto, se puede estudiar el caso de una web de artículos muy conocida: Amazon. Al consultar un artículo concreto, existe un apartado con este tipo de recomendaciones tipo "Los clientes que vieron este producto también vieron" y, aunque muchas veces es de utilidad, otras veces muestra artículos totalmente irrelevantes sin relación alguna con el artículo consultado.
+
+Finalmente, y esta es la decisión tomada, quedan las \textbf{relacionales}. Quizás sea porque podrían categorizarse como un punto medio entre las orientadas a documentos, que se enfocan en las entidades, y las orientadas a grafos, que hacen énfasis en las relaciones. Entre los requisitos de \textit{My Many Reads} se encuentran los de ofrecer un catálogo de libros a consultar por los usuarios, sobre los cuales pueden crear sus propias colecciones, así como consultar recomendaciones, que pueden ser generadas por usuarios o por el sistema.
+
+Dada la necesidad de cumplir estos requisitos, en los que existe una importancia clara en almacenar de forma organizada una serie de entidades, y de ofrecer unas recomendaciones, se decidió optar por una base de datos relacional y dejar las recomendaciones como una característica independiente y desacoplada a la base de datos, ya que se detectaron dos posibles problemas que surgirían a raiz de usar una base de datos orientada a grafos: la posible imprecisión de las recomendaciones que ésta ofrecería y la incertidumbre de su funcionamiento con un nivel nulo o bajo de usuarios con el que todo sistema nuevo debe comenzar.
+
+Esto no quiere decir que una base de datos orientada a grafos quede descartada para siempre. Llegado el momento en el que la plataforma tenga un cierto nivel de usuarios, sería de gran interés volver a estudiar esta opción para integrarla al sistema de recomendaciones automáticas.
+
+Tras la elección de un modelo relacional para la base de datos, lo siguiente será escoger el entorno y sistema gestor de base de datos a emplear. A grosso modo, se pueden distinguir dos opciones:
+
+\begin{enumerate}
+    \item Instalar manualmente un SGBD en una máquina física o virtual. Por una parte tendría control completo sobre el entorno y la instalación, y por otra parte tendría que tener mi máquina siempre encendida y dedicada a eso en cuanto el proyecto pase a producción, y encargarme del mantenimiento.
+    \item Usar alguna plataforma online existente que se encargue de la gestión y mantenimiento.
+\end{enumerate}
+
+Antes de explorar estas opciones, hay que tener en cuenta que, por comodidad para el desarrollo, la segunda alternativa es mejor puesto que permite abstraernos totalmente de cualquier tipo de gestión o trabajo adicional.
+
+Hay dos factores a tener en cuenta que serán de utilidad a la hora de escoger una de estas opciones: los recursos a disposición y el tráfico esperado. Con poco tráfico, la segunda opción podría resultar más interesante, ya que se delega el mantenimiento y estos servicios online no suelen ser extremadamente caros con bajo tráfico.
+
+Si se disponen de los suficientes recursos, alguna de las dos primeras opciones podría ser más viable, ya que al gestionar y mantener tanto la máquina como el servicio se logra un control total tanto de hardware como de software lo que permite ajustar la cantidad exacta de recursos para lograr las prestaciones deseadas.
+
+Dado el estado del proyecto, la segunda opción es la más viable, puesto que existen multitud de servicios gratuitos que se encargan de la gestión, y serán más que suficientes en las primeras etapas del proyecto. Para llevar esta idea a cabo, vamos a recurrir a \href{https://bit.io/}{\textit{bit.io}}, que ofrece de forma gratuita hasta 3 bases de datos diferentes y 3gb de almacenamiento, poniendo a nuestra disposición acceso y consultas a través de Postgres, interfaz de usuario o API.
+
+Básicamente, esta plataforma permite fácilmente crear una base de datos PostgreSQL y pone a disposición de sus usuarios métodos de conexión muy sencillos de usar. Adicionalmente, la documentación y guía de uso ofrecida es muy clara, incluyendo tanto imágenes como vídeos que apoyan las explicaciones expuestas sobre cómo realizar las acciones que ofrece la plataforma.
