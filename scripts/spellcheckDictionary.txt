@@ -84,3 +84,6 @@ contextualizada
 gb
 io
 grosso
+JSON
+carritos
+categorizarse
