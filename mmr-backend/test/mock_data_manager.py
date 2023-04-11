@@ -12,7 +12,7 @@ data_path = os.path.join(current_dir, sample_data_path)
 
 
 class DataManager:
-    def __init__(self, address: str) -> None:
+    def __init__(self) -> None:
          # Set up fake data until real database is implemented
         books_data = open(data_path)
         self.fake_books = json.load(books_data)

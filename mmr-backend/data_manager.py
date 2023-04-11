@@ -11,8 +11,7 @@ from os import environ
 class DataManager:
     AGGREGATED_VALUE_SEPARATOR = ';'
 
-    def __init__(self, address: str) -> None:
-        self._address = address
+    def __init__(self) -> None:
         connection = psycopg2.connect(host=environ.get("HOST"),
                                       database=environ.get("DATABASE"),
                                       user=environ.get("USER"),
