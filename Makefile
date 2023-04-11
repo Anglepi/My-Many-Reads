@@ -7,6 +7,9 @@ spellcheck:
 test:
 	POETRY_DOTENV_LOCATION="$(shell pwd)/test.env" poetry run pytest
 
+test-nodb:
+	TEST="test" poetry run pytest
+
 coverage:
 	poetry run coverage run -m pytest
 	poetry run coverage report -m
