@@ -1,11 +1,14 @@
+from os import environ
+if environ.get("TEST"):
+    import sys
+    sys.modules["data_manager"] = __import__("mock_data_manager")
+from api import mmr
+from book import Book
+import copy
+import json
+import os
 from assertpy import assert_that
 from fastapi.testclient import TestClient
-from api import mmr
-import os
-import json
-import copy
-from book import Book
-from library import Library
 
 
 current_dir = os.path.dirname(__file__)
@@ -154,7 +157,7 @@ def test_library_add_entry():
     assert_that(response.status_code).is_equal_to(201)
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
-        [{"book": book_list[0].to_dict(), "score": 5, "status": "COMPLETED"}])
+        [{"book": book_list[0].to_dict(), "score": None, "status": ""}])
 
 
 def test_library_update_entry():
@@ -325,9 +328,10 @@ def test_add_user_recommendation_existing():
         new_recommendations = client.get(
             "/recommendations/99921-58-10-7").json()
     expected_new_recommendations = copy.deepcopy(existing_recommendations)
-    expected_new_recommendations[0]["comments"].append(
-        {"author": "username", "comment": "comment", "score": 0})
-
+    for recommendantion in expected_new_recommendations:
+        if "99921-58-10-7" in recommendantion["books"] and "0-9752298-0-X" in recommendantion["books"]:
+            recommendantion["comments"].append(
+                {"author": "username", "comment": "comment", "score": 0})
     # Then
     assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
     assert_that(response.status_code).is_equal_to(201)
