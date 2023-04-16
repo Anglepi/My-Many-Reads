@@ -1,19 +1,12 @@
-from typing import Iterable, Optional, Union
+from typing import Optional, Union
 from book import Book
 from data_manager import DataManager
 from library import Library
 from library_stats import LibraryStats
-from user_recommendation import UserRecommendation
-import os
-import json
 from fastapi import FastAPI, Response, status
 
-# For testing...
-current_dir = os.path.dirname(__file__)
-sample_data_path = "test/sample-data/books.json"
-data_path = os.path.join(current_dir, sample_data_path)
 
-data_manager: DataManager = DataManager(data_path)
+data_manager: DataManager = DataManager()
 
 mmr = FastAPI()
 
