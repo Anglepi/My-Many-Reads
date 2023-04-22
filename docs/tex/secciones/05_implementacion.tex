@@ -417,9 +417,9 @@ Ya sabiendo esto, el primer paso será definir las diferentes clases que represe
 Dadas las tres entidades mencionadas anteriormente, y como ya se ha indicado, el siguiente paso es crear un conjunto de clases que sirvan para representar estas entidades:
 
 \begin{itemize}
-    \item \textit{Book}. Solamente contiene la información que representa un libro.
-    \item \textit{Library}. Se emplea para representar las bibliotecas, y contiene también funcionalidades para editar su información correctamente.
-    \item \textit{UserRecommendation}. Representa las recomendaciones entre dos libros creadas por usuarios. Como cada pareja de libros puede ser representada por diferentes usuarios, también se encarga de representar los diferentes comentarios escritos por los usuarios para justificar la recomendación entre ambos libros.
+    \item \textit{Book}: solamente contiene la información que representa un libro.
+    \item \textit{Library}: se emplea para representar las bibliotecas, y contiene también funcionalidades para editar su información correctamente.
+    \item \textit{UserRecommendation}: representa las recomendaciones entre dos libros creadas por usuarios. Como cada pareja de libros puede ser representada por diferentes usuarios, también se encarga de representar los diferentes comentarios escritos por los usuarios para justificar la recomendación entre ambos libros.
 \end{itemize}
 
 En el caso de los libros, la información es inmutable, pues nunca debería cambiar por ejemplo el ISBN o título de un libro. Si ocurre un cambio significativo por ejemplo en su sinopsis, lo normal es que esto se deba a una nueva edición del libro, por lo que se estaría refiriendo a una entidad totalmente nueva.
@@ -437,10 +437,10 @@ Toda la funcionalidad que ofrece este módulo resulta de especial interés, por 
 En base a las necesidades del proyecto hay que decidir que tipo de base de datos resulta de mayor interés. En cuanto al tipo de base de datos, existen bastantes que destacan en función del tipo de uso que se le vaya a dar: relacionales, clave-valor, orientadas a documentos, a grafos... Cada una de estas posee unas características que las hacen más adecuadas.
 
 \begin{itemize}
-    \item Relacionales. En éstas, la información se representa en forma de tablas con diferentes columnas y filas, permitiendo relacionar diferentes tablas entre sí a través de sus campos identificadores.
-    \item Clave-valor. A través de una clave única se almacena la información necesaria. Cada clave almacena un valor, cuyo esquema o estructura de atributos no tiene por qué coincidir con el del resto de valores almacenados en otras claves. Se suelen usar, por ejemplo, en carritos de compra o para almacenar las sesiones de los usuarios.
-    \item Orientadas a documentos. Almacena un conjunto de documentos de tipo JSON. Permite crear diferentes colecciones de documentos y predefinir un esquema con algo de flexibilidad para éstas. Este tipo de base de datos surge a raíz de las clave-valor, a las que se le añade algo de complejidad. Se suelen usar, por ejemplo, para catálogos de artículos.
-    \item Orientadas a grafos. Se centran en almacenar las relaciones y navegar por ellas. Como su nombre indica, se pueden ver como grafos en los que sus nodos son entidades de datos y las diferentes aristas que conectan nodos como las relaciones. Son bastante frecuentes en redes sociales y algunos sistemas de recomendaciones
+    \item Relacionales: en éstas, la información se representa en forma de tablas con diferentes columnas y filas, permitiendo relacionar diferentes tablas entre sí a través de sus campos identificadores.
+    \item Clave-valor: a través de una clave única se almacena la información necesaria. Cada clave almacena un valor, cuyo esquema o estructura de atributos no tiene por qué coincidir con el del resto de valores almacenados en otras claves. Se suelen usar, por ejemplo, en carritos de compra o para almacenar las sesiones de los usuarios.
+    \item Orientadas a documentos: almacena un conjunto de documentos de tipo JSON. Permite crear diferentes colecciones de documentos y predefinir un esquema con algo de flexibilidad para éstas. Este tipo de base de datos surge a raíz de las clave-valor, a las que se le añade algo de complejidad. Se suelen usar, por ejemplo, para catálogos de artículos.
+    \item Orientadas a grafos: se centran en almacenar las relaciones y navegar por ellas. Como su nombre indica, se pueden ver como grafos en los que sus nodos son entidades de datos y las diferentes aristas que conectan nodos como las relaciones. Son bastante frecuentes en redes sociales y algunos sistemas de recomendaciones
 \end{itemize}
 
 Si la intención fuera meramente almacenar libros, es decir, solo registros independientes, una base de datos \textbf{orientada a documentos} sería la mejor opción. Al no existir relaciones entre diferentes entidades, estas bases de datos son mucho más rápidas a la hora de realizar consultas y tienen la complejidad justa y necesaria.
