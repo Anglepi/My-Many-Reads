@@ -78,3 +78,12 @@ URIs
 pmv
 elif
 middleware
+Postgres
+SGBD
+contextualizada
+gb
+io
+grosso
+JSON
+carritos
+categorizarse

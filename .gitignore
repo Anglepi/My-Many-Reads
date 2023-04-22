@@ -25,3 +25,6 @@ Spellchecker.results
 
 # Tests and coverage outputs
 .coverage
+
+# Secrets
+*.env

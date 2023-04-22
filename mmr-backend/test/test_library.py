@@ -88,7 +88,7 @@ def test_remove_entry():
         book_list[0].to_dict())+', "score": 7, "status": "PLAN TO READ"}]}'
 
     # When
-    library.remove_entry(book_list[1].ISBN)
+    library.remove_entry(book_list[1].isbn)
 
     # Then
     assert_that(json.dumps(library.to_dict())).is_equal_to(expected_library)
@@ -107,7 +107,7 @@ def test_update_entry():
         book_list[1].to_dict())+', "score": 0, "status": "ON HOLD"}]}'
 
     # When
-    library.update_entry(book_list[0].ISBN, Library.Entry(
+    library.update_entry(book_list[0].isbn, Library.Entry(
         book_list[1], 0, "ON HOLD"))
 
     # Then

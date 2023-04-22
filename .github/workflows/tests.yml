@@ -33,4 +33,4 @@ jobs:
         run: poetry install
 
       - name: Execute tests target
-        run: make test
+        run: make test-nodb

@@ -6,7 +6,7 @@ import re
 
 @dataclass(frozen=True)
 class Book:
-    ISBN: str
+    isbn: str
     title: str
     synopsis: str
     authors: list[str]
@@ -21,7 +21,7 @@ class Book:
 
     @staticmethod
     def from_dict(book: dict) -> Book:
-        Book.validate_isbn(book["ISBN"])
+        Book.validate_isbn(book["isbn"])
         return Book(**book)
 
     @staticmethod

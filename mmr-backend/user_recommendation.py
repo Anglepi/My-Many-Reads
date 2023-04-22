@@ -8,10 +8,10 @@ class UserRecommendation:
         self.__comments = [user_comment]
 
     class UserComment:
-        def __init__(self, user: str, comment: str):
+        def __init__(self, user: str, comment: str, score: int = 0):
             self.__author = user
             self.__comment = comment
-            self.__score = 0
+            self.__score = score
 
         def get_author(self) -> str:
             return self.__author
