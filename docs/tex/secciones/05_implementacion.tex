@@ -428,7 +428,7 @@ Por tanto, para los libros, se ha empleado un módulo que facilita el almacenami
 
 Una \textit{dataclass}, o clase de datos, genera automáticamente ciertas funciones como el constructor, el comparador de igualdad y la representación de la instancia. Con esto, el programador ahorra bastante código que escribir, sin embargo este no es el motivo principal por el que, en este proyecto, se importa el módulo.
 
-Otra de las características que ofrece consiste en un conjunto de parámetros que se pueden indicar junto al \textit{decorator} que se emplea para generar una \textit{dataclass}. En concreto, \textit{frozen} permite asegurar que una clase sea inmutable, controlando que el valor otorgado a sus atributos tras crear el objeto no varía.
+Otra de las características que ofrece consiste en un conjunto de parámetros que se pueden indicar junto al \textit{decorator} que se emplea para generar una \textit{dataclass}. En concreto, \textit{frozen} permite asegurar que las instancias de una clase sean inmutables, controlando que el valor otorgado a sus atributos tras crear el objeto no varía.
 
 Toda la funcionalidad que ofrece este módulo resulta de especial interés, por ejemplo, para la representación de la clase \textit{Book}, ya que sus atributos nunca deben cambiar.
 
