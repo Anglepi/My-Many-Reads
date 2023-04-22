@@ -11,8 +11,7 @@ from os import environ
 class DataManager:
     AGGREGATED_VALUE_SEPARATOR = ';'
 
-    def __init__(self, address: str) -> None:
-        self._address = address
+    def __init__(self) -> None:
         connection = psycopg2.connect(host=environ.get("HOST"),
                                       database=environ.get("DATABASE"),
                                       user=environ.get("USER"),
@@ -140,8 +139,8 @@ class DataManager:
                           "b.isbn = %s and l.owner = %s and l.name = %s", (isbn, user, library_name))
 
     def add_library_entry(self, user: str, library_name: str, isbn: str) -> bool:
-        self._cur.execute("insert into library_entries(library_id, book_id, score, reading_status) " +
-                          "select l.id, b.id, '5', 'COMPLETED' from libraries l, books b " +
+        self._cur.execute("insert into library_entries(library_id, book_id) " +
+                          "select l.id, b.id from libraries l, books b " +
                           "where l.owner = %s AND l.name = %s AND b.isbn = %s " +
                           "returning id", (user, library_name, isbn))
         success = self._cur.fetchone()
