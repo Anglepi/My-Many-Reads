@@ -12,12 +12,12 @@ class DataManager:
     AGGREGATED_VALUE_SEPARATOR = ';'
 
     def __init__(self) -> None:
-        connection = psycopg2.connect(host=environ.get("HOST"),
-                                      database=environ.get("DATABASE"),
-                                      user=environ.get("USER"),
-                                      password=environ.get("PASSWORD"),
-                                      port=environ.get("PORT"))
-        self._cur = connection.cursor(
+        self._connection = psycopg2.connect(host=environ.get("HOST"),
+                                            database=environ.get("DATABASE"),
+                                            user=environ.get("USER"),
+                                            password=environ.get("PASSWORD"),
+                                            port=environ.get("PORT"))
+        self._cur = self._connection.cursor(
             cursor_factory=psycopg2.extras.RealDictCursor)
 
     # BOOKS
@@ -130,9 +130,17 @@ class DataManager:
         self._cur.execute(
             "update libraries set name = %s where owner = %s and name = %s", (new_name, user, library_name))
 
-    def create_library(self, user: str, library_name: str) -> None:
-        self._cur.execute(
-            "insert into libraries (owner, name) values (%s, %s)", (user, library_name))
+    def create_library(self, user: str, library_name: str) -> bool:
+        try:
+            self._cur.execute(
+                "insert into libraries (owner, name) values (%s, %s)", (user, library_name))
+        except psycopg2.IntegrityError:
+            self._connection.rollback()
+            return False
+        else:
+            self._connection.commit()
+
+        return True
 
     def remove_library_entry(self, user: str, library_name: str, isbn: str) -> None:
         self._cur.execute("delete from library_entries le using libraries l, books b " +

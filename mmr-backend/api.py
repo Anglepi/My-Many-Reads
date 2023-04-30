@@ -56,9 +56,12 @@ async def update_library_name(user: str, library_name: str, new_name: str) -> No
 
 @mmr.post("/libraries/{user}/{library_name}")
 async def create_library(user: str, library_name: str, response: Response) -> None:
-    data_manager.create_library(user, library_name)
-    response.status_code = status.HTTP_201_CREATED
-    response.headers["location"] = "/libraries/"+user+"/"+library_name
+    success = data_manager.create_library(user, library_name)
+    if success:
+        response.status_code = status.HTTP_201_CREATED
+        response.headers["location"] = "/libraries/"+user+"/"+library_name
+    else:
+        response.status_code = status.HTTP_409_CONFLICT
 
 
 @mmr.post("/libraries/{user}/{library_name}/{isbn}")

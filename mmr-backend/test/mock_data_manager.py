@@ -13,7 +13,7 @@ data_path = os.path.join(current_dir, sample_data_path)
 
 class DataManager:
     def __init__(self) -> None:
-         # Set up fake data until real database is implemented
+        # Set up fake data until real database is implemented
         books_data = open(data_path)
         self.fake_books = json.load(books_data)
         books_data.close()
@@ -63,9 +63,13 @@ class DataManager:
         if library:
             library.set_name(new_name)
 
-    def create_library(self, user: str, library_name: str) -> None:
+    def create_library(self, user: str, library_name: str) -> bool:
         # To be replaced by an actual query
+        for library in self.fake_libraries:
+            if library.get_owner() == user and library.get_name() == library_name:
+                return False
         self.fake_libraries.append(Library(user, library_name, list()))
+        return True
 
     def remove_library_entry(self, user: str, library_name: str, isbn: str) -> None:
         # To be replaced by an actual query

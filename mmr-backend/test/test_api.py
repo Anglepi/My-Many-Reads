@@ -107,6 +107,16 @@ def test_create_library():
         [{"owner": "userTest", "name": "libraryTest", "entries": []}])
 
 
+def test_no_duplicated_libraries_for_an_user():
+    # Given - When
+    with TestClient(mmr) as client:
+        libraries = client.get("/libraries/userTest").json()
+        response = client.post("/libraries/userTest/"+libraries[0]["name"])
+
+    # Then
+    assert_that(response.status_code).is_equal_to(409)
+
+
 def test_update_library():
     # Given - When
     with TestClient(mmr) as client:
