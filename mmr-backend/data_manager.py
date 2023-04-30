@@ -160,7 +160,8 @@ class DataManager:
                           "left join books b1 on ur.book1_id = b1.id " +
                           "left join books b2 on ur.book2_id = b2.id " +
                           "left join user_recommendation_comments urc on ur.id = urc.recommendation_id " +
-                          "where b1.isbn = %s or b2.isbn = %s", (isbn, isbn))
+                          "where b1.isbn = %s or b2.isbn = %s " +
+                          "order by urc.score desc, urc.author asc, urc.comment asc", (isbn, isbn))
 
         result = self._cur.fetchall()
         recommendations: dict[int, UserRecommendation] = {}
