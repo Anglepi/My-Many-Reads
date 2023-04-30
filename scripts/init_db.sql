@@ -11,7 +11,7 @@ CREATE TABLE books (
 CREATE TABLE authors (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    birth_date TEXT NOT NULL
+    birth_date DATE NOT NULL
 );
 
 CREATE TABLE genres (
