@@ -214,20 +214,25 @@ class DataManager:
 
         return result["id"] if result else None
 
-    def create_user_recommendation(self, isbn1: str, isbn2: str, user: str, comment: str) -> bool:
+    def create_user_recommendation(self, isbn1: str, isbn2: str, user: str, comment: str) -> int:
         recommendationPairId: Optional[int] = self.__getOrCreateRecommendationsPair(
             isbn1, isbn2)
 
         if not recommendationPairId:
-            return False
+            return 404
 
-        self._cur.execute("insert into user_recommendation_comments (recommendation_id, author, comment) " +
-                          "values " +
-                          "(%s, %s, %s) " +
-                          "returning id", (recommendationPairId, user, comment))
-        self._connection.commit()
+        try:
+            self._cur.execute("insert into user_recommendation_comments (recommendation_id, author, comment) " +
+                              "values " +
+                              "(%s, %s, %s) " +
+                              "returning id", (recommendationPairId, user, comment))
+        except psycopg2.IntegrityError:
+            self._connection.rollback()
+            return 409
+        else:
+            self._connection.commit()
         result = self._cur.fetchone()
-        return True if result else False
+        return 201 if result else 404
 
     def vote_user_recommendation(self, isbn1: str, isbn2: str, user: str) -> bool:
         self._cur.execute("update user_recommendation_comments urc " +

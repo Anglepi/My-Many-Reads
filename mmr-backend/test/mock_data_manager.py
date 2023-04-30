@@ -107,18 +107,21 @@ class DataManager:
         book1: Optional[Book] = self.get_book(isbn1)
         book2: Optional[Book] = self.get_book(isbn2)
         if not (book1 and book2):
-            return False
+            return 404
 
         recommendations: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
             isbn1) and recommendation.has_book(isbn2), self.fake_recommendations))
 
         if len(recommendations):
+            for recommendation in recommendations:
+                if len(recommendation.get_author_comments(user)) > 0:
+                    return 409
             recommendations[0].add_comment(
                 UserRecommendation.UserComment(user, comment))
         else:
             self.fake_recommendations.append(UserRecommendation(
                 (isbn1, isbn2), UserRecommendation.UserComment(user, comment)))
-        return True
+        return 201
 
     def vote_user_recommendation(self, isbn1: str, isbn2: str, user: str) -> bool:
         book1: Optional[Book] = self.get_book(isbn1)

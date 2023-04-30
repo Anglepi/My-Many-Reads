@@ -126,11 +126,16 @@ async def add_user_recommendation(isbn1: str, isbn2: str, user: str, comment: st
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"error": "Can't recommend a book with itself"}
 
-    if not data_manager.create_user_recommendation(isbn1, isbn2, user, comment):
+    result: int = data_manager.create_user_recommendation(
+        isbn1, isbn2, user, comment)
+
+    if result == 404:
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"error": "Can't find some of the indicated books"}
-
-    response.status_code = status.HTTP_201_CREATED
-    response.headers["location"] = "/recommendations/" + \
-        "/".join((isbn1, isbn2, user))
+    elif result == 409:
+        response.status_code = status.HTTP_409_CONFLICT
+    else:
+        response.status_code = status.HTTP_201_CREATED
+        response.headers["location"] = "/recommendations/" + \
+            "/".join((isbn1, isbn2, user))
     return None

@@ -359,6 +359,15 @@ def test_add_user_recommendation_existing():
     assert_that(new_recommendations).is_equal_to(expected_new_recommendations)
 
 
+def test_add_user_recommendation_one_comment_per_user():
+    # Given - When
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/recommendations/99921-58-10-7/0-9752298-0-X/username/comment")
+    # Then
+    assert_that(response.status_code).is_equal_to(409)
+
+
 def test_recommendations_from_library():
     # Given
     expected_recommendaitons = [
