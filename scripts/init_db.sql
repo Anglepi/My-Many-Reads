@@ -4,7 +4,7 @@ CREATE TABLE books (
     title TEXT NOT NULL,
     synopsis TEXT NOT NULL,
     publisher TEXT NOT NULL,
-    publishing_date TEXT NOT NULL,
+    publishing_date DATE NOT NULL,
     edition TEXT NOT NULL
 );
 
