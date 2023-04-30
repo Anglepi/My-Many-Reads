@@ -11,30 +11,36 @@ CREATE TABLE books (
 CREATE TABLE authors (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    birth_date DATE NOT NULL
+    birth_date DATE NOT NULL,
+    UNIQUE(name, birth_date)
 );
 
 CREATE TABLE genres (
     id SERIAL PRIMARY KEY,
-    genre TEXT NOT NULL
+    genre TEXT NOT NULL,
+    UNIQUE(genre)
 );
 
 CREATE TABLE authored (
     id SERIAL PRIMARY KEY,
     book_id INTEGER REFERENCES books (id),
-    author_id INTEGER REFERENCES authors (id)
+    author_id INTEGER REFERENCES authors (id),
+    UNIQUE(book_id, author_id)
 );
 
 CREATE TABLE book_genres (
     id SERIAL PRIMARY KEY,
     book_id INTEGER REFERENCES books (id),
-    genre_id INTEGER REFERENCES genres (id)
+    genre_id INTEGER REFERENCES genres (id),
+    UNIQUE(book_id, genre_id)
+
 );
 
 CREATE TABLE libraries (
     id SERIAL PRIMARY KEY,
     owner TEXT NOT NULL,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    UNIQUE(owner, name)
 );
 
 CREATE TYPE ReadingStatus AS ENUM ('PLAN_TO_READ', 'CURRENTLY_READING', 'COMPLETED', 'DROPPED', 'ON_HOLD', '');
@@ -44,14 +50,16 @@ CREATE TABLE library_entries (
     library_id INTEGER REFERENCES libraries (id) ON DELETE CASCADE,
     book_id INTEGER REFERENCES books (id),
     score INTEGER,
-    reading_status ReadingStatus NOT NULL DEFAULT ''
+    reading_status ReadingStatus NOT NULL DEFAULT '',
+    UNIQUE(library_id, book_id)
 );
 
 CREATE TABLE user_recommendations (
     id SERIAL PRIMARY KEY,
     book1_id INTEGER REFERENCES books (id),
     book2_id INTEGER REFERENCES books (id),
-    CHECK (book1_id <> book2_id)
+    CHECK (book1_id <> book2_id),
+    UNIQUE(book1_id, book2_id)
 );
 
 CREATE TABLE user_recommendation_comments (
@@ -59,7 +67,8 @@ CREATE TABLE user_recommendation_comments (
     recommendation_id INTEGER REFERENCES user_recommendations (id),
     author TEXT NOT NULL,
     comment TEXT NOT NULL,
-    score INTEGER NOT NULL DEFAULT 0
+    score INTEGER NOT NULL DEFAULT 0,
+    UNIQUE(recommendation_id, author)
 );
 
 insert into genres(genre) values ('Action'), --1
