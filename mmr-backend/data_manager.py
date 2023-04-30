@@ -12,12 +12,12 @@ class DataManager:
     AGGREGATED_VALUE_SEPARATOR = ';'
 
     def __init__(self) -> None:
-        connection = psycopg2.connect(host=environ.get("HOST"),
-                                      database=environ.get("DATABASE"),
-                                      user=environ.get("USER"),
-                                      password=environ.get("PASSWORD"),
-                                      port=environ.get("PORT"))
-        self._cur = connection.cursor(
+        self._connection = psycopg2.connect(host=environ.get("HOST"),
+                                            database=environ.get("DATABASE"),
+                                            user=environ.get("USER"),
+                                            password=environ.get("PASSWORD"),
+                                            port=environ.get("PORT"))
+        self._cur = self._connection.cursor(
             cursor_factory=psycopg2.extras.RealDictCursor)
 
     # BOOKS
@@ -125,33 +125,49 @@ class DataManager:
     def delete_library(self, user: str, library_name: str) -> None:
         self._cur.execute(
             "delete from libraries where owner = %s and name = %s", (user, library_name))
+        self._connection.commit()
 
     def rename_library(self, user: str, library_name: str, new_name: str) -> None:
         self._cur.execute(
             "update libraries set name = %s where owner = %s and name = %s", (new_name, user, library_name))
+        self._connection.commit()
 
-    def create_library(self, user: str, library_name: str) -> None:
-        self._cur.execute(
-            "insert into libraries (owner, name) values (%s, %s)", (user, library_name))
+    def create_library(self, user: str, library_name: str) -> bool:
+        try:
+            self._cur.execute(
+                "insert into libraries (owner, name) values (%s, %s)", (user, library_name))
+        except psycopg2.IntegrityError:
+            self._connection.rollback()
+            return False
+        else:
+            self._connection.commit()
+
+        return True
 
     def remove_library_entry(self, user: str, library_name: str, isbn: str) -> None:
         self._cur.execute("delete from library_entries le using libraries l, books b " +
                           "where le.library_id = l.id and b.id = le.book_id and " +
                           "b.isbn = %s and l.owner = %s and l.name = %s", (isbn, user, library_name))
+        self._connection.commit()
 
     def add_library_entry(self, user: str, library_name: str, isbn: str) -> bool:
-        self._cur.execute("insert into library_entries(library_id, book_id) " +
-                          "select l.id, b.id from libraries l, books b " +
-                          "where l.owner = %s AND l.name = %s AND b.isbn = %s " +
-                          "returning id", (user, library_name, isbn))
-        success = self._cur.fetchone()
-        return True if success else False
+        try:
+            self._cur.execute("insert into library_entries(library_id, book_id) " +
+                              "select l.id, b.id from libraries l, books b " +
+                              "where l.owner = %s AND l.name = %s AND b.isbn = %s", (user, library_name, isbn))
+        except psycopg2.IntegrityError:
+            self._connection.rollback()
+            return False
+        else:
+            self._connection.commit()
+        return True
 
     def update_library_entry(self, user: str, library_name: str, isbn: str, score: int, status: Library.ReadingStatus) -> None:
         self._cur.execute("update library_entries le set book_id = b.id, score=%s, reading_status=%s " +
                           "from books b, libraries l " +
                           "where l.owner = %s AND l.name = %s AND b.isbn = %s " +
                           "AND le.library_id = l.id AND le.book_id = b.id", (score, status.value, user, library_name, isbn))
+        self._connection.commit()
 
     # RECOMMENDATIONS
 
@@ -198,19 +214,25 @@ class DataManager:
 
         return result["id"] if result else None
 
-    def create_user_recommendation(self, isbn1: str, isbn2: str, user: str, comment: str) -> bool:
+    def create_user_recommendation(self, isbn1: str, isbn2: str, user: str, comment: str) -> int:
         recommendationPairId: Optional[int] = self.__getOrCreateRecommendationsPair(
             isbn1, isbn2)
 
         if not recommendationPairId:
-            return False
+            return 404
 
-        self._cur.execute("insert into user_recommendation_comments (recommendation_id, author, comment) " +
-                          "values " +
-                          "(%s, %s, %s) " +
-                          "returning id", (recommendationPairId, user, comment))
+        try:
+            self._cur.execute("insert into user_recommendation_comments (recommendation_id, author, comment) " +
+                              "values " +
+                              "(%s, %s, %s) " +
+                              "returning id", (recommendationPairId, user, comment))
+        except psycopg2.IntegrityError:
+            self._connection.rollback()
+            return 409
+        else:
+            self._connection.commit()
         result = self._cur.fetchone()
-        return True if result else False
+        return 201 if result else 404
 
     def vote_user_recommendation(self, isbn1: str, isbn2: str, user: str) -> bool:
         self._cur.execute("update user_recommendation_comments urc " +
@@ -221,5 +243,6 @@ class DataManager:
                           "on (ur.book1_id = b1.id and ur.book2_id = b2.id) or (ur.book1_id = b2.id and ur.book2_id = b1.id) " +
                           "where ur.id = urc.recommendation_id and urc.author = %s " +
                           "returning urc.id", (isbn1, isbn2, user))
+        self._connection.commit()
         result = self._cur.fetchone()
         return True if result else False

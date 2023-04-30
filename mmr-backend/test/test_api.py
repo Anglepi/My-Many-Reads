@@ -107,6 +107,16 @@ def test_create_library():
         [{"owner": "userTest", "name": "libraryTest", "entries": []}])
 
 
+def test_no_duplicated_libraries_for_an_user():
+    # Given - When
+    with TestClient(mmr) as client:
+        libraries = client.get("/libraries/userTest").json()
+        response = client.post("/libraries/userTest/"+libraries[0]["name"])
+
+    # Then
+    assert_that(response.status_code).is_equal_to(409)
+
+
 def test_update_library():
     # Given - When
     with TestClient(mmr) as client:
@@ -158,6 +168,15 @@ def test_library_add_entry():
     assert_that(library).is_not_equal_to(updated_library)
     assert_that(updated_library["entries"]).is_equal_to(
         [{"book": book_list[0].to_dict(), "score": None, "status": ""}])
+
+
+def test_library_no_duplicated_entries():
+    # Given - When
+    with TestClient(mmr) as client:
+        response = client.post("/libraries/user1/myLibrary/99921-58-10-7")
+
+    # Then
+    assert_that(response.status_code).is_equal_to(409)
 
 
 def test_library_update_entry():
@@ -338,6 +357,15 @@ def test_add_user_recommendation_existing():
     assert_that(response.headers["location"]).is_equal_to(
         "/recommendations/99921-58-10-7/0-9752298-0-X/username")
     assert_that(new_recommendations).is_equal_to(expected_new_recommendations)
+
+
+def test_add_user_recommendation_one_comment_per_user():
+    # Given - When
+    with TestClient(mmr) as client:
+        response = client.post(
+            "/recommendations/99921-58-10-7/0-9752298-0-X/username/comment")
+    # Then
+    assert_that(response.status_code).is_equal_to(409)
 
 
 def test_recommendations_from_library():

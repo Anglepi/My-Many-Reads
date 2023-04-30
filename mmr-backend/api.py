@@ -56,9 +56,12 @@ async def update_library_name(user: str, library_name: str, new_name: str) -> No
 
 @mmr.post("/libraries/{user}/{library_name}")
 async def create_library(user: str, library_name: str, response: Response) -> None:
-    data_manager.create_library(user, library_name)
-    response.status_code = status.HTTP_201_CREATED
-    response.headers["location"] = "/libraries/"+user+"/"+library_name
+    success = data_manager.create_library(user, library_name)
+    if success:
+        response.status_code = status.HTTP_201_CREATED
+        response.headers["location"] = "/libraries/"+user+"/"+library_name
+    else:
+        response.status_code = status.HTTP_409_CONFLICT
 
 
 @mmr.post("/libraries/{user}/{library_name}/{isbn}")
@@ -66,6 +69,8 @@ async def add_library_entry(user: str, library_name: str, isbn: str, response: R
     success: bool = data_manager.add_library_entry(user, library_name, isbn)
     if success:
         response.status_code = status.HTTP_201_CREATED
+    else:
+        response.status_code = status.HTTP_409_CONFLICT
 
 
 @mmr.delete("/libraries/{user}/{library_name}/{isbn}")
@@ -121,11 +126,16 @@ async def add_user_recommendation(isbn1: str, isbn2: str, user: str, comment: st
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"error": "Can't recommend a book with itself"}
 
-    if not data_manager.create_user_recommendation(isbn1, isbn2, user, comment):
+    result: int = data_manager.create_user_recommendation(
+        isbn1, isbn2, user, comment)
+
+    if result == 404:
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"error": "Can't find some of the indicated books"}
-
-    response.status_code = status.HTTP_201_CREATED
-    response.headers["location"] = "/recommendations/" + \
-        "/".join((isbn1, isbn2, user))
+    elif result == 409:
+        response.status_code = status.HTTP_409_CONFLICT
+    else:
+        response.status_code = status.HTTP_201_CREATED
+        response.headers["location"] = "/recommendations/" + \
+            "/".join((isbn1, isbn2, user))
     return None

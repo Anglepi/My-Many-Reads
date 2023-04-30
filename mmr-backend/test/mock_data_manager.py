@@ -13,7 +13,7 @@ data_path = os.path.join(current_dir, sample_data_path)
 
 class DataManager:
     def __init__(self) -> None:
-         # Set up fake data until real database is implemented
+        # Set up fake data until real database is implemented
         books_data = open(data_path)
         self.fake_books = json.load(books_data)
         books_data.close()
@@ -63,9 +63,13 @@ class DataManager:
         if library:
             library.set_name(new_name)
 
-    def create_library(self, user: str, library_name: str) -> None:
+    def create_library(self, user: str, library_name: str) -> bool:
         # To be replaced by an actual query
+        for library in self.fake_libraries:
+            if library.get_owner() == user and library.get_name() == library_name:
+                return False
         self.fake_libraries.append(Library(user, library_name, list()))
+        return True
 
     def remove_library_entry(self, user: str, library_name: str, isbn: str) -> None:
         # To be replaced by an actual query
@@ -78,6 +82,9 @@ class DataManager:
         book: Optional[Book] = self.get_book(isbn)
         library: Optional[Library] = self.get_library(user, library_name)
         if book and library:
+            for entry in library.get_entries():
+                if entry.get_book_id() == isbn:
+                    return False
             library.add_entry(Library.Entry(book, None, ""))
         return bool(book and library)
 
@@ -100,18 +107,21 @@ class DataManager:
         book1: Optional[Book] = self.get_book(isbn1)
         book2: Optional[Book] = self.get_book(isbn2)
         if not (book1 and book2):
-            return False
+            return 404
 
         recommendations: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
             isbn1) and recommendation.has_book(isbn2), self.fake_recommendations))
 
         if len(recommendations):
+            for recommendation in recommendations:
+                if len(recommendation.get_author_comments(user)) > 0:
+                    return 409
             recommendations[0].add_comment(
                 UserRecommendation.UserComment(user, comment))
         else:
             self.fake_recommendations.append(UserRecommendation(
                 (isbn1, isbn2), UserRecommendation.UserComment(user, comment)))
-        return True
+        return 201
 
     def vote_user_recommendation(self, isbn1: str, isbn2: str, user: str) -> bool:
         book1: Optional[Book] = self.get_book(isbn1)
