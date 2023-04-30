@@ -31,7 +31,8 @@ class DataManager:
             "left join authors a on ad.author_id = a.id " +
             "left join book_genres bg on b.id = bg.book_id " +
             "left join genres g on g.id = bg.genre_id " +
-            "group by b.id;", (DataManager.AGGREGATED_VALUE_SEPARATOR, DataManager.AGGREGATED_VALUE_SEPARATOR))
+            "group by b.id " +
+            "order by b.title", (DataManager.AGGREGATED_VALUE_SEPARATOR, DataManager.AGGREGATED_VALUE_SEPARATOR))
         result = self._cur.fetchall()
         for tuple in result:
             tuple["authors"] = tuple["authors"].split(
