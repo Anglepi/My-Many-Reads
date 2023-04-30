@@ -82,6 +82,9 @@ class DataManager:
         book: Optional[Book] = self.get_book(isbn)
         library: Optional[Library] = self.get_library(user, library_name)
         if book and library:
+            for entry in library.get_entries():
+                if entry.get_book_id() == isbn:
+                    return False
             library.add_entry(Library.Entry(book, None, ""))
         return bool(book and library)
 

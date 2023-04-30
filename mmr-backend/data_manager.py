@@ -151,13 +151,16 @@ class DataManager:
         self._connection.commit()
 
     def add_library_entry(self, user: str, library_name: str, isbn: str) -> bool:
-        self._cur.execute("insert into library_entries(library_id, book_id) " +
-                          "select l.id, b.id from libraries l, books b " +
-                          "where l.owner = %s AND l.name = %s AND b.isbn = %s " +
-                          "returning id", (user, library_name, isbn))
-        self._connection.commit()
-        success = self._cur.fetchone()
-        return True if success else False
+        try:
+            self._cur.execute("insert into library_entries(library_id, book_id) " +
+                              "select l.id, b.id from libraries l, books b " +
+                              "where l.owner = %s AND l.name = %s AND b.isbn = %s", (user, library_name, isbn))
+        except psycopg2.IntegrityError:
+            self._connection.rollback()
+            return False
+        else:
+            self._connection.commit()
+        return True
 
     def update_library_entry(self, user: str, library_name: str, isbn: str, score: int, status: Library.ReadingStatus) -> None:
         self._cur.execute("update library_entries le set book_id = b.id, score=%s, reading_status=%s " +

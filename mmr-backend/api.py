@@ -69,6 +69,8 @@ async def add_library_entry(user: str, library_name: str, isbn: str, response: R
     success: bool = data_manager.add_library_entry(user, library_name, isbn)
     if success:
         response.status_code = status.HTTP_201_CREATED
+    else:
+        response.status_code = status.HTTP_409_CONFLICT
 
 
 @mmr.delete("/libraries/{user}/{library_name}/{isbn}")

@@ -170,6 +170,15 @@ def test_library_add_entry():
         [{"book": book_list[0].to_dict(), "score": None, "status": ""}])
 
 
+def test_library_no_duplicated_entries():
+    # Given - When
+    with TestClient(mmr) as client:
+        response = client.post("/libraries/user1/myLibrary/99921-58-10-7")
+
+    # Then
+    assert_that(response.status_code).is_equal_to(409)
+
+
 def test_library_update_entry():
     # Given - When
     with TestClient(mmr) as client:
