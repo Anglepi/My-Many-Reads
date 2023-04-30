@@ -125,10 +125,12 @@ class DataManager:
     def delete_library(self, user: str, library_name: str) -> None:
         self._cur.execute(
             "delete from libraries where owner = %s and name = %s", (user, library_name))
+        self._connection.commit()
 
     def rename_library(self, user: str, library_name: str, new_name: str) -> None:
         self._cur.execute(
             "update libraries set name = %s where owner = %s and name = %s", (new_name, user, library_name))
+        self._connection.commit()
 
     def create_library(self, user: str, library_name: str) -> bool:
         try:
@@ -146,12 +148,14 @@ class DataManager:
         self._cur.execute("delete from library_entries le using libraries l, books b " +
                           "where le.library_id = l.id and b.id = le.book_id and " +
                           "b.isbn = %s and l.owner = %s and l.name = %s", (isbn, user, library_name))
+        self._connection.commit()
 
     def add_library_entry(self, user: str, library_name: str, isbn: str) -> bool:
         self._cur.execute("insert into library_entries(library_id, book_id) " +
                           "select l.id, b.id from libraries l, books b " +
                           "where l.owner = %s AND l.name = %s AND b.isbn = %s " +
                           "returning id", (user, library_name, isbn))
+        self._connection.commit()
         success = self._cur.fetchone()
         return True if success else False
 
@@ -160,6 +164,7 @@ class DataManager:
                           "from books b, libraries l " +
                           "where l.owner = %s AND l.name = %s AND b.isbn = %s " +
                           "AND le.library_id = l.id AND le.book_id = b.id", (score, status.value, user, library_name, isbn))
+        self._connection.commit()
 
     # RECOMMENDATIONS
 
@@ -217,6 +222,7 @@ class DataManager:
                           "values " +
                           "(%s, %s, %s) " +
                           "returning id", (recommendationPairId, user, comment))
+        self._connection.commit()
         result = self._cur.fetchone()
         return True if result else False
 
@@ -229,5 +235,6 @@ class DataManager:
                           "on (ur.book1_id = b1.id and ur.book2_id = b2.id) or (ur.book1_id = b2.id and ur.book2_id = b1.id) " +
                           "where ur.id = urc.recommendation_id and urc.author = %s " +
                           "returning urc.id", (isbn1, isbn2, user))
+        self._connection.commit()
         result = self._cur.fetchone()
         return True if result else False
