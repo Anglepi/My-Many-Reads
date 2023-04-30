@@ -4,10 +4,11 @@ start:
 spellcheck:
 	./scripts/spellcheck.sh
 
-test:
+test: clean-test
 	POETRY_DOTENV_LOCATION="$(shell pwd)/test.env" poetry run pytest
-	POETRY_DOTENV_LOCATION="$(shell pwd)/test.env" poetry run python scripts/clean_test_db.py
-
+	
+clean-test:
+	POETRY_DOTENV_LOCATION="$(shell pwd)/test.env" poetry run python scripts/clean_test_db.py	
 
 test-nodb:
 	TEST="test" poetry run pytest
