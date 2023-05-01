@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "isbn": "99921-58-10-7",
     "title": "A book",
     "synopsis": "Some random descriptivie text about the book",
@@ -10,6 +11,7 @@
     "edition": "1st Edition"
   },
   {
+    "id": 2,
     "isbn": "9971-5-0210-0",
     "title": "A book: Reloaded",
     "synopsis": "Some random descriptivie text about the book",
@@ -20,6 +22,7 @@
     "edition": "Special anniversary edition"
   },
   {
+    "id": 3,
     "isbn": "0-9752298-0-X",
     "title": "A book: Revoluitions",
     "synopsis": "Some random descriptivie text about the book",
@@ -30,6 +33,7 @@
     "edition": "5th edition"
   },
   {
+    "id": 4,
     "isbn": "960-425-059-0",
     "title": "Recommendations Paradise",
     "synopsis": "Some random descriptivie text about the book",
@@ -40,6 +44,7 @@
     "edition": "5th edition"
   },
   {
+    "id": 5,
     "isbn": "80-902734-1-6",
     "title": "The Spanish Omelette Hero",
     "synopsis": "Some random descriptivie text about the book",

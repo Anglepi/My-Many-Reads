@@ -44,7 +44,7 @@ def test_get_book():
 
     # When
     with TestClient(mmr) as client:
-        response = client.get("/books/99921-58-10-7")
+        response = client.get("/books/1")
 
     # Then
     check_response(response, expected_status, expected_body)
@@ -57,7 +57,7 @@ def test_get_book_not_found():
 
     # When
     with TestClient(mmr) as client:
-        response = client.get("/books/93-86954-21-4")
+        response = client.get("/books/24654")
 
     # Then
     check_response(response, expected_status, expected_body)
@@ -160,7 +160,7 @@ def test_library_add_entry():
     # Given - When
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
-        response = client.post("/libraries/user1/myLibrary/99921-58-10-7")
+        response = client.post("/libraries/user1/myLibrary/1")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     # Then
@@ -173,7 +173,7 @@ def test_library_add_entry():
 def test_library_no_duplicated_entries():
     # Given - When
     with TestClient(mmr) as client:
-        response = client.post("/libraries/user1/myLibrary/99921-58-10-7")
+        response = client.post("/libraries/user1/myLibrary/1")
 
     # Then
     assert_that(response.status_code).is_equal_to(409)
@@ -184,7 +184,7 @@ def test_library_update_entry():
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.put(
-            "/libraries/user1/myLibrary/99921-58-10-7/10/COMPLETED")
+            "/libraries/user1/myLibrary/1/10/COMPLETED")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     # Then
@@ -199,7 +199,7 @@ def test_remove_nonexistent_entry():
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.delete(
-            "/libraries/user1/myLibrary/nonexistent")
+            "/libraries/user1/myLibrary/234554")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     # Then
@@ -212,7 +212,7 @@ def test_remove_existent_entry():
     with TestClient(mmr) as client:
         library = client.get("/libraries/user1/myLibrary").json()
         response = client.delete(
-            "/libraries/user1/myLibrary/99921-58-10-7")
+            "/libraries/user1/myLibrary/1")
         updated_library = client.get("/libraries/user1/myLibrary").json()
 
     # Then
@@ -227,8 +227,8 @@ def test_user_recommendations_for_book():
     expected_body1 = [
         {
             "books": [
-                "0-9752298-0-X",
-                "99921-58-10-7"
+                1,
+                3
             ],
             "comments": [
                 {
@@ -244,9 +244,9 @@ def test_user_recommendations_for_book():
     # When
     with TestClient(mmr) as client:
         recommendations1 = client.get(
-            "/recommendations/0-9752298-0-X")
+            "/recommendations/3")
         recommendations2 = client.get(
-            "/recommendations/NotExistent")
+            "/recommendations/234234")
 
     # Then
     check_response(recommendations1, expected_status, expected_body1)
@@ -257,7 +257,7 @@ def test_add_user_recommendation_duplicated_books():
     # Given - When
     with TestClient(mmr) as client:
         response = client.post(
-            "/recommendations/99921-58-10-7/99921-58-10-7/username/comment")
+            "/recommendations/1/1/username/comment")
 
     # Then
     check_response(response, 400, {
@@ -268,7 +268,7 @@ def test_add_user_recommendation_missing_book():
     # Given - When
     with TestClient(mmr) as client:
         response = client.post(
-            "/recommendations/99921-58-10-7/NonExistentBook/username/comment")
+            "/recommendations/1/5424352/username/comment")
 
     # Then
     check_response(response, 404, {
@@ -279,18 +279,18 @@ def test_vote_user_recommendation():
     # Given - When
     with TestClient(mmr) as client:
         existing_recommendations = client.get(
-            "/recommendations/9971-5-0210-0").json()
+            "/recommendations/2").json()
         response = client.post(
-            "/recommendations/99921-58-10-7/9971-5-0210-0/RandomGuy")
+            "/recommendations/1/2/RandomGuy")
         new_recommendations = client.get(
-            "/recommendations/9971-5-0210-0").json()
+            "/recommendations/2").json()
     previous_score = existing_recommendations[0]["comments"][0]["score"]
     new_score = new_recommendations[0]["comments"][0]["score"]
 
     # Then
     assert_that(response.status_code).is_equal_to(201)
     assert_that(response.headers["location"]).is_equal_to(
-        "/recommendations/99921-58-10-7")
+        "/recommendations/1")
     assert_that(new_score).is_equal_to(previous_score+1)
 
 
@@ -298,7 +298,7 @@ def test_vote_user_bad_recommendation():
     # Given - When
     with TestClient(mmr) as client:
         response = client.post(
-            "/recommendations/99921-58-10-7/99921-58-10-7/Recommender")
+            "/recommendations/1/1/Recommender")
 
     # Then
     check_response(response, 400, {
@@ -309,7 +309,7 @@ def test_vote_user_recommendation_missing_author():
     # Given - When
     with TestClient(mmr) as client:
         response = client.post(
-            "/recommendations/99921-58-10-7/9971-5-0210-0/ThisUserHasNotCommentedHere")
+            "/recommendations/1/2/ThisUserHasNotCommentedHere")
 
     # Then
     check_response(response, 404, {
@@ -320,20 +320,20 @@ def test_add_user_recommendation_new():
     # Given - When
     with TestClient(mmr) as client:
         existing_recommendations = client.get(
-            "/recommendations/9971-5-0210-0").json()
+            "/recommendations/2").json()
         response = client.post(
-            "/recommendations/9971-5-0210-0/0-9752298-0-X/username/comment")
+            "/recommendations/2/3/username/comment")
         new_recommendations = client.get(
-            "/recommendations/9971-5-0210-0").json()
+            "/recommendations/2").json()
     expected_new_recommendations = copy.deepcopy(existing_recommendations)
     expected_new_recommendations.append(
-        {"books": ["0-9752298-0-X", "9971-5-0210-0"], "comments": [{"author": "username", "comment": "comment", "score": 0}]})
+        {"books": [2, 3], "comments": [{"author": "username", "comment": "comment", "score": 0}]})
 
     # Then
-    assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
     assert_that(response.status_code).is_equal_to(201)
+    assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
     assert_that(response.headers["location"]).is_equal_to(
-        "/recommendations/9971-5-0210-0/0-9752298-0-X/username")
+        "/recommendations/2/3/username")
     assert_that(new_recommendations).is_equal_to(expected_new_recommendations)
 
 
@@ -341,21 +341,21 @@ def test_add_user_recommendation_existing():
     # Given - When
     with TestClient(mmr) as client:
         existing_recommendations = client.get(
-            "/recommendations/99921-58-10-7").json()
+            "/recommendations/1").json()
         response = client.post(
-            "/recommendations/99921-58-10-7/0-9752298-0-X/username/comment")
+            "/recommendations/1/3/username/comment")
         new_recommendations = client.get(
-            "/recommendations/99921-58-10-7").json()
+            "/recommendations/1").json()
     expected_new_recommendations = copy.deepcopy(existing_recommendations)
     for recommendantion in expected_new_recommendations:
-        if "99921-58-10-7" in recommendantion["books"] and "0-9752298-0-X" in recommendantion["books"]:
+        if 1 in recommendantion["books"] and 3 in recommendantion["books"]:
             recommendantion["comments"].append(
                 {"author": "username", "comment": "comment", "score": 0})
     # Then
     assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
     assert_that(response.status_code).is_equal_to(201)
     assert_that(response.headers["location"]).is_equal_to(
-        "/recommendations/99921-58-10-7/0-9752298-0-X/username")
+        "/recommendations/1/3/username")
     assert_that(new_recommendations).is_equal_to(expected_new_recommendations)
 
 
@@ -363,7 +363,7 @@ def test_add_user_recommendation_one_comment_per_user():
     # Given - When
     with TestClient(mmr) as client:
         response = client.post(
-            "/recommendations/99921-58-10-7/0-9752298-0-X/username/comment")
+            "/recommendations/1/3/username/comment")
     # Then
     assert_that(response.status_code).is_equal_to(409)
 

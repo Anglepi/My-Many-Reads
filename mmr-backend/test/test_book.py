@@ -13,6 +13,7 @@ def test_create_book_from_dict_and_transform_to_dict():
         # Given
         json_object = json.load(json_books)
         expected_book: dict = {
+            "id": 1,
             "isbn": "99921-58-10-7",
             "title": "A book",
             "synopsis": "Some random descriptivie text about the book",
