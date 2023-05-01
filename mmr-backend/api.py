@@ -20,9 +20,9 @@ async def get_books() -> list[Book]:
     return data_manager.get_books()
 
 
-@mmr.get("/books/{isbn}")
-async def get_book(isbn: str, response: Response) -> Union[Optional[Book], dict]:
-    book: Optional[Book] = data_manager.get_book(isbn)
+@mmr.get("/books/{book_id}")
+async def get_book(book_id: int, response: Response) -> Union[Optional[Book], dict]:
+    book: Optional[Book] = data_manager.get_book(book_id)
     if not book:
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"error": "Book not found"}
@@ -64,32 +64,33 @@ async def create_library(user: str, library_name: str, response: Response) -> No
         response.status_code = status.HTTP_409_CONFLICT
 
 
-@mmr.post("/libraries/{user}/{library_name}/{isbn}")
-async def add_library_entry(user: str, library_name: str, isbn: str, response: Response) -> None:
-    success: bool = data_manager.add_library_entry(user, library_name, isbn)
+@mmr.post("/libraries/{user}/{library_name}/{book_id}")
+async def add_library_entry(user: str, library_name: str, book_id: int, response: Response) -> None:
+    success: bool = data_manager.add_library_entry(user, library_name, book_id)
     if success:
         response.status_code = status.HTTP_201_CREATED
     else:
         response.status_code = status.HTTP_409_CONFLICT
 
 
-@mmr.delete("/libraries/{user}/{library_name}/{isbn}")
-async def remove_library_entry(user: str, library_name: str, isbn: str) -> None:
-    data_manager.remove_library_entry(user, library_name, isbn)
+@mmr.delete("/libraries/{user}/{library_name}/{book_id}")
+async def remove_library_entry(user: str, library_name: str, book_id: int) -> None:
+    data_manager.remove_library_entry(user, library_name, book_id)
 
 
-@mmr.put("/libraries/{user}/{library_name}/{isbn}/{score}/{status}")
-async def update_library_entry(user: str, library_name: str, isbn: str, score: int, status: Library.ReadingStatus) -> None:
-    data_manager.update_library_entry(user, library_name, isbn, score, status)
+@mmr.put("/libraries/{user}/{library_name}/{book_id}/{score}/{status}")
+async def update_library_entry(user: str, library_name: str, book_id: int, score: int, status: Library.ReadingStatus) -> None:
+    data_manager.update_library_entry(
+        user, library_name, book_id, score, status)
 
 #
 # USER RECOMMENDATIONS
 #
 
 
-@mmr.get("/recommendations/{isbn}")
-async def get_recommendations_for_book(isbn: str) -> list[dict]:
-    return data_manager.get_recommendations_for_book(isbn)
+@mmr.get("/recommendations/{book_id}")
+async def get_recommendations_for_book(book_id: int) -> list[dict]:
+    return data_manager.get_recommendations_for_book(book_id)
 
 
 @mmr.get("/recommendations/{user}/{library_name}")
@@ -105,29 +106,29 @@ async def get_recommendations_for_library(user: str, library_name: str, response
     return stats.get_recommendations(books)
 
 
-@mmr.post("/recommendations/{isbn1}/{isbn2}/{user}")
-async def vote_user_recommendation(isbn1: str, isbn2: str, user: str, response: Response) -> Optional[dict]:
-    if isbn1 == isbn2:
+@mmr.post("/recommendations/{book_id1}/{book_id2}/{user}")
+async def vote_user_recommendation(book_id1: int, book_id2: int, user: str, response: Response) -> Optional[dict]:
+    if book_id1 == book_id2:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"error": "Recommendations must be from different books"}
 
-    if not data_manager.vote_user_recommendation(isbn1, isbn2, user):
+    if not data_manager.vote_user_recommendation(book_id1, book_id2, user):
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"error": "Recommendation or comment does not exist"}
 
     response.status_code = status.HTTP_201_CREATED
-    response.headers["location"] = "/recommendations/" + isbn1
+    response.headers["location"] = "/recommendations/" + str(book_id1)
     return None
 
 
-@mmr.post("/recommendations/{isbn1}/{isbn2}/{user}/{comment}")
-async def add_user_recommendation(isbn1: str, isbn2: str, user: str, comment: str, response: Response) -> Optional[dict]:
-    if isbn1 == isbn2:
+@mmr.post("/recommendations/{book_id1}/{book_id2}/{user}/{comment}")
+async def add_user_recommendation(book_id1: int, book_id2: int, user: str, comment: str, response: Response) -> Optional[dict]:
+    if book_id1 == book_id2:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"error": "Can't recommend a book with itself"}
 
     result: int = data_manager.create_user_recommendation(
-        isbn1, isbn2, user, comment)
+        book_id1, book_id2, user, comment)
 
     if result == 404:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -137,5 +138,5 @@ async def add_user_recommendation(isbn1: str, isbn2: str, user: str, comment: st
     else:
         response.status_code = status.HTTP_201_CREATED
         response.headers["location"] = "/recommendations/" + \
-            "/".join((isbn1, isbn2, user))
+            "/".join((str(book_id1), str(book_id2), user))
     return None
