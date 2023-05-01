@@ -20,9 +20,9 @@ class DataManager:
         self.fake_libraries = [Library("user1", "myLibrary", list()), Library(
             "user1", "myOtherLibrary", list()), Library("user2", "generic", [Library.Entry(Book.from_dict(self.fake_books[0]), 5, Library.ReadingStatus.COMPLETED)])]
         self.fake_recommendations = [UserRecommendation(
-            (Book.from_dict(self.fake_books[0]).isbn, Book.from_dict(self.fake_books[1]).isbn), UserRecommendation.UserComment("RandomGuy", "They are both cool")),
+            (Book.from_dict(self.fake_books[0]).id, Book.from_dict(self.fake_books[1]).id), UserRecommendation.UserComment("RandomGuy", "They are both cool")),
             UserRecommendation(
-            (Book.from_dict(self.fake_books[0]).isbn, Book.from_dict(self.fake_books[2]).isbn), UserRecommendation.UserComment("OtherGuy", "They are both entertaining"))]
+            (Book.from_dict(self.fake_books[0]).id, Book.from_dict(self.fake_books[2]).id), UserRecommendation.UserComment("OtherGuy", "They are both entertaining"))]
 
     # BOOKS
 
@@ -31,10 +31,10 @@ class DataManager:
         books = self.fake_books
         return Book.from_list(books)
 
-    def get_book(self, isbn: str) -> Optional[Book]:
+    def get_book(self, id: int) -> Optional[Book]:
         # To be replaced by an actual query
-        occurrencies = list(filter(lambda book: book.to_dict()[
-            "isbn"] == isbn, Book.from_list(self.fake_books)))
+        occurrencies = list(filter(lambda book: int(book.to_dict()[
+            "id"]) == int(id), Book.from_list(self.fake_books)))
         return occurrencies[0] if len(occurrencies) else None
 
     # LIBRARIES
@@ -71,46 +71,47 @@ class DataManager:
         self.fake_libraries.append(Library(user, library_name, list()))
         return True
 
-    def remove_library_entry(self, user: str, library_name: str, isbn: str) -> None:
+    def remove_library_entry(self, user: str, library_name: str, book_id: int) -> None:
         # To be replaced by an actual query
         library: Optional[Library] = self.get_library(user, library_name)
         if library:
-            library.remove_entry(isbn)
+            library.remove_entry(book_id)
 
-    def add_library_entry(self, user: str, library_name: str, isbn: str) -> bool:
+    def add_library_entry(self, user: str, library_name: str, book_id: int) -> bool:
         # To be replaced by an actual query
-        book: Optional[Book] = self.get_book(isbn)
+        book: Optional[Book] = self.get_book(book_id)
         library: Optional[Library] = self.get_library(user, library_name)
         if book and library:
             for entry in library.get_entries():
-                if entry.get_book_id() == isbn:
+                if entry.get_book_id() == book_id:
                     return False
             library.add_entry(Library.Entry(book, None, ""))
         return bool(book and library)
 
-    def update_library_entry(self, user: str, library_name: str, isbn: str, score: int, status: Library.ReadingStatus) -> None:
+    def update_library_entry(self, user: str, library_name: str, book_id: int, score: int, status: Library.ReadingStatus) -> None:
         # To be replaced by an actual query
-        book: Optional[Book] = self.get_book(isbn)
+        book: Optional[Book] = self.get_book(book_id)
         library: Optional[Library] = self.get_library(user, library_name)
         if book and library:
-            library.update_entry(isbn, Library.Entry(book, score, status))
+            library.update_entry(book_id, Library.Entry(book, score, status))
 
     # RECOMMENDATIONS
 
-    def get_recommendations_for_book(self, isbn: str) -> list[dict]:
+    def get_recommendations_for_book(self, book_id: int) -> list[dict]:
         # To be replaced by an actual query
         recommendations_for_book: Iterable[UserRecommendation] = filter(
-            lambda recommendation: recommendation.has_book(isbn), self.fake_recommendations)
+            lambda recommendation: recommendation.has_book(book_id), self.fake_recommendations)
         return list(map(lambda recommendation: recommendation.to_dict(), recommendations_for_book))
 
-    def create_user_recommendation(self, isbn1: str, isbn2: str, user: str, comment: str) -> bool:
-        book1: Optional[Book] = self.get_book(isbn1)
-        book2: Optional[Book] = self.get_book(isbn2)
+    def create_user_recommendation(self, book_id1: int, book_id2: int, user: str, comment: str) -> bool:
+        book1: Optional[Book] = self.get_book(book_id1)
+        book2: Optional[Book] = self.get_book(book_id2)
+
         if not (book1 and book2):
             return 404
 
         recommendations: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
-            isbn1) and recommendation.has_book(isbn2), self.fake_recommendations))
+            book_id1) and recommendation.has_book(book_id2), self.fake_recommendations))
 
         if len(recommendations):
             for recommendation in recommendations:
@@ -120,18 +121,18 @@ class DataManager:
                 UserRecommendation.UserComment(user, comment))
         else:
             self.fake_recommendations.append(UserRecommendation(
-                (isbn1, isbn2), UserRecommendation.UserComment(user, comment)))
+                (book_id1, book_id2), UserRecommendation.UserComment(user, comment)))
         return 201
 
-    def vote_user_recommendation(self, isbn1: str, isbn2: str, user: str) -> bool:
-        book1: Optional[Book] = self.get_book(isbn1)
-        book2: Optional[Book] = self.get_book(isbn2)
+    def vote_user_recommendation(self, book_id1: int, book_id2: int, user: str) -> bool:
+        book1: Optional[Book] = self.get_book(book_id1)
+        book2: Optional[Book] = self.get_book(book_id2)
 
         if not (book1 and book2):
             return False
 
         recommendations: list[UserRecommendation] = list(filter(lambda recommendation: recommendation.has_book(
-            isbn1) and recommendation.has_book(isbn2) and len(recommendation.get_author_comments(user)), self.fake_recommendations))
+            book_id1) and recommendation.has_book(book_id2) and len(recommendation.get_author_comments(user)), self.fake_recommendations))
 
         if len(recommendations):
             recommendations[0].vote_comment(user)
