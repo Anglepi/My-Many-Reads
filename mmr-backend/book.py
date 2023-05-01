@@ -6,6 +6,7 @@ import re
 
 @dataclass(frozen=True)
 class Book:
+    id: int
     isbn: str
     title: str
     synopsis: str

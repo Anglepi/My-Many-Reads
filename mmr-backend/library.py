@@ -34,8 +34,8 @@ class Library:
             self.__score: Optional[int] = score
             self.__status: Optional[Library.ReadingStatus] = status
 
-        def get_book_id(self) -> str:
-            return self.__book.isbn
+        def get_book_id(self) -> int:
+            return self.__book.id
 
         def to_dict(self) -> dict:
             return {"book": self.__book.to_dict(), "score": self.__score, "status": self.__status}
@@ -75,7 +75,7 @@ class Library:
 
     def has_book(self, book: Book) -> bool:
         for entry in self.__entries:
-            if (entry.get_book_id() == book.isbn):
+            if (entry.get_book_id() == book.id):
                 return True
         return False
 

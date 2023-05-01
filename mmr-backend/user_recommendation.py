@@ -3,7 +3,7 @@ from typing import Tuple
 
 
 class UserRecommendation:
-    def __init__(self, books: Tuple[str, str], user_comment: UserRecommendation.UserComment) -> None:
+    def __init__(self, books: Tuple[int, int], user_comment: UserRecommendation.UserComment) -> None:
         self.__books = sorted(books)
         self.__comments = [user_comment]
 
@@ -36,8 +36,8 @@ class UserRecommendation:
         return list(
             filter(lambda current_comment: current_comment.get_author() == author, self.__comments))
 
-    def has_book(self, isbn: str) -> bool:
-        return isbn in self.__books
+    def has_book(self, book_id: int) -> bool:
+        return book_id in self.__books
 
     def add_comment(self, comment: UserComment) -> None:
         occurrences = list(
