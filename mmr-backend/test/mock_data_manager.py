@@ -33,8 +33,8 @@ class DataManager:
 
     def get_book(self, id: int) -> Optional[Book]:
         # To be replaced by an actual query
-        occurrencies = list(filter(lambda book: int(book.to_dict()[
-            "id"]) == int(id), Book.from_list(self.fake_books)))
+        occurrencies = list(filter(lambda book: book.to_dict()[
+            "id"] == id, Book.from_list(self.fake_books)))
         return occurrencies[0] if len(occurrencies) else None
 
     # LIBRARIES
