@@ -329,9 +329,6 @@ def test_add_user_recommendation_new():
     expected_new_recommendations.append(
         {"books": [2, 3], "comments": [{"author": "username", "comment": "comment", "score": 0}]})
 
-    print(existing_recommendations)
-    print(new_recommendations)
-
     # Then
     assert_that(response.status_code).is_equal_to(201)
     assert_that(existing_recommendations).is_not_equal_to(new_recommendations)
