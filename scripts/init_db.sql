@@ -40,6 +40,7 @@ CREATE TABLE libraries (
     id SERIAL PRIMARY KEY,
     owner TEXT NOT NULL,
     name TEXT NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
     UNIQUE(owner, name)
 );
 
