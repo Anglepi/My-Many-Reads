@@ -124,7 +124,7 @@ class DataManager:
 
     def delete_library(self, user: str, library_name: str) -> None:
         self._cur.execute(
-            "delete from libraries where owner = %s and name = %s", (user, library_name))
+            "update libraries set owner = null, active = false where owner = %s and name = %s", (user, library_name))
         self._connection.commit()
 
     def rename_library(self, user: str, library_name: str, new_name: str) -> None:
