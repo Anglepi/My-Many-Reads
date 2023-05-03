@@ -289,7 +289,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \item Books:
     \begin{itemize}
         \item \textit{/books}
-        \item \textit{/books/\{isbn\}}
+        \item \textit{/books/\{book_id\}}
     \end{itemize}
     \item Libraries:
     \begin{itemize}
@@ -298,7 +298,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \end{itemize}
     \item Recommendations:
     \begin{itemize}
-        \item \textit{/recommendations/\{isbn\}}
+        \item \textit{/recommendations/\{book_id\}}
         \item \textit{/recommendations/\{user\}/\{library\}}
     \end{itemize}
 \end{itemize}
@@ -308,12 +308,12 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \item Libraries:
     \begin{itemize}
         \item \textit{/libraries/\{user\}/\{library\}}
-        \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
+        \item \textit{/libraries/\{user\}/\{library\}/\{book_id\}}
     \end{itemize}
     \item Recommendations:
     \begin{itemize}
-        \item \textit{/recommendations/\{isbn1\}/\{isbn2\}/\{user\}}
-        \item \textit{/recommendations/\{isbn1\}/\{isbn2\}/\{user\}/\{comment\}}
+        \item \textit{/recommendations/\{book_id1\}/\{book_id2\}/\{user\}}
+        \item \textit{/recommendations/\{book_id1\}/\{book_id2\}/\{user\}/\{comment\}}
     \end{itemize}
 \end{itemize}
 
@@ -322,7 +322,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \item Libraries:
     \begin{itemize}
         \item \textit{/libraries/\{user\}/\{library\}/\{new-name\}}
-        \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}/\{score\}/\{status\}}
+        \item \textit{/libraries/\{user\}/\{library\}/\{book_id\}/\{score\}/\{status\}}
     \end{itemize}
 \end{itemize}
 
@@ -331,7 +331,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \item Libraries:
     \begin{itemize}
         \item \textit{/libraries/\{user\}/\{library\}}
-        \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
+        \item \textit{/libraries/\{user\}/\{library\}/\{book_id\}}
     \end{itemize}
 \end{itemize}
 
@@ -413,7 +413,7 @@ Para encontrar los diferentes atributos de un libro que resulten de interés se 
     \item Los que aporten información que pueda resultar de utilidad para un \hyperref[usuario lector]{\underline{usuario lector}} cualquiera, como las traducciones disponibles o fechas de publicación.
 \end{enumerate}
 
-Sin olvidarnos de aquellas propiedades que nos permitan identificar libros concretos, en este caso el ISBN es un buen candidato.
+Sin olvidarnos de aquellas propiedades que nos permitan identificar libros concretos, en este caso el ISBN es un buen candidato, aunque no sea un identificativo único, si que está bien extendido y es bastante usado.
 
 En el caso de los atributos de las bibliotecas, estudiando el concepto de éstas que se ha ido formando a lo largo del análisis del problema y sus posibles soluciones, se puede llegar a la conclusión de que una biblioteca es una lista de libros con un nombre, asociada y gestionada por un usuario, que puede calificar y categorizar cada una de las entradas de la lista. Por lo tanto, la biblioteca consiste en: un nombre, un dueño, una lista cuyos elementos son un libro, una calificación y un estado.
 
@@ -488,3 +488,5 @@ La estructura de la base de datos debe definirse atendiendo a todas las posibles
 \includegraphics[width=0.9\textwidth]{img/diagrama_bd.png}\\[1.4cm]
 
 El diagrama anterior se ha generado con \href{https://dbdiagram.io/}{dbdiagram.io}, web que permite importar scripts en diversos lenguajes de bases de datos y generar un diagrama automáticamente.
+
+Nótese que el indetificador del libro no es el ISBN, como uno podría esperar. Esto se debe a que aunque el ISBN debería ser único, a veces las editoriales cometen el error de asignar el mismo ISBN a dos o más títulos, o incluso se emplean intencionadamente para identificar colecciones de libros. Por otra parte, este identificador es de uso comercial, lo que quiere decir que no tiene por qué estar presente en libros que no hayan sido puestos a la venta. Estos motivos han llevado a la decisión de que el identificador de un libro debe ser otro, en este caso, un serial interno, y que la duplicidad o ausencia del ISBN debe ser soportada.
