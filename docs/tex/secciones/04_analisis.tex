@@ -168,6 +168,12 @@ A cada PMV planteado le corresponde un conjunto de requisitos, y dado que los PM
     \item RF1-3 Se debe permitir consultar los libros y bibliotecas almacenadas.
 \end{itemize}
 
+En este primer PMV se desarrollarán las clases necesarias para representar las estructuras de datos que definen los libros, bibliotecas y sus entradas, al menos un modelo básico con el que poder ofrecer una funcionalidad mínima en este punto.
+
+Las funciones básicas ofrecidas en este punto serán las de creación de una biblioteca, añadir entradas a esta y consultar información existente sobre libros y bibliotecas. Una peculiaridad en este punto es que se permite añadir multiples veces el mismo libro a la misma biblioteca. Esto se debe a que controlar esta situación requiere de lógica adicional que no se ha planificado para este PMV principalmente por dos motivos: más adelante podrían surgir cambios en el modelo de datos o la funcionalidad deseada que alteren la complejidad y por tanto requieran de trabajo adicional para refactorizar esta lógica (en otras palabras, existe el riesgo de que esto se convierta en deuda técnica), y por otra parte se trata de un PMV, como su nombre indica debe incluir el mínimo de detalles que lo hagan viable.
+
+En los futuros PMV se trabaja no solo en añadir nuevos componentes al sistema, sino además en extender la funcionalidad de los anteriormente existentes, por lo que no debe ser motivo de preocupación dejar ``cabos sueltos'' que atar en el futuro.
+
 \subsection{\href{https://github.com/Anglepi/My-Many-Reads/milestone/3}{PMV-2}. Estructura de datos básica y base de la lógica de negocio}
 
 \subsubsection{Requisitos funcionales}
