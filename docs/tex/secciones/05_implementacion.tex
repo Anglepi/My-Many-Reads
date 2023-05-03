@@ -480,3 +480,11 @@ Si se disponen de los suficientes recursos, alguna de las dos primeras opciones 
 Dado el estado del proyecto, la segunda opción es la más viable, puesto que existen multitud de servicios gratuitos que se encargan de la gestión, y serán más que suficientes en las primeras etapas del proyecto. Para llevar esta idea a cabo, vamos a recurrir a \href{https://bit.io/}{\textit{bit.io}}, que ofrece de forma gratuita hasta 3 bases de datos diferentes y 3gb de almacenamiento, poniendo a nuestra disposición acceso y consultas a través de Postgres, interfaz de usuario o API.
 
 Básicamente, esta plataforma permite fácilmente crear una base de datos PostgreSQL y pone a disposición de sus usuarios métodos de conexión muy sencillos de usar. Adicionalmente, la documentación y guía de uso ofrecida es muy clara, incluyendo tanto imágenes como vídeos que apoyan las explicaciones expuestas sobre cómo realizar las acciones que ofrece la plataforma.
+
+\subsubsection{Estructura de la base de datos}
+
+La estructura de la base de datos debe definirse atendiendo a todas las posibles restricciones de información, además de demostrando una estructura lógica que represente adecuadamente las diferentes entidades almacenadas y las relaciones entre éstas. En el \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/init_db.sql}{repositorio} se encuentra el script construido para crear las diferentes tablas, relaciones, y algún que otro dato de prueba.
+
+\includegraphics[width=0.9\textwidth]{img/diagrama_bd.png}\\[1.4cm]
+
+El diagrama anterior se ha generado con \href{https://dbdiagram.io/}{dbdiagram.io}, web que permite importar scripts en diversos lenguajes de bases de datos y generar un diagrama automáticamente.
