@@ -84,6 +84,15 @@ Así mismo cabe mencionar que el primer \textit{milestone} del proyecto se exclu
         \item \href{https://github.com/Anglepi/My-Many-Reads/issues/78}{\textbf{T-7.2}} Crear un script que defina las estructuras de las tablas en la base de datos, así como algunos datos de prueba.
         \item \href{https://github.com/Anglepi/My-Many-Reads/issues/79}{\textbf{T-7.3}} Modificar el gestor de datos para que realice la conexión a esta nueva base de datos.
     \end{itemize}
+    \item \href{https://github.com/Anglepi/My-Many-Reads/issues/98}{\textbf{HU-8}} Evitar posibles inconsistencias. \\
+    Como Sergio, lector en MMR, \\
+    quiero que la información y funcionalidades sean consistentes tras cada operación, \\
+    con el fin de evitar situaciones inesperadas causadas por mis acciones.
+    \begin{itemize}
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/93}{\textbf{T-8.1}} Evitar entradas duplicadas en las bibliotecas.
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/94}{\textbf{T-8.2}} Añadir información de cara al usuario sobre el tratamiento de datos en \textit{My Many Reads}.
+        \item \href{https://github.com/Anglepi/My-Many-Reads/issues/96}{\textbf{T-8.3}} Usar un identificador único para identificar los libros, evitando el uso del ISBN.
+    \end{itemize}
 \end{itemize}
 
 \section{Entorno de desarrollo}
@@ -280,7 +289,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \item Books:
     \begin{itemize}
         \item \textit{/books}
-        \item \textit{/books/\{isbn\}}
+        \item \textit{/books/\{book\_id\}}
     \end{itemize}
     \item Libraries:
     \begin{itemize}
@@ -289,7 +298,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \end{itemize}
     \item Recommendations:
     \begin{itemize}
-        \item \textit{/recommendations/\{isbn\}}
+        \item \textit{/recommendations/\{book\_id\}}
         \item \textit{/recommendations/\{user\}/\{library\}}
     \end{itemize}
 \end{itemize}
@@ -299,12 +308,12 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \item Libraries:
     \begin{itemize}
         \item \textit{/libraries/\{user\}/\{library\}}
-        \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
+        \item \textit{/libraries/\{user\}/\{library\}/\{book\_id\}}
     \end{itemize}
     \item Recommendations:
     \begin{itemize}
-        \item \textit{/recommendations/\{isbn1\}/\{isbn2\}/\{user\}}
-        \item \textit{/recommendations/\{isbn1\}/\{isbn2\}/\{user\}/\{comment\}}
+        \item \textit{/recommendations/\{book\_id1\}/\{book\_id2\}/\{user\}}
+        \item \textit{/recommendations/\{book\_id1\}/\{book\_id2\}/\{user\}/\{comment\}}
     \end{itemize}
 \end{itemize}
 
@@ -313,7 +322,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \item Libraries:
     \begin{itemize}
         \item \textit{/libraries/\{user\}/\{library\}/\{new-name\}}
-        \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}/\{score\}/\{status\}}
+        \item \textit{/libraries/\{user\}/\{library\}/\{book\_id\}/\{score\}/\{status\}}
     \end{itemize}
 \end{itemize}
 
@@ -322,7 +331,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \item Libraries:
     \begin{itemize}
         \item \textit{/libraries/\{user\}/\{library\}}
-        \item \textit{/libraries/\{user\}/\{library\}/\{isbn\}}
+        \item \textit{/libraries/\{user\}/\{library\}/\{book\_id\}}
     \end{itemize}
 \end{itemize}
 
@@ -404,7 +413,7 @@ Para encontrar los diferentes atributos de un libro que resulten de interés se 
     \item Los que aporten información que pueda resultar de utilidad para un \hyperref[usuario lector]{\underline{usuario lector}} cualquiera, como las traducciones disponibles o fechas de publicación.
 \end{enumerate}
 
-Sin olvidarnos de aquellas propiedades que nos permitan identificar libros concretos, en este caso el ISBN es un buen candidato.
+Sin olvidarnos de aquellas propiedades que nos permitan identificar libros concretos, en este caso el ISBN es un buen candidato, aunque no sea un identificativo único, si que está bien extendido y es bastante usado.
 
 En el caso de los atributos de las bibliotecas, estudiando el concepto de éstas que se ha ido formando a lo largo del análisis del problema y sus posibles soluciones, se puede llegar a la conclusión de que una biblioteca es una lista de libros con un nombre, asociada y gestionada por un usuario, que puede calificar y categorizar cada una de las entradas de la lista. Por lo tanto, la biblioteca consiste en: un nombre, un dueño, una lista cuyos elementos son un libro, una calificación y un estado.
 
@@ -471,3 +480,13 @@ Si se disponen de los suficientes recursos, alguna de las dos primeras opciones 
 Dado el estado del proyecto, la segunda opción es la más viable, puesto que existen multitud de servicios gratuitos que se encargan de la gestión, y serán más que suficientes en las primeras etapas del proyecto. Para llevar esta idea a cabo, vamos a recurrir a \href{https://bit.io/}{\textit{bit.io}}, que ofrece de forma gratuita hasta 3 bases de datos diferentes y 3gb de almacenamiento, poniendo a nuestra disposición acceso y consultas a través de Postgres, interfaz de usuario o API.
 
 Básicamente, esta plataforma permite fácilmente crear una base de datos PostgreSQL y pone a disposición de sus usuarios métodos de conexión muy sencillos de usar. Adicionalmente, la documentación y guía de uso ofrecida es muy clara, incluyendo tanto imágenes como vídeos que apoyan las explicaciones expuestas sobre cómo realizar las acciones que ofrece la plataforma.
+
+\subsubsection{Estructura de la base de datos}
+
+La estructura de la base de datos debe definirse atendiendo a todas las posibles restricciones de información, además de demostrando una estructura lógica que represente adecuadamente las diferentes entidades almacenadas y las relaciones entre éstas. En el \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/init_db.sql}{repositorio} se encuentra el script construido para crear las diferentes tablas, relaciones, y algún que otro dato de prueba.
+
+\includegraphics[width=0.9\textwidth]{img/diagrama_bd.png}\\[1.4cm]
+
+El diagrama anterior se ha generado con \href{https://dbdiagram.io/}{dbdiagram.io}, web que permite importar scripts en diversos lenguajes de bases de datos y generar un diagrama automáticamente.
+
+Nótese que el identificador del libro no es el ISBN, como uno podría esperar. Esto se debe a que aunque el ISBN debería ser único, a veces las editoriales cometen el error de asignar el mismo ISBN a dos o más títulos, o incluso se emplean intencionadamente para identificar colecciones de libros. Por otra parte, este identificador es de uso comercial, lo que quiere decir que no tiene por qué estar presente en libros que no hayan sido puestos a la venta. Estos motivos han llevado a la decisión de que el identificador de un libro debe ser otro, en este caso, un serial interno, y que la duplicidad o ausencia del ISBN debe ser soportada.
