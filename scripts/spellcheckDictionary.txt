@@ -88,3 +88,5 @@ JSON
 carritos
 categorizarse
 dbdiagram
+RNF
+Nótese
