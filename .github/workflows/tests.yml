@@ -1,11 +1,13 @@
 name: Run all test files
 on:
   pull_request:
-  push:
     paths:
       - "**.py"
-      - ".github/workflows/tests.yml"
       - "pyproject.toml"
+      - ".github/workflows/tests.yml"
+  push:
+    branches:
+      - "main"
 
 jobs:
   build:
