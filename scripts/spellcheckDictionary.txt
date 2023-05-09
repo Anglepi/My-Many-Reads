@@ -90,3 +90,5 @@ categorizarse
 dbdiagram
 RNF
 Nótese
+DOTENV
+env
