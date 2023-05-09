@@ -92,3 +92,7 @@ RNF
 Nótese
 DOTENV
 env
+autocommit
+fetchAll
+fetchOne
+psycopg
