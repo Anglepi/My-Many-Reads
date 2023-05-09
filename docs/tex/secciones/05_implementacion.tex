@@ -335,71 +335,6 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \end{itemize}
 \end{itemize}
 
-\subsubsection{Gestor de datos}
-
-La primera implementación de la API se introdujo en el segundo PMV (ver \nameref{pmv2}). En este momento, al ser una fase temprana del proyecto, se carecía de una base de datos, por lo que para poner este código a prueba se introdujeron datos de prueba y lógica en la propia API, aunque esto incumpla el principio de responsabilidad única.
-
-En esta primera versión de la API, cada \textit{endpoint} consultaba los datos almacenados en una variable global, realizaba las operaciones necesarias sobre estos y devolvía la respuesta con el mero objetivo de pasar los tests, pues en este momento no había base de datos como para ofrecer una funcionalidad real. Siguiendo el principio de responsabilidad única, el único trabajo del que debería encargarse la API es de recibir peticiones, delegar las acciones requeridas a otros módulos y devolver la respuesta correspondiente.
-
-Fue a continuación, en el tercer PMV (ver \nameref{pmv3}) cuando se trabajó en solventar esta situación. Con un nuevo módulo llamado \textit{Data Manager} se movió todo el apartado de consulta de datos fuera de la API. Este gestor de datos se encarga de establecer una conexión con una base de datos, realizar una consulta determinada y devolver la información a la API, que ya se encargaría de delegar el procesamiento de está información a otros módulos según fuera necesario.
-
-Dado que la implementación de la base de datos fue uno de los últimos pasos de este PMV, al principio se seguían usando datos de pruebas almacenados en esta clase gestora. Sin embargo su implementación sí que pretendía emular una conexión con una base de datos, realizando la conexión a esta al principio de cada consulta y cerrándola siempre al final.
-
-En este punto se detectó un problema. Fue necesario refactorizar gran parte del código, pues hubo que llevar mucha funcionalidad de la API a esta nueva clase gestora. Esto planteó dudas sobre si la planificación del desarrollo de esta parte fue correcta.
-
-Esto no habría ocurrido si se hubiese desarrollado la base de datos en primer lugar, seguida de la clase gestora de datos y finalmente por la API. Por un momento al pensar en este nuevo orden de desarrollo sentí que había cometido un error notable, pero dicha sensación se esfumó al pensar que, con la cantidad de trabajo que esas partes hubieron requerido, no habría conseguido realizar ninguna entrega funcional a un supuesto cliente en mucho tiempo ya que nada de esto aportaría utilidades nuevas hasta que la API no estuviera incluida, y esto no encaja con la mentalidad ágil propuesta para este desarrollo.
-
-La versión final de este gestor de datos se conecta a la base de datos con información leída de las variables de entorno. En ficheros de tipo \textit{.env} se definen las diferentes variables necesarias para realizar la conexión a la base de datos: \textit{HOST, DATABASE, USER, PASSWORD, PORT}. Al momento de ejecutar la aplicación, dado que se está usando \textit{Poetry}, se puede indicar el \textit{path} del fichero \textit{.env} como valor de la variable \textit{POETRY_DOTENV_LOCATION}. 
-
-En pocas palabras, indicamos el fichero con las variables de entorno que usará la aplicación. De esta forma es muy fácil tener varios de estos ficheros para diferentes bases de datos a las que conectar. Un ejemplo práctico que demuestra la utilidad de esta forma de hacerlo es tener dos de estos ficheros, uno orientado a una base de datos de producción, y otro a una base de datos de \textit{testing}. En el \textit{Makefile} del proyecto se puede ver como se hace uso de \textit{test.env} para la ejecución de \textit{tests} mientras que se usa \textit{prod.env} para la ejecución normal de la aplicación.
-
-Dado que la información de conexión es sensible, no se encuentra en el repositorio ni es visible en el código. Esta es otra de las ventajas de usar ficheros de entorno para almacenar y ocultar esta información.
-
-\subsection{Sistema de recomendaciones}
-
-Este sistema es uno de los puntos más importantes del proyecto, pues es el que más atractivo aporta con respecto a los usuarios. Se compone, básicamente, de dos subsistemas: recomendaciones automáticas basadas en librerías y recomendaciones creadas por usuarios.
-
-\subsubsection{Recomendaciones de los usuarios}
-
-Para cada pareja de libros, los usuarios podrán escribir un comentario para justificar la recomendación entre ambos libros. Otros usuarios podrán votar dichos comentarios con el fin de apoyar esa recomendación.
-
-El primer paso será determinar cual puede ser la mejor estructura de datos para esta situación. Por una parte, los libros ya se encuentran almacenados en el sistema, por lo que incluirlos de nuevo sería redundante, con su identificador será suficiente.
-
-En este punto ya hay que tener en cuenta algunos aspectos importantes:
-
-\begin{enumerate}
-    \item No tiene sentido recomendar un libro consigo mismo.
-    \item Recomendar el libro A con el libro B es igual que recomendar el libro B con el libro A
-    \item Las recomendaciones son únicas, es decir, para una pareja de libros habrá uno o varios comentarios de usuarios, pero una única instancia de la pareja.
-    \item Un usuario no puede escribir más de una recomendación por pareja de libros, pues no tendría sentido.
-\end{enumerate}
-
-El primer punto es sencillo de tratar, con comprobar que la pareja de libros introducida no está formada por un único identificador duplicado, el problema se soluciona.
-
-Con respecto al segundo punto, lo ideal sería encontrar una estructura de datos predefinida que permitiera crear parejas de objetos las cuales no estuvieran ordenadas, pero no hubo mucha suerte al buscar esto para Python, por lo que simplemente se ordena la tupla al almacenarla para facilitar la comprobación.
-
-Lidiar con el tercer punto es bastante sencillo una vez se ha definido la situación en lenguaje natural. Al crear una recomendación habrá que comprobar si la pareja indicada de libros ya tenía otras recomendaciones o no. En caso afirmativo bastará con añadir el comentario especificado a ésta, y en caso negativo se creará la pareja a la que se le añadirá dicho comentario.
-
-Finalmente, el último punto está bastante relacionado con el anterior. De la naturaleza de estas recomendaciones se comienza a sobreentender que para cada pareja de libros existe una lista de comentarios escritos por usuarios, por lo que lo único necesario a realizar será, en el momento de añadir un nuevo comentario, comprobar que de los ya existentes la lista correspondiente ninguno pertenece al nuevo autor.
-
-Con toda esta lógica ya controlada e incluida, el único aspecto a controlar es el de la votación, la cual tiene un proceso bastante sencillo, simplemente identificar el comentario objetivo e incrementar en uno su puntuación. Este proceso ganará en complejidad una vez se implementen las sesiones de usuarios, ya que habría que controlar que comentarios ha votado el usuario identificado con el fin de permitir que solo pueda votar una vez por comentario.
-
-\subsubsection{Recomendaciones automáticas}
-
-Para elaborar un algoritmo que pueda hacer sugerencias de manera automática para los usuarios, es necesario en primer lugar ser capaz de determinar los gustos de dicho usuario. Para ello, dado que un usuario puede organizar sus lecturas en varias bibliotecas, se van a generar las recomendaciones en base a los gustos definidos en una biblioteca específica, aportando mayor versatilidad a los usuarios de cara a la búsqueda de nuevas lecturas.
-
-Este algoritmo de recomendaciones ofrece como resultado una lista de libros ordenados de mayor a menor relevancia con respecto a la biblioteca especificada. Para construir esta lista se sigue un proceso que puede dividirse en tres pasos principales:
-
-\begin{enumerate}
-    \item Se generan unas características generales de una biblioteca objetivo, agrupando todas las características relevantes de los libros que la componen con el fin de calcular la afinidad de un libro respecto a ésta. Dos de las características más evidentes de un libro que pueden usarse para esta tarea son los géneros y los autores, ya que a partir de éstas se puede definir muy bien la temática de un libro y su estilo de escritura. Para hacer esta recopilación de características, se puede realizar un conteo de todos los géneros y autores pertenecientes a cada libro, ponderando cada una de estas apariciones con un valor derivado de la puntuación que el usuario dueño de esa biblioteca ha asignado al libro en concreto, ayudando así a resaltar los géneros y autores favoritos.
-    \item Mediante una función capaz de comparar un libro con estas características recopiladas, se otorga una puntuación de compatibilidad de un libro objetivo con respecto a una biblioteca, que hace las veces de correlación. Esta función comparará las propiedades del libro con las de las características recogidas, siempre teniendo en cuenta que no todas estas características son igual de valiosas para este proceso. Por ejemplo, los géneros de un libro son más representativos que, por ejemplo, la editorial.
-    \item Finalmente, con las características de una biblioteca y la función para puntuar libros respecto a estas se puede generar la lista de recomendaciones. Para ello, se filtra la lista de libros candidatos, pues debemos eliminar los que ya se encuentren en la biblioteca, y se puntúa cada uno de los restantes. Para construir el resultado, estos libros se ordenan por puntuación, facilitando así devolver un subconjunto de los más relevantes.
-\end{enumerate}
-
-Para medir la compatibilidad se pueden tener en cuenta una gran cantidad de propiedades de los libros, no solo géneros y autores, sino también fecha de publicación, similitudes entre las sinopsis, apariciones en bibliotecas similares de otros usuarios e incluso según las recomendaciones manuales.
-
-Conociendo ya todos estos aspectos, solo resta hacer algo de experimentación jugando con la inclusión de algunos o todos éstos parámetros y ajustando sus pesos hasta dar con un modelo satisfactorio.
-
 \subsection{Representación y almacenamiento de datos}
 
 Una parte fundamental de este proyecto son los datos, pues para perfeccionar su principal atractivo, las recomendaciones, será necesario realizar procesamientos con grandes cantidades de libros, y tampoco debemos olvidar funcionalidades más básicas como la de permitir a los usuarios almacenar y gestionar sus propias bibliotecas.
@@ -496,3 +431,68 @@ La estructura de la base de datos debe definirse atendiendo a todas las posibles
 El diagrama anterior se ha generado con \href{https://dbdiagram.io/}{dbdiagram.io}, web que permite importar scripts en diversos lenguajes de bases de datos y generar un diagrama automáticamente.
 
 Nótese que el identificador del libro no es el ISBN, como uno podría esperar. Esto se debe a que aunque el ISBN debería ser único, a veces las editoriales cometen el error de asignar el mismo ISBN a dos o más títulos, o incluso se emplean intencionadamente para identificar colecciones de libros. Por otra parte, este identificador es de uso comercial, lo que quiere decir que no tiene por qué estar presente en libros que no hayan sido puestos a la venta. Estos motivos han llevado a la decisión de que el identificador de un libro debe ser otro, en este caso, un serial interno, y que la duplicidad o ausencia del ISBN debe ser soportada.
+
+\subsubsection{Gestor de datos}
+
+La primera implementación de la API se introdujo en el segundo PMV (ver \nameref{pmv2}). En este momento, al ser una fase temprana del proyecto, se carecía de una base de datos, por lo que para poner este código a prueba se introdujeron datos de prueba y lógica en la propia API, aunque esto incumpla el principio de responsabilidad única.
+
+En esta primera versión de la API, cada \textit{endpoint} consultaba los datos almacenados en una variable global, realizaba las operaciones necesarias sobre estos y devolvía la respuesta con el mero objetivo de pasar los tests, pues en este momento no había base de datos como para ofrecer una funcionalidad real. Siguiendo el principio de responsabilidad única, el único trabajo del que debería encargarse la API es de recibir peticiones, delegar las acciones requeridas a otros módulos y devolver la respuesta correspondiente.
+
+Fue a continuación, en el tercer PMV (ver \nameref{pmv3}) cuando se trabajó en solventar esta situación. Con un nuevo módulo llamado \textit{Data Manager} (Gestor de Datos) se movió todo el apartado de consulta de datos fuera de la API. Este gestor de datos se encarga de establecer una conexión con una base de datos, realizar una consulta determinada y devolver la información a la API, que ya se encargaría de delegar el procesamiento de está información a otros módulos según fuera necesario.
+
+Dado que la implementación de la base de datos fue uno de los últimos pasos de este PMV, al principio se seguían usando datos de pruebas almacenados en esta clase gestora. Sin embargo su implementación sí que pretendía emular una conexión con una base de datos, realizando la conexión a esta al principio de cada consulta y cerrándola siempre al final.
+
+En este punto se detectó un problema. Fue necesario refactorizar gran parte del código, pues hubo que llevar mucha funcionalidad de la API a esta nueva clase gestora. Esto planteó dudas sobre si la planificación del desarrollo de esta parte fue correcta.
+
+Esto no habría ocurrido si se hubiese desarrollado la base de datos en primer lugar, seguida de la clase gestora de datos y finalmente por la API. Por un momento al pensar en este nuevo orden de desarrollo sentí que había cometido un error notable, pero dicha sensación se esfumó al pensar que, con la cantidad de trabajo que esas partes hubieron requerido, no habría conseguido realizar ninguna entrega funcional a un supuesto cliente en mucho tiempo ya que nada de esto aportaría utilidades nuevas hasta que la API no estuviera incluida, y esto no encaja con la mentalidad ágil propuesta para este desarrollo.
+
+La versión final de este gestor de datos se conecta a la base de datos con información leída de las variables de entorno. En ficheros de tipo \textit{.env} se definen las diferentes variables necesarias para realizar la conexión a la base de datos: \textit{HOST, DATABASE, USER, PASSWORD, PORT}. Al momento de ejecutar la aplicación, dado que se está usando \textit{Poetry}, se puede indicar el \textit{path} del fichero \textit{.env} como valor de la variable \textit{POETRY_DOTENV_LOCATION}. 
+
+En pocas palabras, indicamos el fichero con las variables de entorno que usará la aplicación. De esta forma es muy fácil tener varios de estos ficheros para diferentes bases de datos a las que conectar. Un ejemplo práctico que demuestra la utilidad de esta forma de hacerlo es tener dos de estos ficheros, uno orientado a una base de datos de producción, y otro a una base de datos de \textit{testing}. En el \textit{Makefile} del proyecto se puede ver como se hace uso de \textit{test.env} para la ejecución de \textit{tests} mientras que se usa \textit{prod.env} para la ejecución normal de la aplicación.
+
+Dado que la información de conexión es sensible, no se encuentra en el repositorio ni es visible en el código. Esta es otra de las ventajas de usar ficheros de entorno para almacenar y ocultar esta información.
+
+\subsection{Sistema de recomendaciones}
+
+Este sistema es uno de los puntos más importantes del proyecto, pues es el que más atractivo aporta con respecto a los usuarios. Se compone, básicamente, de dos subsistemas: recomendaciones automáticas basadas en librerías y recomendaciones creadas por usuarios.
+
+\subsubsection{Recomendaciones de los usuarios}
+
+Para cada pareja de libros, los usuarios podrán escribir un comentario para justificar la recomendación entre ambos libros. Otros usuarios podrán votar dichos comentarios con el fin de apoyar esa recomendación.
+
+El primer paso será determinar cual puede ser la mejor estructura de datos para esta situación. Por una parte, los libros ya se encuentran almacenados en el sistema, por lo que incluirlos de nuevo sería redundante, con su identificador será suficiente.
+
+En este punto ya hay que tener en cuenta algunos aspectos importantes:
+
+\begin{enumerate}
+    \item No tiene sentido recomendar un libro consigo mismo.
+    \item Recomendar el libro A con el libro B es igual que recomendar el libro B con el libro A
+    \item Las recomendaciones son únicas, es decir, para una pareja de libros habrá uno o varios comentarios de usuarios, pero una única instancia de la pareja.
+    \item Un usuario no puede escribir más de una recomendación por pareja de libros, pues no tendría sentido.
+\end{enumerate}
+
+El primer punto es sencillo de tratar, con comprobar que la pareja de libros introducida no está formada por un único identificador duplicado, el problema se soluciona.
+
+Con respecto al segundo punto, lo ideal sería encontrar una estructura de datos predefinida que permitiera crear parejas de objetos las cuales no estuvieran ordenadas, pero no hubo mucha suerte al buscar esto para Python, por lo que simplemente se ordena la tupla al almacenarla para facilitar la comprobación.
+
+Lidiar con el tercer punto es bastante sencillo una vez se ha definido la situación en lenguaje natural. Al crear una recomendación habrá que comprobar si la pareja indicada de libros ya tenía otras recomendaciones o no. En caso afirmativo bastará con añadir el comentario especificado a ésta, y en caso negativo se creará la pareja a la que se le añadirá dicho comentario.
+
+Finalmente, el último punto está bastante relacionado con el anterior. De la naturaleza de estas recomendaciones se comienza a sobreentender que para cada pareja de libros existe una lista de comentarios escritos por usuarios, por lo que lo único necesario a realizar será, en el momento de añadir un nuevo comentario, comprobar que de los ya existentes la lista correspondiente ninguno pertenece al nuevo autor.
+
+Con toda esta lógica ya controlada e incluida, el único aspecto a controlar es el de la votación, la cual tiene un proceso bastante sencillo, simplemente identificar el comentario objetivo e incrementar en uno su puntuación. Este proceso ganará en complejidad una vez se implementen las sesiones de usuarios, ya que habría que controlar que comentarios ha votado el usuario identificado con el fin de permitir que solo pueda votar una vez por comentario.
+
+\subsubsection{Recomendaciones automáticas}
+
+Para elaborar un algoritmo que pueda hacer sugerencias de manera automática para los usuarios, es necesario en primer lugar ser capaz de determinar los gustos de dicho usuario. Para ello, dado que un usuario puede organizar sus lecturas en varias bibliotecas, se van a generar las recomendaciones en base a los gustos definidos en una biblioteca específica, aportando mayor versatilidad a los usuarios de cara a la búsqueda de nuevas lecturas.
+
+Este algoritmo de recomendaciones ofrece como resultado una lista de libros ordenados de mayor a menor relevancia con respecto a la biblioteca especificada. Para construir esta lista se sigue un proceso que puede dividirse en tres pasos principales:
+
+\begin{enumerate}
+    \item Se generan unas características generales de una biblioteca objetivo, agrupando todas las características relevantes de los libros que la componen con el fin de calcular la afinidad de un libro respecto a ésta. Dos de las características más evidentes de un libro que pueden usarse para esta tarea son los géneros y los autores, ya que a partir de éstas se puede definir muy bien la temática de un libro y su estilo de escritura. Para hacer esta recopilación de características, se puede realizar un conteo de todos los géneros y autores pertenecientes a cada libro, ponderando cada una de estas apariciones con un valor derivado de la puntuación que el usuario dueño de esa biblioteca ha asignado al libro en concreto, ayudando así a resaltar los géneros y autores favoritos.
+    \item Mediante una función capaz de comparar un libro con estas características recopiladas, se otorga una puntuación de compatibilidad de un libro objetivo con respecto a una biblioteca, que hace las veces de correlación. Esta función comparará las propiedades del libro con las de las características recogidas, siempre teniendo en cuenta que no todas estas características son igual de valiosas para este proceso. Por ejemplo, los géneros de un libro son más representativos que, por ejemplo, la editorial.
+    \item Finalmente, con las características de una biblioteca y la función para puntuar libros respecto a estas se puede generar la lista de recomendaciones. Para ello, se filtra la lista de libros candidatos, pues debemos eliminar los que ya se encuentren en la biblioteca, y se puntúa cada uno de los restantes. Para construir el resultado, estos libros se ordenan por puntuación, facilitando así devolver un subconjunto de los más relevantes.
+\end{enumerate}
+
+Para medir la compatibilidad se pueden tener en cuenta una gran cantidad de propiedades de los libros, no solo géneros y autores, sino también fecha de publicación, similitudes entre las sinopsis, apariciones en bibliotecas similares de otros usuarios e incluso según las recomendaciones manuales.
+
+Conociendo ya todos estos aspectos, solo resta hacer algo de experimentación jugando con la inclusión de algunos o todos éstos parámetros y ajustando sus pesos hasta dar con un modelo satisfactorio.
