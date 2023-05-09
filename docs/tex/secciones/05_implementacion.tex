@@ -349,6 +349,12 @@ En este punto se detectó un problema. Fue necesario refactorizar gran parte del
 
 Esto no habría ocurrido si se hubiese desarrollado la base de datos en primer lugar, seguida de la clase gestora de datos y finalmente por la API. Por un momento al pensar en este nuevo orden de desarrollo sentí que había cometido un error notable, pero dicha sensación se esfumó al pensar que, con la cantidad de trabajo que esas partes hubieron requerido, no habría conseguido realizar ninguna entrega funcional a un supuesto cliente en mucho tiempo ya que nada de esto aportaría utilidades nuevas hasta que la API no estuviera incluida, y esto no encaja con la mentalidad ágil propuesta para este desarrollo.
 
+La versión final de este gestor de datos se conecta a la base de datos con información leída de las variables de entorno. En ficheros de tipo \textit{.env} se definen las diferentes variables necesarias para realizar la conexión a la base de datos: \textit{HOST, DATABASE, USER, PASSWORD, PORT}. Al momento de ejecutar la aplicación, dado que se está usando \textit{Poetry}, se puede indicar el \textit{path} del fichero \textit{.env} como valor de la variable \textit{POETRY_DOTENV_LOCATION}. 
+
+En pocas palabras, indicamos el fichero con las variables de entorno que usará la aplicación. De esta forma es muy fácil tener varios de estos ficheros para diferentes bases de datos a las que conectar. Un ejemplo práctico que demuestra la utilidad de esta forma de hacerlo es tener dos de estos ficheros, uno orientado a una base de datos de producción, y otro a una base de datos de \textit{testing}. En el \textit{Makefile} del proyecto se puede ver como se hace uso de \textit{test.env} para la ejecución de \textit{tests} mientras que se usa \textit{prod.env} para la ejecución normal de la aplicación.
+
+Dado que la información de conexión es sensible, no se encuentra en el repositorio ni es visible en el código. Esta es otra de las ventajas de usar ficheros de entorno para almacenar y ocultar esta información.
+
 \subsection{Sistema de recomendaciones}
 
 Este sistema es uno de los puntos más importantes del proyecto, pues es el que más atractivo aporta con respecto a los usuarios. Se compone, básicamente, de dos subsistemas: recomendaciones automáticas basadas en librerías y recomendaciones creadas por usuarios.
