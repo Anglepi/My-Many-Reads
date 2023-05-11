@@ -96,3 +96,4 @@ autocommit
 fetchAll
 fetchOne
 psycopg
+ORM
