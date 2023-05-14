@@ -97,3 +97,6 @@ fetchAll
 fetchOne
 psycopg
 ORM
+refactorizaciones
+refactorización
+refactorizado
