@@ -78,8 +78,3 @@ class Library:
             if (entry.get_book_id() == book.id):
                 return True
         return False
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Library):
-            return NotImplemented
-        return self.__name == other.__name and self.__owner == other.__owner

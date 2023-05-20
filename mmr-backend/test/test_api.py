@@ -66,15 +66,19 @@ def test_get_book_not_found():
 def test_get_libraries():
     # Given
     expected_status = 200
-    expected_body = [{"owner": "user1", "name": "myLibrary", "entries": []}, {
+    expected_user1_body = [{"owner": "user1", "name": "myLibrary", "entries": []}, {
         "owner": "user1", "name": "myOtherLibrary", "entries": []}]
+    expected_user2_body = [{"owner": "user2", "name": "generic", "entries": [{"book": {"id": 1, "isbn": "99921-58-10-7", "title": "A book", "synopsis": "Some random descriptivie text about the book",
+                                                                                       "authors": ["Cervantes"], "genres": ["Action", "Fantasy"], "publisher": "Nova editorial", "publishing_date": "2017-10-28", "edition": "1st Edition"}, "score": 5, "status": "COMPLETED"}]}]
 
     # When
     with TestClient(mmr) as client:
-        response = client.get("/libraries/user1")
+        user1_libraries = client.get("/libraries/user1")
+        user2_libraries = client.get("/libraries/user2")
 
     # Then
-    check_response(response, expected_status, expected_body)
+    check_response(user1_libraries, expected_status, expected_user1_body)
+    check_response(user2_libraries, expected_status, expected_user2_body)
 
 
 def test_get_library():
