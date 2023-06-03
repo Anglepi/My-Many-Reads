@@ -5,7 +5,8 @@ CREATE TABLE books (
     synopsis TEXT NOT NULL,
     publisher TEXT NOT NULL,
     publishing_date DATE NOT NULL,
-    edition TEXT NOT NULL
+    edition TEXT NOT NULL,
+    views BIGINT default 0
 );
 
 CREATE TABLE authors (
