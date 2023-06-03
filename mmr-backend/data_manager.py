@@ -43,6 +43,7 @@ class DataManager:
 
     def get_book(self, book_id: int) -> Optional[Book]:
         self._cur.execute(
+            "with found_book as ( " +
             "SELECT b.id, b.isbn, b.title, b.synopsis, b.publisher, b.publishing_date, b.edition, " +
             "STRING_AGG(DISTINCT(a.name), %s) as authors, STRING_AGG(DISTINCT(g.genre), %s) " +
             "as genres FROM books b " +
@@ -51,11 +52,16 @@ class DataManager:
             "left join book_genres bg on b.id = bg.book_id " +
             "left join genres g on g.id = bg.genre_id " +
             "where b.id = %s " +
-            "group by b.id;", (DataManager.AGGREGATED_VALUE_SEPARATOR, DataManager.AGGREGATED_VALUE_SEPARATOR, book_id))
+            "group by b.id " +
+            ") " +
+            "update books b set views = b.views + 1 " +
+            "from found_book " +
+            "where b.id = found_book.id " +
+            "returning found_book.*", (DataManager.AGGREGATED_VALUE_SEPARATOR, DataManager.AGGREGATED_VALUE_SEPARATOR, book_id))
         result = self._cur.fetchone()
         if not result:
             return None
-
+        self._connection.commit()
         result["authors"] = result["authors"].split(
             DataManager.AGGREGATED_VALUE_SEPARATOR)
         result["genres"] = result["genres"].split(
