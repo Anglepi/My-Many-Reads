@@ -252,3 +252,11 @@ class DataManager:
         self._connection.commit()
         result = self._cur.fetchone()
         return True if result else False
+
+    def get_book_stats(self, book_id: int) -> dict:
+        self._cur.execute("select b.title, b.views, AVG(le.score) as score " +
+                          "from books b " +
+                          "left join library_entries le on b.id = le.book_id " +
+                          "where b.id = %s " +
+                          "group by b.id ", (book_id,))
+        return self._cur.fetchone()
