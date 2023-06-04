@@ -396,3 +396,29 @@ def test_recommendations_from_library_not_found():
 
     # Then
     check_response(response, 404, expected_response)
+
+
+def test_get_book_stats():
+    # Given
+    expected_response = {"title": "A book", "score": 5.0, "views": 1}
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get(
+            "/books/stats/1")
+
+    # Then
+    check_response(response, 200, expected_response)
+
+
+def test_get_book_stats_not_exists():
+    # Given
+    expected_response = {"error": "Book not found"}
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get(
+            "/books/stats/1434")
+
+    # Then
+    check_response(response, 404, expected_response)
