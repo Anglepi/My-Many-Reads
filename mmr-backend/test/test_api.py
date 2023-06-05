@@ -406,7 +406,7 @@ def test_get_book_stats():
     # When
     with TestClient(mmr) as client:
         response = client.get(
-            "/books/stats/1")
+            "/stats/books/1")
 
     # Then
     check_response(response, 200, expected_response)
@@ -419,7 +419,7 @@ def test_get_book_stats_not_exists():
     # When
     with TestClient(mmr) as client:
         response = client.get(
-            "/books/stats/1434")
+            "/stats/books/1434")
 
     # Then
     check_response(response, 404, expected_response)

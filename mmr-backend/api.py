@@ -146,10 +146,16 @@ async def add_user_recommendation(book_id1: int, book_id2: int, user: str, comme
 #
 
 
-@mmr.get("/books/stats/{book_id}")
+@mmr.get("/stats/books/{book_id}")
 async def get_book_stats(book_id: int, response: Response) -> Optional[dict]:
     stats: Optional[dict] = data_manager.get_book_stats(book_id)
     if not stats:
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"error": "Book not found"}
+    return stats
+
+
+@mmr.get("/stats/genres")
+async def get_genres_stats() -> Optional[dict]:
+    stats: Optional[dict] = data_manager.get_genres_stats()
     return stats
