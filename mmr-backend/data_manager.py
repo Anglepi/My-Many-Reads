@@ -261,3 +261,14 @@ class DataManager:
                           "where b.id = %s " +
                           "group by b.id ", (book_id,))
         return self._cur.fetchone()
+
+    def get_genres_stats(self) -> dict:
+        self._cur.execute("select g.genre, sum(b.views) as views, coalesce(AVG(le.score),0) as score, count(distinct l.owner) as readers " +
+                          "from books b " +
+                          "left join library_entries le on b.id = le.book_id " +
+                          "left join libraries l on l.id = le.library_id " +
+                          "left join book_genres bg on bg.book_id = b.id " +
+                          "left join genres g on g.id = bg.genre_id " +
+                          "group by g.genre " +
+                          "order by views desc")
+        return self._cur.fetchone()
