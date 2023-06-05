@@ -400,7 +400,8 @@ def test_recommendations_from_library_not_found():
 
 def test_get_book_stats():
     # Given
-    expected_response = {"title": "A book", "score": 5.0, "views": 1}
+    expected_response = {"title": "A book",
+                         "score": 5.0, "views": 1, "readers": 1}
 
     # When
     with TestClient(mmr) as client:
