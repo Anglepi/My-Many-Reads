@@ -139,3 +139,19 @@ class DataManager:
             return True
 
         return False
+
+    def get_book_stats(self, book_id: int) -> dict:
+        return {"title": "A book", "score": 5.0, "views": 1, "readers": 1} if book_id == 1 else None
+
+    def get_genres_stats(self) -> dict:
+        return [{'genre': 'Action', 'views': 1, 'score': 5.0, 'readers': 1},
+                {'genre': 'Fantasy', 'views': 1,
+                 'score': 5.0, 'readers': 1},
+                {'genre': 'Manga', 'views': 0, 'score': 0, 'readers': 0},
+                {'genre': 'Science', 'views': 0,
+                 'score': 0, 'readers': 0},
+                {'genre': 'Thriller', 'views': 0,
+                 'score': 0, 'readers': 0},
+                {'genre': 'Historical', 'views': 0,
+                 'score': 0, 'readers': 0},
+                {'genre': 'Art', 'views': 0, 'score': 0, 'readers': 0}]
