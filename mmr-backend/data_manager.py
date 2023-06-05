@@ -271,4 +271,4 @@ class DataManager:
                           "left join genres g on g.id = bg.genre_id " +
                           "group by g.genre " +
                           "order by views desc")
-        return self._cur.fetchone()
+        return self._cur.fetchall()
