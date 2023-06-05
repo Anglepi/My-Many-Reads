@@ -423,3 +423,25 @@ def test_get_book_stats_not_exists():
 
     # Then
     check_response(response, 404, expected_response)
+
+
+def test_get_genres_stats():
+    # Given
+    expected_response = [{'genre': 'Action', 'views': 1, 'score': 5.0, 'readers': 1},
+                         {'genre': 'Fantasy', 'views': 1,
+                             'score': 5.0, 'readers': 1},
+                         {'genre': 'Manga', 'views': 0, 'score': 0, 'readers': 0},
+                         {'genre': 'Science', 'views': 0,
+                             'score': 0, 'readers': 0},
+                         {'genre': 'Thriller', 'views': 0,
+                             'score': 0, 'readers': 0},
+                         {'genre': 'Historical', 'views': 0,
+                             'score': 0, 'readers': 0},
+                         {'genre': 'Art', 'views': 0, 'score': 0, 'readers': 0}]
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get("/stats/genres")
+
+    # Then
+    check_response(response, 200, expected_response)
