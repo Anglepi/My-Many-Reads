@@ -155,3 +155,33 @@ class DataManager:
                 {'genre': 'Historical', 'views': 0,
                  'score': 0, 'readers': 0},
                 {'genre': 'Art', 'views': 0, 'score': 0, 'readers': 0}]
+
+    def get_top_books(self, criteria: str) -> Optional[dict]:
+        if criteria == "popularity":
+            return [
+                {'id': 1, 'isbn': '99921-58-10-7', 'title': 'A book', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+                 'publishing_date': '2017-10-28', 'edition': '1st Edition', 'score': 5.0, 'authors': 'Cervantes', 'genres': 'Action, Fantasy'},
+                {'id': 2, 'isbn': '9971-5-0210-0', 'title': 'A book: Reloaded', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+                 'publishing_date': '2018-10-28', 'edition': 'Special anniversary edition', 'score': 0, 'authors': 'Cervantes, Manuel', 'genres': 'Action, Fantasy'},
+                {'id': 3, 'isbn': '0-9752298-0-X', 'title': 'A book: Revoluitions', 'synopsis': 'Some random descriptivie text about the book',
+                 'publisher': 'Nova editorial', 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Cervantes', 'genres': 'Action, Fantasy'},
+                {'id': 4, 'isbn': '960-425-059-0', 'title': 'Recommendations Paradise', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+                 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Ángel Píñar', 'genres': 'Fantasy, Historical, Science'},
+                {'id': 5, 'isbn': '80-902734-1-6', 'title': 'The Spanish Omelette Hero', 'synopsis': 'Some random descriptivie text about the book',
+                 'publisher': 'Nova editorial', 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Ángel Píñar', 'genres': 'Art, Manga, Thriller'}
+            ]
+        elif criteria == "score":
+            return [
+                {'id': 1, 'isbn': '99921-58-10-7', 'title': 'A book', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+                 'publishing_date': '2017-10-28', 'edition': '1st Edition', 'score': 5.0, 'authors': 'Cervantes', 'genres': 'Action, Fantasy'},
+                {'id': 2, 'isbn': '9971-5-0210-0', 'title': 'A book: Reloaded', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+                 'publishing_date': '2018-10-28', 'edition': 'Special anniversary edition', 'score': 0, 'authors': 'Cervantes, Manuel', 'genres': 'Action, Fantasy'},
+                {'id': 3, 'isbn': '0-9752298-0-X', 'title': 'A book: Revoluitions', 'synopsis': 'Some random descriptivie text about the book',
+                 'publisher': 'Nova editorial', 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Cervantes', 'genres': 'Action, Fantasy'},
+                {'id': 4, 'isbn': '960-425-059-0', 'title': 'Recommendations Paradise', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+                 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Ángel Píñar', 'genres': 'Fantasy, Historical, Science'},
+                {'id': 5, 'isbn': '80-902734-1-6', 'title': 'The Spanish Omelette Hero', 'synopsis': 'Some random descriptivie text about the book',
+                 'publisher': 'Nova editorial', 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Ángel Píñar', 'genres': 'Art, Manga, Thriller'}
+            ]
+        else:
+            return None
