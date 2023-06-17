@@ -426,6 +426,8 @@ Por desgracia, a pesar de ser una gran opción que acompaño a prácticamente to
 
 Una de estas es \href{https://supabase.com/}{supabase}, cuyo plan gratuito es más limitado que el de \href{https://bit.io/}{\textit{bit.io}}, pero aún así suficiente para el desarrollo del proyecto. Adicionalmente, su documentación es ligeramente menos atractiva y algo más desorganizada. Ofrecen un módulo propio para realizar conexión y consultas a sus bases de datos, siguiendo una filosofía de programación funcional, pero por suerte no es necesaria, y simplemente actualizando los datos de conexión en las variables de entorno, \textit{My Many Reads} funcionó con normalidad.
 
+Esta experiencia lleva a la reflexión de otro de los problemas que conlleva la elección de una pequeña plataforma de servicios, y es que la situación de estas es bastante volátil, pues pueden ser absorbidas por otras más grandes como este caso en cuanto comienzan a destacar y ofrecer un buen servicio, o por mala fortuna económica no les es posible seguir ofreciendo servicios.
+
 \subsubsection{Estructura de la base de datos}
 
 La estructura de la base de datos debe definirse atendiendo a todas las posibles restricciones de información, además de demostrando una estructura lógica que represente adecuadamente las diferentes entidades almacenadas y las relaciones entre éstas. En el \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/init_db.sql}{repositorio} se encuentra el script construido para crear las diferentes tablas, relaciones, y algún que otro dato de prueba.
