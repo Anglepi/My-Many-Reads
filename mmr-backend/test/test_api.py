@@ -396,3 +396,113 @@ def test_recommendations_from_library_not_found():
 
     # Then
     check_response(response, 404, expected_response)
+
+
+def test_get_book_stats():
+    # Given
+    expected_response = {"title": "A book",
+                         "score": 5.0, "views": 1, "readers": 1}
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get(
+            "/stats/books/1")
+
+    # Then
+    check_response(response, 200, expected_response)
+
+
+def test_get_book_stats_not_exists():
+    # Given
+    expected_response = {"error": "Book not found"}
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get(
+            "/stats/books/1434")
+
+    # Then
+    check_response(response, 404, expected_response)
+
+
+def test_get_genres_stats():
+    # Given
+    expected_response = [{'genre': 'Action', 'views': 1, 'score': 5.0, 'readers': 1},
+                         {'genre': 'Fantasy', 'views': 1,
+                             'score': 5.0, 'readers': 1},
+                         {'genre': 'Manga', 'views': 0, 'score': 0, 'readers': 0},
+                         {'genre': 'Science', 'views': 0,
+                             'score': 0, 'readers': 0},
+                         {'genre': 'Thriller', 'views': 0,
+                             'score': 0, 'readers': 0},
+                         {'genre': 'Historical', 'views': 0,
+                             'score': 0, 'readers': 0},
+                         {'genre': 'Art', 'views': 0, 'score': 0, 'readers': 0}]
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get("/stats/genres")
+
+    # Then
+    check_response(response, 200, expected_response)
+
+
+def test_get_top_books_views():
+    # Given
+    expected_response = [
+        {'id': 1, 'isbn': '99921-58-10-7', 'title': 'A book', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+            'publishing_date': '2017-10-28', 'edition': '1st Edition', 'score': 5.0, 'authors': 'Cervantes', 'genres': 'Action, Fantasy'},
+        {'id': 2, 'isbn': '9971-5-0210-0', 'title': 'A book: Reloaded', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+         'publishing_date': '2018-10-28', 'edition': 'Special anniversary edition', 'score': 0, 'authors': 'Cervantes, Manuel', 'genres': 'Action, Fantasy'},
+        {'id': 3, 'isbn': '0-9752298-0-X', 'title': 'A book: Revoluitions', 'synopsis': 'Some random descriptivie text about the book',
+         'publisher': 'Nova editorial', 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Cervantes', 'genres': 'Action, Fantasy'},
+        {'id': 4, 'isbn': '960-425-059-0', 'title': 'Recommendations Paradise', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+         'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Ángel Píñar', 'genres': 'Fantasy, Historical, Science'},
+        {'id': 5, 'isbn': '80-902734-1-6', 'title': 'The Spanish Omelette Hero', 'synopsis': 'Some random descriptivie text about the book',
+            'publisher': 'Nova editorial', 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Ángel Píñar', 'genres': 'Art, Manga, Thriller'}
+    ]
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get(
+            "/stats/top/popularity")
+
+    # Then
+    check_response(response, 200, expected_response)
+
+
+def test_get_top_books_score():
+    # Given
+    expected_response = [
+        {'id': 1, 'isbn': '99921-58-10-7', 'title': 'A book', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+            'publishing_date': '2017-10-28', 'edition': '1st Edition', 'score': 5.0, 'authors': 'Cervantes', 'genres': 'Action, Fantasy'},
+        {'id': 2, 'isbn': '9971-5-0210-0', 'title': 'A book: Reloaded', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+         'publishing_date': '2018-10-28', 'edition': 'Special anniversary edition', 'score': 0, 'authors': 'Cervantes, Manuel', 'genres': 'Action, Fantasy'},
+        {'id': 3, 'isbn': '0-9752298-0-X', 'title': 'A book: Revoluitions', 'synopsis': 'Some random descriptivie text about the book',
+         'publisher': 'Nova editorial', 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Cervantes', 'genres': 'Action, Fantasy'},
+        {'id': 4, 'isbn': '960-425-059-0', 'title': 'Recommendations Paradise', 'synopsis': 'Some random descriptivie text about the book', 'publisher': 'Nova editorial',
+         'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Ángel Píñar', 'genres': 'Fantasy, Historical, Science'},
+        {'id': 5, 'isbn': '80-902734-1-6', 'title': 'The Spanish Omelette Hero', 'synopsis': 'Some random descriptivie text about the book',
+            'publisher': 'Nova editorial', 'publishing_date': '2019-10-28', 'edition': '5th edition', 'score': 0, 'authors': 'Ángel Píñar', 'genres': 'Art, Manga, Thriller'}
+    ]
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get(
+            "/stats/top/score")
+
+    # Then
+    check_response(response, 200, expected_response)
+
+
+def test_get_top_books_bad_criteria():
+    # Given
+    expected_response = {"error": "Invalid criteria"}
+
+    # When
+    with TestClient(mmr) as client:
+        response = client.get(
+            "/stats/top/badCriteria")
+
+    # Then
+    check_response(response, 400, expected_response)

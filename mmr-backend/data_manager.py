@@ -10,6 +10,7 @@ from os import environ
 
 class DataManager:
     AGGREGATED_VALUE_SEPARATOR = ';'
+    COMMA_SEPARATOR = ', '
 
     def __init__(self) -> None:
         self._connection = psycopg2.connect(host=environ.get("HOST"),
@@ -252,3 +253,47 @@ class DataManager:
         self._connection.commit()
         result = self._cur.fetchone()
         return True if result else False
+
+    def get_book_stats(self, book_id: int) -> dict:
+        self._cur.execute("select b.title, b.views, AVG(le.score) as score, count(distinct l.owner) as readers " +
+                          "from books b " +
+                          "left join library_entries le on b.id = le.book_id " +
+                          "left join libraries l on l.id = le.library_id " +
+                          "where b.id = %s " +
+                          "group by b.id ", (book_id,))
+        return self._cur.fetchone()
+
+    def get_genres_stats(self) -> dict:
+        self._cur.execute("select g.genre, sum(b.views) as views, coalesce(AVG(le.score),0) as score, count(distinct l.owner) as readers " +
+                          "from books b " +
+                          "left join library_entries le on b.id = le.book_id " +
+                          "left join libraries l on l.id = le.library_id " +
+                          "left join book_genres bg on bg.book_id = b.id " +
+                          "left join genres g on g.id = bg.genre_id " +
+                          "group by g.genre " +
+                          "order by views desc")
+        return self._cur.fetchall()
+
+    def get_top_books(self, criteria: str) -> Optional[dict]:
+        order_statement: str
+        if criteria == "popularity":
+            order_statement = "views"
+        elif criteria == "score":
+            order_statement = "score"
+        else:
+            return None
+
+        self._cur.execute(
+            "SELECT b.id, b.isbn, b.title, b.synopsis, b.publisher, b.publishing_date, b.edition, coalesce(AVG(le.score),0) as score, " +
+            "STRING_AGG(DISTINCT(a.name), %s) as authors, STRING_AGG(DISTINCT(g.genre), %s) " +
+            "as genres FROM books b " +
+            "left join authored ad on b.id = ad.book_id " +
+            "left join authors a on ad.author_id = a.id " +
+            "left join book_genres bg on b.id = bg.book_id " +
+            "left join genres g on g.id = bg.genre_id " +
+            "left join library_entries le on b.id = le.book_id " +
+            "left join libraries l on l.id = le.library_id " +
+            "group by b.id " +
+            "order by "+order_statement+" desc", (DataManager.COMMA_SEPARATOR, DataManager.COMMA_SEPARATOR))
+
+        return self._cur.fetchall()
