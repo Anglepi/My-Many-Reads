@@ -472,8 +472,6 @@ La conexión permite instanciar un objeto \textit{cursor} a través del cual se 
 
 A través de la función \textit{execute} del cursor se envía la consulta, con sus parámetros, a la base de datos. Esta función asegura que los parámetros enviados estén correctamente tratados para evitar ataques tipo \textit{SQL Injection}, por lo que no es necesario preocuparse por esto. Tras lanzar esta consulta, se obtienen los resultados a través de funciones \textit{fetch} como \textit{fetchAll} que devuelve todas las tuplas, o \textit{fetchOne} que las devuelve de una en una. Hay que mencionar que los efectos de manipulaciones de datos (como sentencias \textit{insert} o \textit{update}) se perderán al cerrar la conexión si no se llama a la función \textit{commit} o si la conexión se establece en modo \textit{``autocommit''}.
 
-Poner cosas de los ORM
-
 \subsection{Sistema de recomendaciones}
 
 Este sistema es uno de los puntos más importantes del proyecto, pues es el que más atractivo aporta con respecto a los usuarios. Se compone, básicamente, de dos subsistemas: recomendaciones automáticas basadas en librerías y recomendaciones creadas por usuarios.
