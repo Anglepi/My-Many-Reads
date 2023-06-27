@@ -1,3 +1,6 @@
+install:
+	poetry install
+
 start:
 	POETRY_DOTENV_LOCATION="$(shell pwd)/prod.env" poetry run uvicorn api:mmr --reload
 
