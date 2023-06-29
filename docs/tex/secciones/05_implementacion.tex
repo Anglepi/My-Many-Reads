@@ -243,7 +243,7 @@ La alternativa más prometedora que consideré fue \href{https://github.com/grap
 
 \textbf{Framework para construir la API:} \href{https://fastapi.tiangolo.com/}{\textit{FastAPI}}
 
-La naturaleza de este proyecto hace que lo más cómodo apropiado sea construir una API RESTful, ya que es más flexible y ligero que su alternativa principal: SOAP. En contexto de REST, la información gestionada o \textit{recursos} como se les conoce en este tipo de sistema es fácilmente identificable. Además, su uso y diseño es muy fácil e inteligible. Se especifica en mayor detalle en su correspondiente sección (ver \nameref{api}).
+La naturaleza de este proyecto hace que lo más cómodo apropiado sea construir una API RESTful, ya que es más flexible y ligero que su alternativa principal: SOAP. En contexto de REST, la información gestionada o \textit{recursos} como se les conoce en este tipo de sistema es fácilmente identificable. Además, su uso y diseño es muy fácil e inteligible. Se especifica en mayor detalle en su correspondiente sección (ver \underline{\nameref{api}}).
 
 En Python existen muchas alternativas, y muy buenas, para construir una API. Todas parecen competir entre ellas en cuanto a velocidad, pues se publicitan mencionándola continuamente, pero en este caso también quise tener en cuenta la comodidad del desarrollo.
 
@@ -440,11 +440,11 @@ Nótese que el identificador del libro no es el ISBN, como uno podría esperar. 
 
 \subsubsection{Gestor de datos}
 
-La primera implementación de la API se introdujo en el segundo PMV (ver \nameref{pmv2}). En este momento, al ser una fase temprana del proyecto, se carecía de una base de datos, por lo que para poner este código a prueba se introdujeron datos de prueba y lógica en la propia API, aunque esto incumpla el principio de responsabilidad única.
+La primera implementación de la API se introdujo en el segundo PMV (ver \underline{\nameref{pmv2}}). En este momento, al ser una fase temprana del proyecto, se carecía de una base de datos, por lo que para poner este código a prueba se introdujeron datos de prueba y lógica en la propia API, aunque esto incumpla el principio de responsabilidad única.
 
 En esta primera versión de la API, cada \textit{endpoint} consultaba los datos almacenados en una variable global, realizaba las operaciones necesarias sobre estos y devolvía la respuesta con el mero objetivo de pasar los tests, pues en este momento no había base de datos como para ofrecer una funcionalidad real. Siguiendo el principio de responsabilidad única, el único trabajo del que debería encargarse la API es de recibir peticiones, delegar las acciones requeridas a otros módulos y devolver la respuesta correspondiente.
 
-Fue a continuación, en el tercer PMV (ver \nameref{pmv3}) cuando se trabajó en solventar esta situación. Se contemplaban dos posibilidades, una de ellas siendo una implementación tradicional consistente en una conexión a una base de datos y procesamiento de consultas, y otra de más alto nivel, usando algún ORM (\textit{Object-Relational Mapping}).
+Fue a continuación, en el tercer PMV (ver \underline{\nameref{pmv3}}) cuando se trabajó en solventar esta situación. Se contemplaban dos posibilidades, una de ellas siendo una implementación tradicional consistente en una conexión a una base de datos y procesamiento de consultas, y otra de más alto nivel, usando algún ORM (\textit{Object-Relational Mapping}).
 
 La segunda opción resulta interesante, un ORM permite asociar unos modelos de datos a una base de datos, de forma que se pueda consultar más fácilmente la información en esta a través de tus modelos de datos sin necesidad de escribir consultas tradicionales. El ORM se encarga de crear estas consultas a través de una serie de instrucciones más sencillas de emplear, consultar los datos por ti y construir las instancias con tus modelos de datos. Esto resulta en un código más sencillo de mantener y más fácil de crear, pero no todo son ventajas.
 
