@@ -301,6 +301,12 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
         \item \textit{/recommendations/\{book\_id\}}
         \item \textit{/recommendations/\{user\}/\{library\}}
     \end{itemize}
+    \item Statistics:
+    \begin{itemize}
+        \item \textit{/stats/books/\{book\_id\}}
+        \item \textit{/stats/genres}
+        \item \textit{/stats/top/\{criteria\}}
+    \end{itemize}
 \end{itemize}
 
 \textbf{POST}
@@ -471,8 +477,6 @@ En cuanto al funcionamiento, el gestor es bastante sencillo. Dispone de una seri
 La conexión permite instanciar un objeto \textit{cursor} a través del cual se realizan las consultas y se leen sus resultados. Este objeto además es configurable, y la propia librería ofrece algunas configuraciones predeterminadas. Una de estas resulta bastante útil pues permite que los resultados se obtengan en objetos tipo diccionario donde las claves indican los campos, lo cual facilita mucho la tarea de convertir la información consultada a los modelos de datos implementados.
 
 A través de la función \textit{execute} del cursor se envía la consulta, con sus parámetros, a la base de datos. Esta función asegura que los parámetros enviados estén correctamente tratados para evitar ataques tipo \textit{SQL Injection}, por lo que no es necesario preocuparse por esto. Tras lanzar esta consulta, se obtienen los resultados a través de funciones \textit{fetch} como \textit{fetchAll} que devuelve todas las tuplas, o \textit{fetchOne} que las devuelve de una en una. Hay que mencionar que los efectos de manipulaciones de datos (como sentencias \textit{insert} o \textit{update}) se perderán al cerrar la conexión si no se llama a la función \textit{commit} o si la conexión se establece en modo \textit{``autocommit''}.
-
-Poner cosas de los ORM
 
 \subsection{Sistema de recomendaciones}
 
