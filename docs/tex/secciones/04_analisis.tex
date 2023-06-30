@@ -65,25 +65,6 @@ En primer lugar, una lista de \textit{personas} aportará una idea general de qu
     \end{tabularx}
 \end{table}
 
-\begin{table}[H]
-    \centering
-    \begin{tabularx}{\columnwidth}{|l|X|}
-        \hline
-        \textbf{Nombre y edad} & Javier, 36 años. \\
-        \hline
-        \textbf{Rol} & Miembro del tribunal. \\
-        \hline
-        \textbf{Ocupación} & Profesor en la Universidad de Granada. \\
-        \hline
-        \textbf{Biografía} & Siempre llega una época en la que Javier debe dedicar más tiempo a su trabajo, leyendo todos los TFG y TFM que le han sido asignados. Siempre muestra curiosidad por éstos, ya que no es raro encontrar alguno del que aprender algo nuevo, conocer nuevos puntos de vista o metodologías, aunque la carga de trabajo hace que le cueste un esfuerzo adicional realizar estas revisiones. \\
-        \hline
-        \textbf{Temores} & Lo que Javier más teme encontrarse es una documentación desorganizada, con un pobre nivel de expresión o llena de información innecesaria o irrelevante, sin unas fuentes fiables bien indicadas, ya que se tratará de un proyecto más difícil de estudiar y con menor valor. \\
-        \hline
-        \textbf{Necesidades} & Quiere una documentación organizada y clara, que demuestre buenos análisis para el problema a resolver y proponga soluciones de valor y justificadas. \\
-        \hline
-    \end{tabularx}
-\end{table}
-
 \subsection{\textit{User journeys}}
 
 Para crear una biblioteca y añadir libros:
@@ -216,3 +197,27 @@ A partir de este momento se gestionará la información de manera apropiada, en 
 Esto supone un problema, puesto que toda esta información resulta de especial utilidad para la plataforma. Por una parte, dado su carácter social, tendría un impacto negativo la sensación de ausencia o decrecimiento de actividad de otros usuarios, pero por otro lado (y puede que más importante), el sistema de recomendaciones se vería afectado negativamente dado que depende, en parte, de la información generada por usuarios para generar mejores recomendaciones.
 
 Para solventar esta problemática, se propone que la tarea de eliminar esta información suponga, en casos pertinentes, desvincularla totalmente de los usuarios creadores con el fin de que dicha información siga aportando utilidad a la plataforma. Obviamente, en el caso de datos de carácter personal si los hubiere, esta información será eliminada totalmente.
+
+\subsection{\href{https://github.com/Anglepi/My-Many-Reads/milestone/4}{PMV-4}. Recolectar y ofrecer estadísticas}
+
+\subsubsection{Requisitos funcionales}
+\begin{itemize}
+    \item RF4-1 El sistema debe permitir la consulta de visitas y nota media de libros.
+    \item RF4-2 El sistema debe permitir la consulta de popularidad de géneros.
+    \item RF4-3 El sistema debe permitir consultar un \textit{top} de libros según sus visitas o su nota media.
+\end{itemize}
+
+\subsubsection{Requisitos de datos}
+\begin{itemize}
+    \item RD4-1 Se debe almacenar el número de visitas realizadas a cada libro.
+\end{itemize}
+
+El proyecto debe tener algún elemento que le permita mantenerse. En este caso, se trata de información y estadísticas de uso, que se puede emplear en fines comerciales al visibilizar el estado del mercado actual indicando las tendencias más populares.
+
+En este punto el sistema ya cuenta con las puntuaciones que los usuarios establecen en los libros a través de sus bibliotecas, por lo tanto el siguiente paso es agrupar todas estas puntuaciones para obtener una media referente a cada libro. Esto es algo que mediante consultas se puede conseguir, por lo que no se requieren cambios en la estructura de la base de datos.
+
+Por otra parte se encuentra la popularidad, que consiste en el número de visitas que recibe cada libro. Esta información no se encuentra en la base de datos, por lo que habrá que editar la estructura de esta para incluirla. Adicionalmente, habrá que incluir alguna funcionalidad que incremente el número de visitas de un libro con cada consulta. Esto se puede lograr, dependiendo la base de datos, con operaciones o triggers definidos en ésta, lo cual facilita la lógica de uso de este proceso, o mediante la redefinición de la consulta empleada para solicitar los datos de un libro, logrando que en este momento también se incrementen las visitas. Dada la volatilidad experimentada en el sistema externo de base de datos, que se comentará en la sección de implementación. La segunda opción parece más sensata.
+
+Una vez obtenido cierto control sobre la información deseada, hay que ofrecer la posibilidad de consultarla en formatos que puedan resultar interesantes. Una selección de formatos interesantes incluye, además de la más básica consulta de un libro mostrando su puntuación media y visitas, un \textit{top} de géneros más populares y un \textit{top} de libros según visitas o popularidad.
+
+Este PMV está establecido principalmente como un primer paso hacia la satisfacción de los objetivos propuestos para los \href{https://github.com/Anglepi/My-Many-Reads/blob/main/docs/md/personas/information-consumer.md}{usuarios consumidores de información generada}.

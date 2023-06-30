@@ -1,3 +1,6 @@
+install:
+	poetry install
+
 start:
 	POETRY_DOTENV_LOCATION="$(shell pwd)/prod.env" poetry run uvicorn api:mmr --reload
 
@@ -21,6 +24,7 @@ doc:
 	cd docs/tex/; \
 	pdflatex proyecto.tex; \
 	bibtex proyecto; \
+	pdflatex proyecto.tex; \
 	pdflatex proyecto.tex;
 	mv docs/tex/proyecto.pdf .
 

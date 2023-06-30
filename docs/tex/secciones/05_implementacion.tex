@@ -197,6 +197,8 @@ En cuanto a uso, comandos y acciones gestionadas, es muy similar a otros como \t
 
 Su uso surgió como una \href{https://github.com/Anglepi/My-Many-Reads/pull/39#discussion_r974230463}{\textit{review action}} del primer \textit{pull request}, puesto que antes usaba el clásico \textit{requirements.txt} y actualmente no se considera la mejor práctica.
 
+Como nota adicional, la versión concreta de \textit{Poetry} empleada es la 1.12.1. Se ha detectado \href{https://github.com/Anglepi/My-Many-Reads/issues/125}{un problema} que se debe al tener instalada una versión de \textit{Poetry} anterior a la 1.12.0, ya que uno de los \href{https://python-poetry.org/blog/announcing-poetry-1.2.0/}{\textit{breaking changes} de esta versión}, que es la inclusión de grupos de dependencias que permite indicar, por ejemplo, una lista de dependencias exclusiva para el desarrollo y totalmente innecesaria para la publicación del proyecto, es necesario ya que este proyecto incluye dependencias específicas y únicas para el desarrollo.
+
 \subsection{\textit{Test framework.}}
 
 Existen muchos marcos de test diferentes, cada uno de ellos con fortalezas y debilidades además de otras características que aportan atractivo según la metodología y mentalidad con la que se enfoque el desarrollo.
@@ -300,6 +302,12 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \begin{itemize}
         \item \textit{/recommendations/\{book\_id\}}
         \item \textit{/recommendations/\{user\}/\{library\}}
+    \end{itemize}
+    \item Statistics:
+    \begin{itemize}
+        \item \textit{/stats/books/\{book\_id\}}
+        \item \textit{/stats/genres}
+        \item \textit{/stats/top/\{criteria\}}
     \end{itemize}
 \end{itemize}
 
@@ -471,8 +479,6 @@ En cuanto al funcionamiento, el gestor es bastante sencillo. Dispone de una seri
 La conexión permite instanciar un objeto \textit{cursor} a través del cual se realizan las consultas y se leen sus resultados. Este objeto además es configurable, y la propia librería ofrece algunas configuraciones predeterminadas. Una de estas resulta bastante útil pues permite que los resultados se obtengan en objetos tipo diccionario donde las claves indican los campos, lo cual facilita mucho la tarea de convertir la información consultada a los modelos de datos implementados.
 
 A través de la función \textit{execute} del cursor se envía la consulta, con sus parámetros, a la base de datos. Esta función asegura que los parámetros enviados estén correctamente tratados para evitar ataques tipo \textit{SQL Injection}, por lo que no es necesario preocuparse por esto. Tras lanzar esta consulta, se obtienen los resultados a través de funciones \textit{fetch} como \textit{fetchAll} que devuelve todas las tuplas, o \textit{fetchOne} que las devuelve de una en una. Hay que mencionar que los efectos de manipulaciones de datos (como sentencias \textit{insert} o \textit{update}) se perderán al cerrar la conexión si no se llama a la función \textit{commit} o si la conexión se establece en modo \textit{``autocommit''}.
-
-Poner cosas de los ORM
 
 \subsection{Sistema de recomendaciones}
 
