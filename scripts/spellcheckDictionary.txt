@@ -106,3 +106,5 @@ TempSection
 PoC
 complementación
 backend
+Pydantic
+jsonschema
