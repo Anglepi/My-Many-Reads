@@ -24,6 +24,7 @@ doc:
 	cd docs/tex/; \
 	pdflatex proyecto.tex; \
 	bibtex proyecto; \
+	pdflatex proyecto.tex; \
 	pdflatex proyecto.tex;
 	mv docs/tex/proyecto.pdf .
 
