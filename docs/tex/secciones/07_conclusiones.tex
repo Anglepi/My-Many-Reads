@@ -1,1 +1,80 @@
-\chapter{Conclusiones y trabajos futuros}
+\chapter{Conclusiones, estado actual y futuro del proyecto}
+
+En este último capítulo se recogerán las conclusiones obtenidas tras el desarrollo del proyecto hasta este punto, se resumirá el estado actual, con todas las características implementadas y se comentarán los pasos a seguir en etapas futuras de desarrollo.
+
+\section{Conclusiones}
+
+No existe una razón concreta por la que yo quise realizar un proyecto relacionado con libros, sino más bien mi intención fue la de poner a prueba mi capacidad para organizar un proyecto, así como emplear tecnologías que en mi trabajo no uso, con el fin de aprender un poco más y salir de mi zona de comfort.
+
+Gracias a esto he aprendido bastante, y no solo con lo finalmente implementado en el proyecto sino con las numerosas alternativas que se consideraron y se pusieron a prueba en pequeños PoC (\textit{Proof of Concept}). Esto me ha permitido hacer una pequeña visita al estado de algunas tecnologías que se usan actualmente y me ha permitido contrastarlo con mi conocimiento previo, por lo que ahora me veo con una mejor capacidad de toma de decisiones al haber explorado más a fondo nuevas opciones.
+
+También me ha permitido reafirmar algunas sospechas sobre ciertas formas de organizar el trabajo. Comencé pensando, erróneamente, que al ser un único desarrollador, el tamaño de las epopeyas y tareas refinadas debía más pequeño. Tras un primer intento de aplicar esta filosofía me di cuenta de que los costes en tiempo de la gestión administrativa de estas tareas empezaban a ser bastante altos en proporción al tiempo necesario para resolver dichas tareas, es decir, programar.
+
+Por otra parte, los beneficios de esta gestión administrativa tienen menos impacto al tratarse de un trabajo en solitario. Al ser un único desarrollador, lo más común es tener el conocimiento y los objetivos de cada historia bastante claros, y parte de la intención de refinar y explicar apropiadamente cada una de las tareas a desarrollar es que otros desarrolladores puedan fácilmente trabajar en ellas sin tener que buscar información adicional del contexto de la tarea.
+
+También me ha sorprendido la utilidad que tiene, a nivel de revisión, abrir \textit{pull requests} cuando solo hay un desarrollador. Aunque es cierto que mi tutor los revisaba, también me daba tiempo a ``aparcar'' la tarea un tiempo y desconectar, permitiéndome así revisar mi propio trabajo.
+
+En cuanto a tecnologías, he aprendido bastante al estudiar y poner en práctica muchas de estas a las cuales no estoy acostumbrado. Un ejemplo de esto son los \textit{ORM}, de los cuales no conocía su existencia, y me parece una opción muy buena para determinados tipos de aplicaciones. Por otra parte, \textit{python} ha sido desde siempre un lenguaje que nunca me ha terminado de gustar como ya expliqué al momento de tomar esta decisión, pero al ver la cantidad de complementación que un \textit{linter} puede aportarle, como por ejemplo las anotaciones de tipo, ha hecho que mi opinión mejore, aunque sigue teniendo características que no me terminan de gustar como la complejidad de la gestión de los entornos de desarrollo.
+
+En resumen, este proyecto me ha permitido aprender sobre diferentes tipos de bases de datos, la implementación de sistemas de integración continua, de los cuales solo me había servido de su utilidad anteriormente, y de la importancia de la configuración del entorno de desarrollo para acomodar el trabajo. Por otra parte, he podido experimentar el cierre del servicio de la base de datos que estaba usando, lo cual me ha permitido experimentar de primera mano que la migración es un proceso realmente simple, y que aunque estas situaciones resulten molestas, lidiar con ellas acaba siendo bastante sencillo.
+
+\section{Estado actual}
+
+Actualmente el proyecto se encuentra en fase de desarrollo puesto que quedan funcionalidades y partes por implementar que facilitarían en gran medida el uso de la plataforma, que no han sido incluidas por cuestiones prioritarias y se comentarán en la próxima sección.
+
+En este punto \textit{My Many Reads} cuenta con casi toda la funcionalidad de \textit{backend} implementada, lo cual incluye las siguientes características principales: sistema de recomendaciones automático, recomendaciones de usuarios, gestión de bibliotecas y recogida y consulta de estadísticas. Toda esta funcionalidad se puede poner a disposición de los usuarios a través de un servidor web, y conectará con una base de datos externa para aportar persistencia entre ejecuciones.
+
+Gracias a estas características, los usuarios pueden crear su propia biblioteca y puntuar sus lecturas, e incluso pueden crear diferentes bibliotecas según temáticas, enfoque de las lecturas o cualquier otro criterio. Adicionalmente, pueden participar activamente en el crecimiento de la plataforma creando recomendaciones entre libros, de forma que si un usuario ha leído dos libros que comparten alguna similitud, puede incluir una descripción de esta relación con el fin de ayudar al resto de usuarios.
+
+El beneficio principal de dar uso a las funcionalidades anteriormente mencionadas es el de permitir que el sistema te ofrezca recomendaciones basadas en tus gustos y que además tengan en cuenta la información generada por otros usuarios. Este, junto con la capacidad de gestión de biblioteca, son los dos beneficios más importantes por los que se estima que los usuarios se verán atraídos a la plataforma.
+
+Finalmente, gracias a la información que se genere por el uso de la plataforma, se crean unas estadísticas que resultan de utilidad para editoriales y vendedores, y esto será lo que permita a la plataforma obtener ingresos para mantenerse y, con suerte, generar beneficios.
+
+\section{El futuro del proyecto}
+
+Como todo proyecto software, su desarrollo y mantenimiento difícilmente acaba. En este caso, como ya se ha mencionado anteriormente, \textit{My Many Reads} aún carece de características que son necesarias para alcanzar el éxito.
+
+\subsection{Búsqueda mejorada de libros}
+
+Actualmente el sistema te permite consultar el conjunto de libros o un libro específico dado su identificador, y gracias a esto se pueden cumplir los objetivos mínimos de funcionalidad.
+
+Sin embargo, lo mejor que se puede ofrecer para un sistema de búsqueda es la posibilidad de elegir un conjunto de criterios de búsqueda de relativa complejidad, que te permitan escoger géneros, autores, fechas de publicación y otros criterios para obtener los resultados.
+
+Para afrontar este problema hay que tener en cuenta una serie de puntos importantes. En primer lugar hay que definir la estructura de la petición de este tipo de consultas. Lo más apropiado sería escuchar peticiones \textit{POST} con un cuerpo concreto, ya que si los criterios fueran a definirse en la propia ruta de la API, esta sería muy complicada de manejar.
+
+El siguiente paso sería asegurarse de que el cuerpo de la petición \textit{POST} es el correcto. Validar y verificar correctamente todas las entradas de un usuario es uno de los puntos más importantes a tener en cuenta en cuanto a seguridad, ya que todo punto de entrada al sistema es susceptible de ser explotado. Para ello, cómo no, existen herramientas que facilitan la tarea, como \href{https://docs.pydantic.dev/latest/}{\textit{Pydantic}} que es la recomendada por \href{https://fastapi.tiangolo.com/tutorial/body/}{\textit{fastapi}}, o \href{https://python-jsonschema.readthedocs.io/en/stable/}{jsonschema}. 
+
+Estas herramientas te permiten definir estructuras de datos para validar información respecto a estas de forma segura, y prácticamente todas ellas tienen muy buena flexibilidad para permitir especificar un conjunto de restricciones bastante amplio, por lo que la elección de esta herramienta dependerá no tanto de lo que ofrece, si no de su forma de uso.
+
+Con esta información ya validada, habrá que construir los filtros en el lenguaje de consultas específico. Dado que actualmente se usan consultas escritas completamente por el desarrollador, esta parte requiere algo de estudio preliminar antes de elegir el enfoque a seguir. Dependiendo de la complejidad resultante permitida en estos filtros, quizás merezca la pena implementar algún módulo de \textit{Domain Specific Language} que permita fácilmente traducir la información de los filtros deseados al lenguaje de consulta. Otra opción sería refactorizar y hacer uso de algún framework de creación de consultas o incluso reconsiderar la utilización de un ORM.
+
+\subsection{Sesión de usuarios}
+
+Esta es una parte fundamental del sistema, ya que cada usuario debería ser capaz de identificarse y gestionar su propia información. Como ya he implementado varios de estos y hecho trabajos sobre ello, no es un tema que prioricé dado que ya conozco bastante sobre este tema, por lo que quise centrarme en otros aspectos del proyecto para lograr algo que aporte funcionalidad real desde el principio. Su implementación es bastante sencilla.
+
+En primer lugar, hay que decidir si se quiere recurrir a servicios de terceros para gestionar todo este proceso, ya sea con cuentas propias o siguiendo el estándar \href{https://oauth.net/2/}{\textit{OAuth}} (\textit{Open Authorization}), o si se desea implementar desde cero.
+
+El primer caso es muy sencillo, consiste en buscar una API como \href{https://auth0.com/docs/api/authentication}{\textit{auth0}} o \href{https://firebase.google.com/docs/auth?hl=es-419}{\textit{Firebase Authentication}} y servirse de sus funciones de identificación ya implementadas, mantenidas y gestionadas, pero que por lo general no están libres de problemas, ya que depender de un servicio externo, a la larga, no es rentable y suele costar dinero.
+
+Pero como ya he mencionado anteriormente, implementarla no es realmente complicado. A la hora de registrar un nuevo usuario, basta con tratar con un \textit{hash} de su contraseña y su nombre de usuario, además de una dirección de correo electrónico como vía de comunicación con el nuevo usuario. El proceso de identificación es sencillo. Basta con buscar una entrada cuyo nombre de usuario y contraseña \textit{hasheada} coincidan.
+
+Como resultado de una autenticación exitosa, se genera y devuelve un token cifrado, que al descifrar se puede ver información como por ejemplo el nombre del usuario y la fecha y hora de expiración de esa sesión. Para generar este token de nuevo se pueden recurrir a herramientas ya implementadas, como las \href{https://jwt.io/libraries}{múltiples librerías que implementan JWT} (\textit{JSON Web Tokens}, estándares de la industria), o si tienes buena formación en el campo de la seguridad, puedes atreverte a implementar tu propia versión, pero no es lo recomendable.
+
+Este token se adjuntará a la cabecera de cada petición hecha a posteriori, y el \textit{backend} deberá verificar el correcto estado del token para permitir realizar las acciones deseadas.
+
+Por supuesto, esta es la aproximación más sencilla de gestión de sesiones, pero realmente dada la naturaleza de \textit{My Many Reads}, no es realmente necesario un control de autenticación mucho más estricto, con elementos como MFA (\textit{Multiple Factor Authentication}). Sin embargo, esto no exime a la plataforma de seguir las buenas prácticas en cuanto a gestión e identificación de usuario. Algunas de ellas son:
+
+\begin{itemize}
+    \item Longitud de clave requerida mínima y máxima determinada. Generalmente de 8 a 64 caracteres.
+    \item La clave debe contener mayúscula, minúscula, número y carácter alfanumérico.
+    \item Nunca hay que truncar ningún carácter de la clave.
+    \item Incluir un medidor de fuerza de clave es, por lo general, un buen aditivo.
+\end{itemize}
+
+\subsection{Interfaz de usuario}
+
+Finalmente, con la funcionalidad ya prácticamente completa en el \textit{backend}, solo restaría la implementación de una interfaz de usuario propia. La mejor solución para esto sería una página web, a la cual le puede seguir una aplicación móvil.
+
+Dado que el backend se ha construido de forma totalmente independiente a cualquier elemento gráfico, hay una gran libertad a la hora de escoger tecnologías con las que implementarlo. Personalmente, a mi me gustaría usar una combinación de \href{https://es.react.dev/}{\textit{React}} para el desarrollo de la lógica \textit{frontend} junto con \href{https://mui.com/}{\textit{MaterialUI}} para el aspecto visual, aunque existen muchas otras alternativas interesantes merecedoras de estudio, como \href{https://vuejs.org/}{\textit{vue}}
+
+Esta parte consistiría únicamente en consultar información al \textit{backend} a través de los endpoint ya existentes y mostrarla por pantalla, y con esto, \textit{My Many Reads} se encontraría en una fase estable de desarrollo en la que solo faltaría incluir algunas mejoras menos importantes y otras tareas de mantenimiento.

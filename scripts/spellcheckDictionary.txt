@@ -103,4 +103,17 @@ refactorizado
 Databricks
 supabase
 TempSection
+PoC
+complementación
+backend
+Pydantic
+jsonschema
+JWT
+OAuth
+auth
+hasheada
+posteriori
+MaterialUI
+frontend
+vue
 redefinición
