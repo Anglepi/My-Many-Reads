@@ -108,3 +108,8 @@ complementación
 backend
 Pydantic
 jsonschema
+JWT
+OAuth
+auth
+hasheada
+posteriori
