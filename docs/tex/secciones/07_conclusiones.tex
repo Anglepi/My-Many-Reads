@@ -34,7 +34,7 @@ Finalmente, gracias a la información que se genere por el uso de la plataforma,
 
 Como todo proyecto software, su desarrollo y mantenimiento difícilmente acaba. En este caso, como ya se ha mencionado anteriormente, \textit{My Many Reads} aún carece de características que son necesarias para alcanzar el éxito.
 
-\subsection{Busqueda mejorada de libros}
+\subsection{Búsqueda mejorada de libros}
 
 Actualmente el sistema te permite consultar el conjunto de libros o un libro específico dado su identificador, y gracias a esto se pueden cumplir los objetivos mínimos de funcionalidad.
 
@@ -42,7 +42,7 @@ Sin embargo, lo mejor que se puede ofrecer para un sistema de búsqueda es la po
 
 Para afrontar este problema hay que tener en cuenta una serie de puntos importantes. En primer lugar hay que definir la estructura de la petición de este tipo de consultas. Lo más apropiado sería escuchar peticiones \textit{POST} con un cuerpo concreto, ya que si los criterios fueran a definirse en la propia ruta de la API, esta sería muy complicada de manejar.
 
-El siguiente paso sería asegurarse de que el cuerpo de la petición \textit{POST} es el correcto. Validar y verificar correctamente todas las entradas de un usuario es uno de los puntos más importantes a tener en cuenta en cuanto a seguridad, ya que todo punto de entrada al sistema es susceptible de ser explotado. Para ello, cómo no, existen herramientas que facilitan la tarean, como \href{https://docs.pydantic.dev/latest/}{\textit{Pydantic}} que es la recomendada por \href{https://fastapi.tiangolo.com/tutorial/body/}{\textit{fastapi}}, o \href{https://python-jsonschema.readthedocs.io/en/stable/}{jsonschema}. 
+El siguiente paso sería asegurarse de que el cuerpo de la petición \textit{POST} es el correcto. Validar y verificar correctamente todas las entradas de un usuario es uno de los puntos más importantes a tener en cuenta en cuanto a seguridad, ya que todo punto de entrada al sistema es susceptible de ser explotado. Para ello, cómo no, existen herramientas que facilitan la tarea, como \href{https://docs.pydantic.dev/latest/}{\textit{Pydantic}} que es la recomendada por \href{https://fastapi.tiangolo.com/tutorial/body/}{\textit{fastapi}}, o \href{https://python-jsonschema.readthedocs.io/en/stable/}{jsonschema}. 
 
 Estas herramientas te permiten definir estructuras de datos para validar información respecto a estas de forma segura, y prácticamente todas ellas tienen muy buena flexibilidad para permitir especificar un conjunto de restricciones bastante amplio, por lo que la elección de esta herramienta dependerá no tanto de lo que ofrece, si no de su forma de uso.
 
