@@ -102,4 +102,5 @@ refactorización
 refactorizado
 Databricks
 supabase
+TempSection
 redefinición
