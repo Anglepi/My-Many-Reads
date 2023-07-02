@@ -17,7 +17,6 @@ PMV
 PMVs
 serlo
 disfrutable
-Ésto
 LaTeX
 Subtasks
 Touchpoints
