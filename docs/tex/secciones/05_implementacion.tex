@@ -1,6 +1,6 @@
 \chapter{Implementación}
 
-En este capítulo se describe el proceso de implementación junto con todos los elementos en los que éste se apoya, una descripción de todas las elecciones técnicas tomadas junto con su justificación.
+En este capítulo se describe el proceso de implementación junto con todos los elementos en los que este se apoya, una descripción de todas las elecciones técnicas tomadas junto con su justificación.
 
 En primer lugar se muestra el listado de las historias de usuario generadas junto con sus correspondientes tareas, que dan forma a las unidades de trabajo refinadas. Tras esto, se encuentran todos los dilemas tecnológicos considerados, junto con la solución seleccionada y  una lista de alternativas brevemente definidas con el fin de proveer una justificación fundada y válida de la elección tomada.
 
@@ -106,13 +106,13 @@ Un gestor de tareas permitirá automatizar ciertas tareas relacionadas con el de
 
 \textbf{Alternativa principal:} \href{https://www.pyinvoke.org/}{\textit{invoke}}.
 
-Muchas de las alternativas se investigaron una vez se tomó la elección del lenguaje de programación a usar, ya que en muchas ocasiones el gestor de tareas depende del lenguaje o funciona particularmente bien junto a éste. 
+Muchas de las alternativas se investigaron una vez se tomó la elección del lenguaje de programación a usar, ya que en muchas ocasiones el gestor de tareas depende del lenguaje o funciona particularmente bien junto a este. 
 
 En cuanto a los gestores de tareas genéricos, la mayoría los acababa descartando, principalmente debido a la sintaxis que empleaban o a que requerían la instalación de complementos adicionales que, probablemente, no usaría para otra cosa, por lo que me pareció inconveniente.
 
 \textit{Invoke} es una muy buena herramienta para gestión de tareas en Python. Mediante un fichero \textit{tasks.py} se definen las tareas a realizar, y dado que la sintaxis de python es muy conocida y para nada compleja, no es difícil de construir. Además se pueden ejecutar órdenes en la línea de comandos muy fácilmente, por lo que también es muy versátil.
 
-Muy probablemente habría sido la opción principal si se supiera desde el principio que se usaría Python para desarrollar el proyecto, dado que no tiene absolutamente nada que envidiarle a \textit{make}. Sin embargo éste se usaba desde el principio del proyecto, y dado que el cambio no aportaba ningún beneficio, se optó por descartar la opción.
+Muy probablemente habría sido la opción principal si se supiera desde el principio que se usaría Python para desarrollar el proyecto, dado que no tiene absolutamente nada que envidiarle a \textit{make}. Sin embargo este se usaba desde el principio del proyecto, y dado que el cambio no aportaba ningún beneficio, se optó por descartar la opción.
 
 \textbf{Elección final:} \href{https://www.gnu.org/software/make/}{\textit{make}}.
 
@@ -147,7 +147,7 @@ Es el editor más potente y, desgraciadamente, eso se nota cuando se utiliza en 
 
 Destaca principalmente por ofrecer de forma nativa una terminal, que aunque por defecto usa la nativa del sistema en el que se encuentre instalado, es muy sencillo instalar y usar cualquier otra. Además existe una gama muy amplia de complementos gratuitos y desarrollados por la comunidad, muy fáciles de instalar y gestionar. 
 
-El propio editor te ofrece sugerencias cuando detecta el entorno en el que estás trabajando, y ni si quiera es necesario recurrir al navegador web para consultar información de éstos o instalarlos, pues su gestor de complementos ya satisface todas estas necesidades. Algunos de estos complementos útiles para el proyecto son:
+El propio editor te ofrece sugerencias cuando detecta el entorno en el que estás trabajando, y ni si quiera es necesario recurrir al navegador web para consultar información de estos o instalarlos, pues su gestor de complementos ya satisface todas estas necesidades. Algunos de estos complementos útiles para el proyecto son:
 \begin{itemize}
     \item \href{https://marketplace.visualstudio.com/items?itemName=ms-python.python}{Python}, que ofrece características propias del lenguaje como \textit{linting}, \textit{debugging} y formateo de código.
     \item \href{https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens}{GitLens}, que aumenta las funcionalidades relacionadas con Git en el editor.
@@ -157,7 +157,7 @@ El propio editor te ofrece sugerencias cuando detecta el entorno en el que está
 
 Para esta decisión, el criterio principal es las capacidades del lenguaje en cuanto a la facilidad que ofrece para implementar las tareas necesarias (paquetes, módulos, complementos, etc.) junto con la eficiencia del mismo y la mantenibilidad a largo plazo.
 
-Por otra parte también se tiene en cuenta un componente subjetivo, pues se valora la comodidad del desarrollador con dicho lenguaje y las filosofías que éste trae consigo.
+Por otra parte también se tiene en cuenta un componente subjetivo, pues se valora la comodidad del desarrollador con dicho lenguaje y las filosofías que este trae consigo.
 
 \textbf{Alternativa:} \href{https://go.dev/}{\textit{Go}}.
 
@@ -177,7 +177,7 @@ La decisión, como se indica arriba, fue Python. Este lenguaje he de admitir que
 
 Para evitar algunos posibles errores y apoyar la producción de código más legible, he instalado en mi entorno de desarrollo el \textit{linter} \href{http://mypy-lang.org/}{\textit{mypy}}, con algunas \href{https://github.com/Anglepi/My-Many-Reads/blob/main/.mypy.ini}{reglas configuradas} para hacer la revisión más estricta. Este \textit{linter} fuerza que las funciones y argumentos tengan los tipos correctos, con lo que se consigue algo así como crear un \textit{typescript} de Python.
 
-Éste no es el único \textit{linter} viable. Una de las ventajas de Visual Studio Code es que te ofrece herramientas para seleccionar diferentes \textit{linters} y gestiona su instalación por ti, ofreciéndote las recomendaciones más populares. Cada una de estas suele destacar por centrase en algún aspecto, como por ejemplo \href{https://pypi.org/project/pylint/}{\textit{pylint}}, que se centra en la calidad del código y ofrece sugerencias para refactorizar con respecto a los estándares, y sin ningún problema se puede usar junto a \textit{mypy}, por lo que no es mala idea instalarlo también, con algo de \href{https://github.com/Anglepi/My-Many-Reads/blob/main/.pylintrc.ini}{configuración}.
+Este no es el único \textit{linter} viable. Una de las ventajas de Visual Studio Code es que te ofrece herramientas para seleccionar diferentes \textit{linters} y gestiona su instalación por ti, ofreciéndote las recomendaciones más populares. Cada una de estas suele destacar por centrase en algún aspecto, como por ejemplo \href{https://pypi.org/project/pylint/}{\textit{pylint}}, que se centra en la calidad del código y ofrece sugerencias para refactorizar con respecto a los estándares, y sin ningún problema se puede usar junto a \textit{mypy}, por lo que no es mala idea instalarlo también, con algo de \href{https://github.com/Anglepi/My-Many-Reads/blob/main/.pylintrc.ini}{configuración}.
 
 \subsection{Gestor de dependencias}
 
@@ -185,11 +185,11 @@ Esta es una de las espinitas que tengo clavadas con respecto a Python. La gesti�
 
 En cuanto a gestores de dependencias, aquellos que hayan trabajado con Python sabrán que existen una multitud de opciones diferentes, y cada cuál se escogía por mero gusto personal, por lo que por ahí circulan multitud de proyectos cada uno siendo gestionado e instalado de diferente manera.
 
-Finalmente se ha ido consensuando una buena práctica para estas gestiones, por lo que ésta ha de ser tenida en cuenta.
+Finalmente se ha ido consensuando una buena práctica para estas gestiones, por lo que esta ha de ser tenida en cuenta.
 
 \textbf{Alternativa:} \href{https://pipenv-es.readthedocs.io/es/latest/}{\textit{Pipenv}}
 
-En cuanto a uso, comandos y acciones gestionadas, es muy similar a otros como \textit{Poetry}, pero a diferencia de éste, no usa \textit{pyproject.toml}, especificado como estándar en la \href{https://peps.python.org/pep-0518/}{PEP-518}. Como no hay muchas diferencias notables entre ellas a nivel de funcionalidad, la opción quedó descartada por este último detalle, además de que las guías de la herramienta y la legibilidad del fichero \textit{pyproject.toml} me resultaron más atractivos que los de \textit{Pipenv}.
+En cuanto a uso, comandos y acciones gestionadas, es muy similar a otros como \textit{Poetry}, pero a diferencia de este, no usa \textit{pyproject.toml}, especificado como estándar en la \href{https://peps.python.org/pep-0518/}{PEP-518}. Como no hay muchas diferencias notables entre ellas a nivel de funcionalidad, la opción quedó descartada por este último detalle, además de que las guías de la herramienta y la legibilidad del fichero \textit{pyproject.toml} me resultaron más atractivos que los de \textit{Pipenv}.
 
 \textbf{Elección final:} \href{https://python-poetry.org/}{\textit{Poetry}}
 
@@ -232,7 +232,7 @@ Por otra parte está \textit{Markdown}. Se trata de un lenguaje de marcas para d
 
 La alternativa más potente es \href{https://www.antidote.info/en/}{\textit{Antidote} de \textit{Druide}}, que además de correcciones ortográficas ofrece comprobaciones gramaticales las cuales parecen ser bastante acertadas. Sin embargo, al ser una opción de pago, se ha descartado.
 
-\textit{Aspell} es un corrector ortográfico \textit{Open Source} que empleo para la corrección de mi documentación. El principal motivo de la elección de ésta es que, a parte de ser \textit{Open Source}, tiene soporte para ficheros de LaTeX. En el repositorio hay \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheck.sh}{un \textit{script}} que se encarga de su uso, apoyándose en un diccionario personalizado de \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheckDictionary.txt}{excepciones} ya que esta comprobación ortográfica es parte del proceso de integración, y si no supera esta comprobación no se permitirá la inclusión de los cambios a la rama principal.
+\textit{Aspell} es un corrector ortográfico \textit{Open Source} que empleo para la corrección de mi documentación. El principal motivo de la elección de esta es que, a parte de ser \textit{Open Source}, tiene soporte para ficheros de LaTeX. En el repositorio hay \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheck.sh}{un \textit{script}} que se encarga de su uso, apoyándose en un diccionario personalizado de \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheckDictionary.txt}{excepciones} ya que esta comprobación ortográfica es parte del proceso de integración, y si no supera esta comprobación no se permitirá la inclusión de los cambios a la rama principal.
 
 
 \section{Módulos importados}
@@ -252,7 +252,7 @@ En Python existen muchas alternativas, y muy buenas, para construir una API. Tod
 Estas son las posibles alternativas que estudié antes de tomar una decisión:
 \begin{itemize}
     \item \href{https://www.djangoproject.com/}{\textit{Django}} fue el primer \textit{framework} sobre el que me informé, pues lo había usado un poco y pensé que me podría ser de ayuda a la hora de construir un portal web en las fases posteriores del proyecto. Al investigar otras opciones lo descarté rápidamente por su sintaxis y porque transmite bastante sensación de acoplamiento entre la API y la parte web.
-    \item \href{https://flask.palletsprojects.com/en/2.2.x/}{\textit{Flask}}, del cual se habla lo suficiente como para que yo, siendo un novato en Python, haya oído hablar de éste. Su sintaxis es increíblemente sencilla y es muy fácil de instalar y usar, pero sin embargo no permite asincronía, lo cual es bastante probable que acabara convirtiéndose en una penalización notable de rendimiento.
+    \item \href{https://flask.palletsprojects.com/en/2.2.x/}{\textit{Flask}}, del cual se habla lo suficiente como para que yo, siendo un novato en Python, haya oído hablar de este. Su sintaxis es increíblemente sencilla y es muy fácil de instalar y usar, pero sin embargo no permite asincronía, lo cual es bastante probable que acabara convirtiéndose en una penalización notable de rendimiento.
     \item \href{https://quart.palletsprojects.com/en/latest/}{\textit{Quart}} es, literalmente, una reimplementación de \textit{Flask} que permite asincronía.
 \end{itemize}
 
@@ -364,7 +364,7 @@ Para encontrar los diferentes atributos de un libro que resulten de interés se 
 
 Sin olvidarnos de aquellas propiedades que nos permitan identificar libros concretos, en este caso el ISBN es un buen candidato, aunque no sea un identificativo único, si que está bien extendido y es bastante usado.
 
-En el caso de los atributos de las bibliotecas, estudiando el concepto de éstas que se ha ido formando a lo largo del análisis del problema y sus posibles soluciones, se puede llegar a la conclusión de que una biblioteca es una lista de libros con un nombre, asociada y gestionada por un usuario, que puede calificar y categorizar cada una de las entradas de la lista. Por lo tanto, la biblioteca consiste en: un nombre, un dueño, una lista cuyos elementos son un libro, una calificación y un estado.
+En el caso de los atributos de las bibliotecas, estudiando el concepto de estas que se ha ido formando a lo largo del análisis del problema y sus posibles soluciones, se puede llegar a la conclusión de que una biblioteca es una lista de libros con un nombre, asociada y gestionada por un usuario, que puede calificar y categorizar cada una de las entradas de la lista. Por lo tanto, la biblioteca consiste en: un nombre, un dueño, una lista cuyos elementos son un libro, una calificación y un estado.
 
 Para las recomendaciones, la aproximación es similar a la de las bibliotecas. Una recomendación establece una relación entre dos libros a través de una justificación escrita por un usuario. Estudiando en mayor profundidad este concepto se llega a la conclusión de que no es necesario repetir la relación entre dos libros por cada justificación de usuario, por lo que por cada relación entre libros podemos simplemente tener un listado de justificaciones de usuario.
 
@@ -395,9 +395,9 @@ Toda la funcionalidad que ofrece este módulo resulta de especial interés, por 
 En base a las necesidades del proyecto hay que decidir que tipo de base de datos resulta de mayor interés. En cuanto al tipo de base de datos, existen bastantes que destacan en función del tipo de uso que se le vaya a dar: relacionales, clave-valor, orientadas a documentos, a grafos... Cada una de estas posee unas características que las hacen más adecuadas.
 
 \begin{itemize}
-    \item Relacionales: en éstas, la información se representa en forma de tablas con diferentes columnas y filas, permitiendo relacionar diferentes tablas entre sí a través de sus campos identificadores.
+    \item Relacionales: en estas, la información se representa en forma de tablas con diferentes columnas y filas, permitiendo relacionar diferentes tablas entre sí a través de sus campos identificadores.
     \item Clave-valor: a través de una clave única se almacena la información necesaria. Cada clave almacena un valor, cuyo esquema o estructura de atributos no tiene por qué coincidir con el del resto de valores almacenados en otras claves. Se suelen usar, por ejemplo, en carritos de compra o para almacenar las sesiones de los usuarios.
-    \item Orientadas a documentos: almacena un conjunto de documentos de tipo JSON. Permite crear diferentes colecciones de documentos y predefinir un esquema con algo de flexibilidad para éstas. Este tipo de base de datos surge a raíz de las clave-valor, a las que se le añade algo de complejidad. Se suelen usar, por ejemplo, para catálogos de artículos.
+    \item Orientadas a documentos: almacena un conjunto de documentos de tipo JSON. Permite crear diferentes colecciones de documentos y predefinir un esquema con algo de flexibilidad para estas. Este tipo de base de datos surge a raíz de las clave-valor, a las que se le añade algo de complejidad. Se suelen usar, por ejemplo, para catálogos de artículos.
     \item Orientadas a grafos: se centran en almacenar las relaciones y navegar por ellas. Como su nombre indica, se pueden ver como grafos en los que sus nodos son entidades de datos y las diferentes aristas que conectan nodos como las relaciones. Son bastante frecuentes en redes sociales y algunos sistemas de recomendaciones
 \end{itemize}
 
@@ -409,7 +409,7 @@ Para explicar esto, se puede estudiar el caso de una web de artículos muy conoc
 
 Finalmente, y esta es la decisión tomada, quedan las \textbf{relacionales}. Quizás sea porque podrían categorizarse como un punto medio entre las orientadas a documentos, que se enfocan en las entidades, y las orientadas a grafos, que hacen énfasis en las relaciones. Entre los requisitos de \textit{My Many Reads} se encuentran los de ofrecer un catálogo de libros a consultar por los usuarios, sobre los cuales pueden crear sus propias colecciones, así como consultar recomendaciones, que pueden ser generadas por usuarios o por el sistema.
 
-Dada la necesidad de cumplir estos requisitos, en los que existe una importancia clara en almacenar de forma organizada una serie de entidades, y de ofrecer unas recomendaciones, se decidió optar por una base de datos relacional y dejar las recomendaciones como una característica independiente y desacoplada a la base de datos, ya que se detectaron dos posibles problemas que surgirían a raíz de usar una base de datos orientada a grafos: la posible imprecisión de las recomendaciones que ésta ofrecería y la incertidumbre de su funcionamiento con un nivel nulo o bajo de usuarios con el que todo sistema nuevo debe comenzar.
+Dada la necesidad de cumplir estos requisitos, en los que existe una importancia clara en almacenar de forma organizada una serie de entidades, y de ofrecer unas recomendaciones, se decidió optar por una base de datos relacional y dejar las recomendaciones como una característica independiente y desacoplada a la base de datos, ya que se detectaron dos posibles problemas que surgirían a raíz de usar una base de datos orientada a grafos: la posible imprecisión de las recomendaciones que esta ofrecería y la incertidumbre de su funcionamiento con un nivel nulo o bajo de usuarios con el que todo sistema nuevo debe comenzar.
 
 Esto no quiere decir que una base de datos orientada a grafos quede descartada para siempre. Llegado el momento en el que la plataforma tenga un cierto nivel de usuarios, sería de gran interés volver a estudiar esta opción para integrarla al sistema de recomendaciones automáticas.
 
@@ -438,7 +438,7 @@ Esta experiencia lleva a la reflexión de otro de los problemas que conlleva la 
 
 \subsubsection{Estructura de la base de datos}
 
-La estructura de la base de datos debe definirse atendiendo a todas las posibles restricciones de información, además de demostrando una estructura lógica que represente adecuadamente las diferentes entidades almacenadas y las relaciones entre éstas. En el \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/init_db.sql}{repositorio} se encuentra el script construido para crear las diferentes tablas, relaciones, y algún que otro dato de prueba.
+La estructura de la base de datos debe definirse atendiendo a todas las posibles restricciones de información, además de demostrando una estructura lógica que represente adecuadamente las diferentes entidades almacenadas y las relaciones entre estas. En el \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/init_db.sql}{repositorio} se encuentra el script construido para crear las diferentes tablas, relaciones, y algún que otro dato de prueba.
 
 \includegraphics[width=0.9\textwidth]{img/diagrama_bd.png}\\[1.4cm]
 
@@ -503,7 +503,7 @@ El primer punto es sencillo de tratar, con comprobar que la pareja de libros int
 
 Con respecto al segundo punto, lo ideal sería encontrar una estructura de datos predefinida que permitiera crear parejas de objetos las cuales no estuvieran ordenadas, pero no hubo mucha suerte al buscar esto para Python, por lo que simplemente se ordena la tupla al almacenarla para facilitar la comprobación.
 
-Lidiar con el tercer punto es bastante sencillo una vez se ha definido la situación en lenguaje natural. Al crear una recomendación habrá que comprobar si la pareja indicada de libros ya tenía otras recomendaciones o no. En caso afirmativo bastará con añadir el comentario especificado a ésta, y en caso negativo se creará la pareja a la que se le añadirá dicho comentario.
+Lidiar con el tercer punto es bastante sencillo una vez se ha definido la situación en lenguaje natural. Al crear una recomendación habrá que comprobar si la pareja indicada de libros ya tenía otras recomendaciones o no. En caso afirmativo bastará con añadir el comentario especificado a esta, y en caso negativo se creará la pareja a la que se le añadirá dicho comentario.
 
 Finalmente, el último punto está bastante relacionado con el anterior. De la naturaleza de estas recomendaciones se comienza a sobreentender que para cada pareja de libros existe una lista de comentarios escritos por usuarios, por lo que lo único necesario a realizar será, en el momento de añadir un nuevo comentario, comprobar que de los ya existentes la lista correspondiente ninguno pertenece al nuevo autor.
 
@@ -516,11 +516,11 @@ Para elaborar un algoritmo que pueda hacer sugerencias de manera automática par
 Este algoritmo de recomendaciones ofrece como resultado una lista de libros ordenados de mayor a menor relevancia con respecto a la biblioteca especificada. Para construir esta lista se sigue un proceso que puede dividirse en tres pasos principales:
 
 \begin{enumerate}
-    \item Se generan unas características generales de una biblioteca objetivo, agrupando todas las características relevantes de los libros que la componen con el fin de calcular la afinidad de un libro respecto a ésta. Dos de las características más evidentes de un libro que pueden usarse para esta tarea son los géneros y los autores, ya que a partir de éstas se puede definir muy bien la temática de un libro y su estilo de escritura. Para hacer esta recopilación de características, se puede realizar un conteo de todos los géneros y autores pertenecientes a cada libro, ponderando cada una de estas apariciones con un valor derivado de la puntuación que el usuario dueño de esa biblioteca ha asignado al libro en concreto, ayudando así a resaltar los géneros y autores favoritos.
+    \item Se generan unas características generales de una biblioteca objetivo, agrupando todas las características relevantes de los libros que la componen con el fin de calcular la afinidad de un libro respecto a esta. Dos de las características más evidentes de un libro que pueden usarse para esta tarea son los géneros y los autores, ya que a partir de estas se puede definir muy bien la temática de un libro y su estilo de escritura. Para hacer esta recopilación de características, se puede realizar un conteo de todos los géneros y autores pertenecientes a cada libro, ponderando cada una de estas apariciones con un valor derivado de la puntuación que el usuario dueño de esa biblioteca ha asignado al libro en concreto, ayudando así a resaltar los géneros y autores favoritos.
     \item Mediante una función capaz de comparar un libro con estas características recopiladas, se otorga una puntuación de compatibilidad de un libro objetivo con respecto a una biblioteca, que hace las veces de correlación. Esta función comparará las propiedades del libro con las de las características recogidas, siempre teniendo en cuenta que no todas estas características son igual de valiosas para este proceso. Por ejemplo, los géneros de un libro son más representativos que, por ejemplo, la editorial.
     \item Finalmente, con las características de una biblioteca y la función para puntuar libros respecto a estas se puede generar la lista de recomendaciones. Para ello, se filtra la lista de libros candidatos, pues debemos eliminar los que ya se encuentren en la biblioteca, y se puntúa cada uno de los restantes. Para construir el resultado, estos libros se ordenan por puntuación, facilitando así devolver un subconjunto de los más relevantes.
 \end{enumerate}
 
 Para medir la compatibilidad se pueden tener en cuenta una gran cantidad de propiedades de los libros, no solo géneros y autores, sino también fecha de publicación, similitudes entre las sinopsis, apariciones en bibliotecas similares de otros usuarios e incluso según las recomendaciones manuales.
 
-Conociendo ya todos estos aspectos, solo resta hacer algo de experimentación jugando con la inclusión de algunos o todos éstos parámetros y ajustando sus pesos hasta dar con un modelo satisfactorio.
+Conociendo ya todos estos aspectos, solo resta hacer algo de experimentación jugando con la inclusión de algunos o todos estos parámetros y ajustando sus pesos hasta dar con un modelo satisfactorio.

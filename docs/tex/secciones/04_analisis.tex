@@ -73,7 +73,7 @@ Para crear una biblioteca y añadir libros:
     \item \textbf{Acciones}
     \begin{enumerate}
         \item Desde la página principal, acceder a la sección de \textit{Mis bibliotecas}.
-        \item En la lista de bibliotecas, seleccionar la opción \textit{Crear nueva biblioteca}, indicando el nombre de ésta.
+        \item En la lista de bibliotecas, seleccionar la opción \textit{Crear nueva biblioteca}, indicando el nombre de esta.
         \item Con la biblioteca ya creada, acceder a la página de algún libro a través del buscador u otros medios.
         \item Desde la página del libro, buscar la opción \textit{Añadir a la biblioteca...} junto a los detalles del libro.
         \item En el menú emergente, seleccionar la nueva biblioteca.
@@ -135,7 +135,7 @@ A cada PMV planteado le corresponde un conjunto de requisitos, y dado que los PM
 
 \subsubsection{Requisitos de datos}
 \begin{itemize}
-    \item RD1-1 Almacenar libros con información básica acerca de éstos.
+    \item RD1-1 Almacenar libros con información básica acerca de estos.
     \item RD1-2 Almacenar bibliotecas, asociadas a sus dueños, formadas por una lista de entradas:
     \begin{itemize}
         \item RD1-2.1 Cada entrada estará formada por un libro, su estado y la puntuación ofrecida por el usuario.
@@ -173,7 +173,7 @@ En los futuros PMV se trabaja no solo en añadir nuevos componentes al sistema, 
 
 El objetivo de este segundo PMV es, en pocas palabras, introducir una API que publique las funcionalidades implementadas al exterior, de forma que estas sean accesibles de forma remota. El hecho de incluir un nuevo método de acceso a la funcionalidad podría no considerarse un incremento de esta, por lo que además se incluyen las recomendaciones entre dos libros generadas por usuarios, una pequeña adición que implica nuevos modelos de datos sencillos, y que aporta un componente de interés a la plataforma.
 
-Incluir la API es un paso importante a nivel arquitectónico, ya que ésta hará las veces de punto de contacto entre usuarios y/o sistemas externos con las funcionalidades de \textit{My Many Reads}, lo cual implica que cualquier funcionalidad incluida en la plataforma debe ser accesible directa o indirectamente desde la API.
+Incluir la API es un paso importante a nivel arquitectónico, ya que esta hará las veces de punto de contacto entre usuarios y/o sistemas externos con las funcionalidades de \textit{My Many Reads}, lo cual implica que cualquier funcionalidad incluida en la plataforma debe ser accesible directa o indirectamente desde la API.
 
 \subsection{\href{https://github.com/Anglepi/My-Many-Reads/milestone/5}{PMV-3}. Base de datos remota}
 
@@ -216,7 +216,7 @@ El proyecto debe tener algún elemento que le permita mantenerse. En este caso, 
 
 En este punto el sistema ya cuenta con las puntuaciones que los usuarios establecen en los libros a través de sus bibliotecas, por lo tanto el siguiente paso es agrupar todas estas puntuaciones para obtener una media referente a cada libro. Esto es algo que mediante consultas se puede conseguir, por lo que no se requieren cambios en la estructura de la base de datos.
 
-Por otra parte se encuentra la popularidad, que consiste en el número de visitas que recibe cada libro. Esta información no se encuentra en la base de datos, por lo que habrá que editar la estructura de esta para incluirla. Adicionalmente, habrá que incluir alguna funcionalidad que incremente el número de visitas de un libro con cada consulta. Esto se puede lograr, dependiendo la base de datos, con operaciones o triggers definidos en ésta, lo cual facilita la lógica de uso de este proceso, o mediante la redefinición de la consulta empleada para solicitar los datos de un libro, logrando que en este momento también se incrementen las visitas. Dada la volatilidad experimentada en el sistema externo de base de datos, que se comentará en la sección de implementación. La segunda opción parece más sensata.
+Por otra parte se encuentra la popularidad, que consiste en el número de visitas que recibe cada libro. Esta información no se encuentra en la base de datos, por lo que habrá que editar la estructura de esta para incluirla. Adicionalmente, habrá que incluir alguna funcionalidad que incremente el número de visitas de un libro con cada consulta. Esto se puede lograr, dependiendo la base de datos, con operaciones o triggers definidos en esta, lo cual facilita la lógica de uso de este proceso, o mediante la redefinición de la consulta empleada para solicitar los datos de un libro, logrando que en este momento también se incrementen las visitas. Dada la volatilidad experimentada en el sistema externo de base de datos, que se comentará en la sección de implementación. La segunda opción parece más sensata.
 
 Una vez obtenido cierto control sobre la información deseada, hay que ofrecer la posibilidad de consultarla en formatos que puedan resultar interesantes. Una selección de formatos interesantes incluye, además de la más básica consulta de un libro mostrando su puntuación media y visitas, un \textit{top} de géneros más populares y un \textit{top} de libros según visitas o popularidad.
 
