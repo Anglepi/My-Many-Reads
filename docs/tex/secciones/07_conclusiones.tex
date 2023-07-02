@@ -71,6 +71,10 @@ Por supuesto, esta es la aproximación más sencilla de gestión de sesiones, pe
     \item Incluir un medidor de fuerza de clave es, por lo general, un buen aditivo.
 \end{itemize}
 
+\subsection{Mejoras en las recomendaciones}
+
+Además de las posibles mejoras en el sistema de recomendaciones ya comentadas en su correspondiente sección, que se enfocaban en lograr unas recomendaciones más acertadas, se podría incluir la posibilidad de añadir criterios adicionales a las recomendaciones a ser generadas, como por ejemplo indicar unos géneros o autores favoritos para que tengan más peso a la hora de generar la lista de recomendaciónes, así como permitir filtrar esta una vez generada para, por ejemplo, eliminar posibles autores que no sean del agrado del usuario.
+
 \subsection{Interfaz de usuario}
 
 Finalmente, con la funcionalidad ya prácticamente completa en el \textit{backend}, solo restaría la implementación de una interfaz de usuario propia. La mejor solución para esto sería una página web, a la cual le puede seguir una aplicación móvil.
@@ -78,3 +82,5 @@ Finalmente, con la funcionalidad ya prácticamente completa en el \textit{backen
 Dado que el backend se ha construido de forma totalmente independiente a cualquier elemento gráfico, hay una gran libertad a la hora de escoger tecnologías con las que implementarlo. Personalmente, a mi me gustaría usar una combinación de \href{https://es.react.dev/}{\textit{React}} para el desarrollo de la lógica \textit{frontend} junto con \href{https://mui.com/}{\textit{MaterialUI}} para el aspecto visual, aunque existen muchas otras alternativas interesantes merecedoras de estudio, como \href{https://vuejs.org/}{\textit{vue}}
 
 Esta parte consistiría únicamente en consultar información al \textit{backend} a través de los endpoint ya existentes y mostrarla por pantalla, y con esto, \textit{My Many Reads} se encontraría en una fase estable de desarrollo en la que solo faltaría incluir algunas mejoras menos importantes y otras tareas de mantenimiento.
+
+Cabe mencionar, por último, que a la hora de preparar el diseño de la página web, se debe tener en cuenta que habrá que incluir espacios publicitarios, los cuales también habrán de implementarse junto a la lógica necesaria en el \textit{frontend}, que estos generarían ingresos que ayudan al mantenimiento del proyecto.
