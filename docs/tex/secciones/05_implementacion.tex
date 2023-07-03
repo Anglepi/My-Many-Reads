@@ -143,6 +143,7 @@ Aunque LaTeX es algo más tedioso de usar puesto que la configuración inicial e
 Por otra parte está \textit{Markdown}. Se trata de un lenguaje de marcas para dar formato al texto muy popular, el cual se encuentra cada vez en más sitios web a disposición de sus usuarios. En el caso de este proyecto, utilizo \textit{Markdown} para toda la documentación que quiero que sea visible directamente en el \href{https://github.com/Anglepi/My-Many-Reads}{repositorio del proyecto}. Dado que no existen alternativas que estén tan extendidas, realmente no tiene competencia para su uso en sitios web.
 
 \textbf{Revisión ortográfica:} \href{http://aspell.net/}{\textit{aspell}}.
+\label{aspell}
 
 La alternativa más potente es \href{https://www.antidote.info/en/}{\textit{Antidote} de \textit{Druide}}, que además de correcciones ortográficas ofrece comprobaciones gramaticales las cuales parecen ser bastante acertadas. Sin embargo, al ser una opción de pago, se ha descartado.
 
@@ -197,6 +198,25 @@ Pero esto no supone un problema, puesto que existe una tercera opción, las deno
 A continuación se ven en profundidad cada una de las tres acciones incluidas en el repositorio del proyecto.
 
 \subsection{\textit{Spellchecking}}
+
+Probablemente esta sea la más sencilla de las tres, por lo que se aprovechará esta oportunidad para explicar los conceptos básicos de una \textit{GitHub Action}.
+
+Esta se encarga de ejecutar un \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheck.sh}{\textit{script}} incluido en el repositorio que hace uso de \href[aspell]{\underline{\textit{Aspell}}} para realizar una corrección ortográfica.
+
+Al principio de su \href{https://github.com/Anglepi/My-Many-Reads/blob/main/.github/workflows/spellcheck.yml}{fichero de configuración} se define el nombre del \textit{workflow} y los momentos en los que se ejecuta. En este caso, se ejecuta tras cada \textit{push} que afecte a algún fichero relacionad con la documentación, es decir, de extension \textit{.tex} o \textit{.md}, que afecte a la definición propio \textit{workflow} o al \textit{script} encargado de la corrección ortográfica.
+
+Tras esto se definen los diferentes trabajos (\textit{jobs}) que va a ejecutar. En este caso solo es uno, ya que para diferentes trabajos, considero que es más apropiado (salvo ciertas circunstancias de dependencias) diferentes \textit{workflows} definidos en sus respectivos ficheros.
+
+Este \textit{job} en concreto se ejecutará en la última versión estable de Ubuntu, el propio workflow se encarga de este entorno de ejecución, sobre el cual se ejecutarán una serie de pasos que tienen como objetivo realizar la revisión ortográfica.
+
+\begin{enumerate}
+    \item El primer paso, uno fundamental, es descargar el repositorio en el entorno Ubuntu indicado. Para esto se emplea una \href{https://github.com/marketplace/actions/checkout}{acción de \textit{checkout}}, disponible en el \href{https://github.com/marketplace?type=actions}{\textit{marketplace}} de \textit{GitHub}. Esta acción ya se encarga de realizar todas las tareas necesarias para descargar el repositorio en el que se encuentra el \textit{workflow}.
+    \item Tras esto, se ejecuta el comando que instala aspell en el entorno, junto con sus complementos para soporte al inglés y el español.
+    \item Un paso necesario, ya que es un entorno recién creado y no configurado, es el de dar permisos de ejecución al \textit{script} encargado de la corrección ortográfica.
+    \item Finalmente, se ejecuta dicho \textit{script}, cuya salida debe ser capaz de determinar el éxito o error del \textit{workflow}, produciendo un error si encuentra palabras mal escritas.
+\end{enumerate}
+
+Cabe mencionar que no es el último paso del \textit{workflow} el que decide el resultado de este. Si un paso previo falla, el \textit{workflow} entero se marca como fallido y los pasos posteriores no son ejecutados.
 
 \subsection{Ejecución de tests}
 
