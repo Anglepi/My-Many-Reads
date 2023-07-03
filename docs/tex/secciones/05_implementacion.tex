@@ -239,6 +239,22 @@ Los tests, como ya se ha mencionado anteriormente, se ejecutan a través de \tex
 
 \subsection{Generación de la documentación}
 
+Como las otras, esta acción se encuentra definida en \href{https://github.com/Anglepi/My-Many-Reads/blob/main/.github/workflows/latex-build.yml}{su propio fichero \textit{.yml}} y se  ejecuta con cada \textit{pull request} o \textit{push} que afecte a esta o a un fichero \textit{LaTeX}.
+
+El objetivo de esta acción es generar el PDF y subirlo al repositorio como resultado de la acción. Para descargarlo, basta con consultar las acciones del repositorio, seleccionar alguna ejecución de esta, denominada \textit{Build PDF}, y ahí estará disponible el PDF para su descarga, siempre que la acción haya tenido éxito.
+
+\begin{figure}[H]
+    \includegraphics[width=0.9\textwidth]{img/artifact_download.png}\\[1.4cm]
+    \caption{Vista del resultado de una ejecución del \textit{workflow Build PDF}, donde se encuentra disponible la descarga de la documentación.}
+\end{figure}
+
+De nuevo, esta acción se ejecuta en Ubuntu, pero en este caso se usa un contenedor con una imagen que incluye la última versión de \textit{TeX Live} ya instalada y configurada, de modo que no es necesario realizar ninguno de estos pasos.
+
+\begin{enumerate}
+    \item Como siempre, se hace \textit{checkout} del repositorio.
+    \item Se genera la documentación usando el \textit{target} definido, sin necesidad de instalaciones previas gracias a la imagen empleada.
+    \item Se usa \href{https://github.com/marketplace/actions/upload-a-build-artifact}{una acción ya existente} que se encarga de subir el documento PDF generado como \textit{artifact} al repositorio.
+\end{enumerate}
 
 \section{El código implementado}
 
