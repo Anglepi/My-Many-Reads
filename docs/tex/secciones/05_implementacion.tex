@@ -220,6 +220,23 @@ Cabe mencionar que no es el último paso del \textit{workflow} el que decide el 
 
 \subsection{Ejecución de tests}
 
+En su correspondiente \href{https://github.com/Anglepi/My-Many-Reads/blob/main/.github/workflows/tests.yml}{fichero de configuración} se especifica que este \textit{workflow} se ejecute en cada \textit{pull request} siempre que haya cambios en algún archivo de \textit{Python}, las dependencias del proyecto o el propio \textit{workflow}. Adicionalmente, se deberá ejecutar siempre con cada cambio en la rama principal para asegurar que el código siempre se encuentra funcional.
+
+Como en el caso anterior, se utiliza una estancia de Ubuntu en su última versión estable, pero esta no es la única precondición definida. Se define también una estrategia de matriz, la cual nos permite definir un conjunto de posibles variables y ejecutar los diferentes pasos con cada combinación de valores posible definida en esta matriz.
+
+En este caso, solo se define un array de versiones de \textit{Python} soportadas, por lo que los diferentes steps se ejecutarán para cada una de estas versiones definidas:
+
+\begin{enumerate}
+    \item Se hace checkout del repositorio.
+    \item Se instala y configura python con otra acción disponible en el \textit{marketplace}, \href{https://github.com/marketplace/actions/setup-python}{\textit{setup-python}}, empleando como argumento la versión de \textit{Python} definida anteriormente.
+    \item Se configura la variable de entorno necesaria para el funcionamiento del proyecto, este proceso como se puede ver es algo peculiar debido a las restricciones del entorno en el que se ejecutan los \textit{workflows}.
+    \item Se instala \textit{Poetry} fácilmente gracias a \href{https://github.com/marketplace/actions/install-poetry-action}{otra acción del \textit{marketplace}}.
+    \item Se hace uso de \textit{Poetry} para instalar las dependencias.
+    \item Se ejecutan los tests.
+\end{enumerate}
+
+Los tests, como ya se ha mencionado anteriormente, se ejecutan a través de \textit{Pytest}, y al hacerlo ya se siguen las buenas prácticas, resultando en error si alguno de los tests falla, o éxito si todo funciona correctamente, por lo que no es necesario manualmente comprobar si ha habido algún fallo para determinar el resultado del \textit{workflow}.
+
 \subsection{Generación de la documentación}
 
 
