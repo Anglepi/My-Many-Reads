@@ -201,7 +201,7 @@ A continuación se ven en profundidad cada una de las tres acciones incluidas en
 
 Probablemente esta sea la más sencilla de las tres, por lo que se aprovechará esta oportunidad para explicar los conceptos básicos de una \textit{GitHub Action}.
 
-Esta se encarga de ejecutar un \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheck.sh}{\textit{script}} incluido en el repositorio que hace uso de \href[aspell]{\underline{\textit{Aspell}}} para realizar una corrección ortográfica.
+Esta se encarga de ejecutar un \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/spellcheck.sh}{\textit{script}} incluido en el repositorio que hace uso de \hyperref[aspell]{\underline{\textit{Aspell}}} para realizar una corrección ortográfica.
 
 Al principio de su \href{https://github.com/Anglepi/My-Many-Reads/blob/main/.github/workflows/spellcheck.yml}{fichero de configuración} se define el nombre del \textit{workflow} y los momentos en los que se ejecuta. En este caso, se ejecuta tras cada \textit{push} que afecte a algún fichero relacionad con la documentación, es decir, de extension \textit{.tex} o \textit{.md}, que afecte a la definición propio \textit{workflow} o al \textit{script} encargado de la corrección ortográfica.
 
