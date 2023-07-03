@@ -178,6 +178,13 @@ Gracias a que \textit{FastAPI} es compatible con funciones asíncronas, se permi
 
 Esto para mi supuso bastante ahorro de trabajo, pues para comprobar manualmente el funcionamiento de la API no tendría que recurrir a escribir muchas llamadas \textit{curl} en la terminal o instalarme aplicaciones como \href{https://www.postman.com/}{\textit{Postman}} o \href{https://insomnia.rest/}{\textit{Insomnia}}.
 
+\section{Procesos de integración continua}
+
+Una parte muy importante en el desarrollo de todo proyecto, y sobre la que quizás no se hace tanto hincapié como se debería, son los procesos de integración continua. Estos son los procesos automatizados definidos por los desarrolladores que se ejecutan generalmente con cada cambio en el código, como por ejemplo al abrir \textit{pull requests} o con cada cambio en la rama principal de desarrollo.
+
+El tipo de proceso más común de integración continua es el que ejecuta un conjunto de tests para asegurar que ninguna de las funcionalidades previamente existentes haya sido alterada sin querer, pero pueden existir otro tipo de tareas como por ejemplo la generación automática de un paquete cada vez que se incremente la versión del proyecto.
+
+En el caso de \textit{My Many Reads}, también se han implementado algunas acciones automáticas como parte del proceso de integración continua para asegurar que ningún cambio acaba rompiendo la funcionalidad existente y realizar otras tareas de forma automática por conveniencia. Cada una de estas acciones produce un estado de éxito o error, por lo tanto si alguna de ellas resulta fallida, será inmediatamente notificado y se detendrán los procesos de desarrollo hasta que los problemas detectados se solucionen.
 
 \section{El código implementado}
 
