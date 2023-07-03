@@ -120,3 +120,4 @@ jenkinsfile
 CircleCI
 yml
 md
+precondición
