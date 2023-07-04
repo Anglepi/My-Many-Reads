@@ -121,3 +121,6 @@ CircleCI
 yml
 md
 precondición
+LSA
+LibraryStats
+MonkeyLearn
