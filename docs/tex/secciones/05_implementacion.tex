@@ -432,6 +432,7 @@ Esta experiencia lleva a la reflexión de otro de los problemas que conlleva la 
 La estructura de la base de datos debe definirse atendiendo a todas las posibles restricciones de información, además de demostrando una estructura lógica que represente adecuadamente las diferentes entidades almacenadas y las relaciones entre estas. En el \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/init_db.sql}{repositorio} se encuentra el script construido para crear las diferentes tablas, relaciones, y algún que otro dato de prueba.
 
 \includegraphics[width=0.9\textwidth]{img/diagrama_bd.png}\\[1.4cm]
+\label{dbdiagram}
 
 El diagrama anterior se ha generado con \href{https://dbdiagram.io/}{dbdiagram.io}, web que permite importar scripts en diversos lenguajes de bases de datos y generar un diagrama automáticamente.
 
@@ -517,5 +518,25 @@ Ahora que este problema y su solución están definidos en lenguaje natural, se 
 \end{itemize}
 
 \subsubsection{Construyendo el perfil de gustos}
+
+Como ya se ha comentado antes, este perfil estará basado en una biblioteca, por lo que para construirlo habrá que volver a echar un vistazo a la información que contiene una biblioteca, que en este caso claramente la única información de interés que ayuda a definir el perfil son sus entradas. Volviendo al \hyperref[dbdiagram]{\underline{diagrama de la base de datos}} se aprecia que una entrada de biblioteca está compuesta por un libro (más bien su ID, suficiente para obtener la información de este), una puntuación asignada por el usuario a dicho libro, y un estado.
+
+Bien, esto es suficiente para conocer las preferencias, ya que indican que libros se han leído y cuanto han gustado cada uno de ellos, por lo que ahora se puede idear alguna forma de construir un perfil basado en esta información. Para ello, vamos a ver cada una de las propiedades de entre toda la información disponible para estudiar el posible uso e importancia de cada una de estas.
+
+El \textit{\textbf{score}} es una de estas, y representa cuanto le ha gustado al usuario dueño de la biblioteca el libro asociado a esa entrada. Este valor nos puede dar una idea de qué libros gustan más y cuales gustan menos, de forma que podemos darle más importancia a las características de un libro con mayor nota que a las de uno con menos nota.
+
+El \textit{\textbf{status}} también sirve de ayuda, ya que dependiendo del estado, un libro puede ser más significativo para definir los gustos que otro. Los posibles estados son: \textit{PLAN\_TO\_READ, CURRENTLY\_READING, COMPLETED, DROPPED, ON\_HOLD} además de que se permite no establecer ningún valor a esta propiedad. Como claramente se deduce, es más probable que un libro con estado \textit{COMPLETED}, es decir, que se ha leído al completo, represente más los gustos de un usuario que uno cuyo estado sea \textit{DROPPED}, el cual empezó a leer pero por algún motivo acabó dejándolo.
+
+Por último, tenemos el \textbf{libro} en cuestión. Las propiedades que más caracterizan a un libro son su \textbf{autor o autores}, pues son los que aportan un estilo narrativo además de la fuente de las ideas plasmadas en sus obras, los \textbf{géneros}, que definen la temática y la \textbf{sinopsis} que es una breve introducción a los temas tratados en el libro.
+
+Teniendo ya estudiadas las características que definen un libro junto a las que indican cuanto ha gustado dicho libro, podemos trabajar en un algoritmo que resuma y agrupe toda esta información, que resultará en el requerido perfil de gustos, un elemento fundamental a la hora de poder obtener las recomendaciones. Este perfil de gustos es representado por la clase \href{https://github.com/Anglepi/My-Many-Reads/blob/main/mmr-backend/library_stats.py}{\textit{LibraryStats}} implementada en \textit{My Many Reads}.
+
+El proceso a seguir para construir el perfil dadas todas estas condiciones es bastante similar al de operaciones tipo \textit{reduce}\cite{reduce}. Se va iterando sobre las entradas de la biblioteca y para cada \textbf{autor} y \textbf{género} encontrado, se va acumulando una puntuación calculada en base al \textbf{\textit{score}} y el \textbf{\textit{status}}, teniendo en cuenta que cada una de estas propiedades tiene un peso, es decir, un valor numérico que representa su importancia, y que es susceptible a ser modificado para ajustar cuanto se valora cada una de estas propiedades, afectando así al resultado final, la lista de recomendaciones.
+
+Para valorar la \textbf{sinopsis}, la situación gana un gran nivel de complejidad, puesto que su estudio requiere de técnicas más avanzadas que implican un mayor coste y que por tanto se aplazó a fases posteriores del desarrollo que aún no se han alcanzado. Esto no significa que no se haya estudiado cómo hacerlo, sino que los costes de implementarlo son altos en proporción al beneficio que se obtiene de esto, en comparación con otros requisitos del proyecto, y por tanto no se encontraba entre las prioridades más inmediatas.
+
+Existen dos posibles enfoques a tener en cuenta para extraer información de una sinopsis que sirva para incrementar el valor del perfil de gustos. El primero consiste usar algún algoritmo para extraer las palabras clave, realizar un conteo de estas y valorarlas de manera similar a como se hace con los \textbf{autores} y \textbf{géneros}. El proceso de extracción de palabras clave implica el uso de algoritmos de \textit{Machine Learning} y lo más común es que se empleen redes neuronales. Plataformas como \href{https://monkeylearn.com/}{MonkeyLearn} con su \href{https://monkeylearn.com/api/v3/#extractor-api}{Extractor API} y el gigante Amazon, a través de \href{https://aws.amazon.com/es/comprehend/}{Amazon Comprehend}, ofrecen los servicios, con un precio, para realizar este análisis sobre textos, e incluso pueden llegar a aportar detalles adicionales sobre las palabras clave extraídas.
+
+La otra opción a tener en cuenta, aún más compleja que la anterior, es emplear algoritmos de LSA, \textit{Latent Semantic Analysis}\cite{lsa}, que analizan los textos y permiten extraer diferentes temáticas detectadas definidas por grupos de palabras. Esto nos permitiría detectar las temáticas más comunes entre los libros de una biblioteca, y valorarlas, de nuevo, por \textbf{\textit{score}} y \textbf{\textit{status}}, que son las dos propiedades que indican cuanto gusta un libro.
 
 \subsubsection{Comparando los candidatos con el perfil de gustos}
