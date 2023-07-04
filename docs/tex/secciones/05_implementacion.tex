@@ -256,9 +256,7 @@ De nuevo, esta acción se ejecuta en Ubuntu, pero en este caso se usa un contene
     \item Se usa \href{https://github.com/marketplace/actions/upload-a-build-artifact}{una acción ya existente} que se encarga de subir el documento PDF generado como \textit{artifact} al repositorio.
 \end{enumerate}
 
-\section{El código implementado}
-
-\subsection{La API}
+\section{Implementación de la API}
 \label{api}
 
 Se ha diseñado una API RESTful por el fácil acceso a los \textit{endpoints} implementados, la clara identificación de los diferentes recursos disponibles y la sencillez con la que se realizan las diferentes peticiones, gracias a todos los estándares bien definidos y muy conocidos a día de hoy, que permiten el acceso a diferentes recursos y funcionalidades sin apenas complejidad.
@@ -277,7 +275,7 @@ Para definir los nombres de los recursos accesibles se han seguido todas las bue
 
 Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prácticas} surgen a través del razonamiento lógico apoyado por el consenso de la comunidad, aunque también pueden verse influenciadas por otros elementos, como por ejemplo en el caso del uso exclusivo de minúsculas, que deriva parcialmente de la RFC-3986\cite{URIRFC} que indica que en las URIs deben distinguirse mayúsculas de minúsculas.
 
-\subsubsection{\textit{Endpoints.}}
+\subsection{\textit{Endpoints.}}
 
 \textbf{GET}
 \begin{itemize}
@@ -336,7 +334,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \end{itemize}
 \end{itemize}
 
-\subsection{Representación y almacenamiento de datos}
+\section{Representación y almacenamiento de datos}
 
 Una parte fundamental de este proyecto son los datos, pues para perfeccionar su principal atractivo, las recomendaciones, será necesario realizar procesamientos con grandes cantidades de libros, y tampoco debemos olvidar funcionalidades más básicas como la de permitir a los usuarios almacenar y gestionar sus propias bibliotecas.
 
@@ -363,7 +361,7 @@ Para las recomendaciones, la aproximación es similar a la de las bibliotecas. U
 
 Ya sabiendo esto, el primer paso será definir las diferentes clases que representen estas entidades en el código, permitiendo así realizar algunas pruebas iniciales que sean de ayuda para detectar posibles problemas con las entidades y atributos definidos antes de que se conviertan en un problema mayor que afecte también al segundo paso: la definición de una base de datos.
 
-\subsubsection{Clases que representan las entidades}
+\subsection{Clases que representan las entidades}
 
 Dadas las tres entidades mencionadas anteriormente, y como ya se ha indicado, el siguiente paso es crear un conjunto de clases que sirvan para representar estas entidades:
 
@@ -383,7 +381,7 @@ Otra de las características que ofrece consiste en un conjunto de parámetros q
 
 Toda la funcionalidad que ofrece este módulo resulta de especial interés, por ejemplo, para la representación de la clase \textit{Book}, ya que sus atributos nunca deben cambiar.
 
-\subsubsection{La base de datos}
+\subsection{La base de datos}
 
 En base a las necesidades del proyecto hay que decidir que tipo de base de datos resulta de mayor interés. En cuanto al tipo de base de datos, existen bastantes que destacan en función del tipo de uso que se le vaya a dar: relacionales, clave-valor, orientadas a documentos, a grafos... Cada una de estas posee unas características que las hacen más adecuadas.
 
@@ -429,7 +427,7 @@ Una de estas es \href{https://supabase.com/}{supabase}, cuyo plan gratuito es m�
 
 Esta experiencia lleva a la reflexión de otro de los problemas que conlleva la elección de una pequeña plataforma de servicios, y es que la situación de estas es bastante volátil, pues pueden ser absorbidas por otras más grandes como este caso en cuanto comienzan a destacar y ofrecer un buen servicio, o por mala fortuna económica no les es posible seguir ofreciendo servicios.
 
-\subsubsection{Estructura de la base de datos}
+\subsection{Estructura de la base de datos}
 
 La estructura de la base de datos debe definirse atendiendo a todas las posibles restricciones de información, además de demostrando una estructura lógica que represente adecuadamente las diferentes entidades almacenadas y las relaciones entre estas. En el \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/init_db.sql}{repositorio} se encuentra el script construido para crear las diferentes tablas, relaciones, y algún que otro dato de prueba.
 
@@ -439,7 +437,7 @@ El diagrama anterior se ha generado con \href{https://dbdiagram.io/}{dbdiagram.i
 
 Nótese que el identificador del libro no es el ISBN, como uno podría esperar. Esto se debe a que aunque el ISBN debería ser único, a veces las editoriales cometen el error de asignar el mismo ISBN a dos o más títulos, o incluso se emplean intencionadamente para identificar colecciones de libros. Por otra parte, este identificador es de uso comercial, lo que quiere decir que no tiene por qué estar presente en libros que no hayan sido puestos a la venta. Estos motivos han llevado a la decisión de que el identificador de un libro debe ser otro, en este caso, un serial interno, y que la duplicidad o ausencia del ISBN debe ser soportada.
 
-\subsubsection{Gestor de datos}
+\subsection{Gestor de datos}
 
 La primera implementación de la API se introdujo en el segundo PMV (ver \underline{\nameref{pmv2}}). En este momento, al ser una fase temprana del proyecto, se carecía de una base de datos, por lo que para poner este código a prueba se introdujeron datos de prueba y lógica en la propia API, aunque esto incumpla el principio de responsabilidad única.
 
@@ -473,11 +471,11 @@ La conexión permite instanciar un objeto \textit{cursor} a través del cual se 
 
 A través de la función \textit{execute} del cursor se envía la consulta, con sus parámetros, a la base de datos. Esta función asegura que los parámetros enviados estén correctamente tratados para evitar ataques tipo \textit{SQL Injection}, por lo que no es necesario preocuparse por esto. Tras lanzar esta consulta, se obtienen los resultados a través de funciones \textit{fetch} como \textit{fetchAll} que devuelve todas las tuplas, o \textit{fetchOne} que las devuelve de una en una. Hay que mencionar que los efectos de manipulaciones de datos (como sentencias \textit{insert} o \textit{update}) se perderán al cerrar la conexión si no se llama a la función \textit{commit} o si la conexión se establece en modo \textit{``autocommit''}.
 
-\subsection{Sistema de recomendaciones}
+\section{Sistema de recomendaciones}
 
 Este sistema es uno de los puntos más importantes del proyecto, pues es el que más atractivo aporta con respecto a los usuarios. Se compone, básicamente, de dos subsistemas: recomendaciones automáticas basadas en librerías y recomendaciones creadas por usuarios.
 
-\subsubsection{Recomendaciones de los usuarios}
+\subsection{Recomendaciones de los usuarios}
 
 Para cada pareja de libros, los usuarios podrán escribir un comentario para justificar la recomendación entre ambos libros. Otros usuarios podrán votar dichos comentarios con el fin de apoyar esa recomendación.
 
@@ -502,7 +500,7 @@ Finalmente, el último punto está bastante relacionado con el anterior. De la n
 
 Con toda esta lógica ya controlada e incluida, el único aspecto a controlar es el de la votación, la cual tiene un proceso bastante sencillo, simplemente identificar el comentario objetivo e incrementar en uno su puntuación. Este proceso ganará en complejidad una vez se implementen las sesiones de usuarios, ya que habría que controlar que comentarios ha votado el usuario identificado con el fin de permitir que solo pueda votar una vez por comentario.
 
-\subsubsection{Recomendaciones automáticas}
+\subsection{Recomendaciones automáticas}
 
 Para elaborar un algoritmo que pueda hacer sugerencias de manera automática para los usuarios, es necesario en primer lugar ser capaz de determinar los gustos de dicho usuario. Teniendo en cuenta que un usuario puede organizar sus lecturas en varias bibliotecas, se van a generar las recomendaciones en base a los gustos definidos en una biblioteca específica, aportando mayor versatilidad a los usuarios de cara a la búsqueda de nuevas lecturas.
 
