@@ -116,3 +116,8 @@ MaterialUI
 frontend
 vue
 redefinición
+jenkinsfile
+CircleCI
+yml
+md
+precondición
