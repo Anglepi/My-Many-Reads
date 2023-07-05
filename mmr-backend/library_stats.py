@@ -17,7 +17,17 @@ class LibraryStats:
         self.__genres: dict[Book.Genre, float] = {}
 
         for entry in entries:
-            score_value: float = score_weight * entry["score"]
+            scale_value: float = 0
+            if entry["status"] == Library.ReadingStatus.COMPLETED:
+                scale_value = 1
+            elif entry["status"] == Library.ReadingStatus.CURRENTLY_READING:
+                scale_value = 0.8
+            elif entry["status"] == Library.ReadingStatus.ON_HOLD:
+                scale_value = 0.4
+            elif entry["status"] == Library.ReadingStatus.DROPPED:
+                scale_value = 0.1
+
+            score_value: float = score_weight * entry["score"] * scale_value
 
             for author in entry["book"]["authors"]:
                 if author not in self.__authors:
