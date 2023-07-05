@@ -256,9 +256,7 @@ De nuevo, esta acción se ejecuta en Ubuntu, pero en este caso se usa un contene
     \item Se usa \href{https://github.com/marketplace/actions/upload-a-build-artifact}{una acción ya existente} que se encarga de subir el documento PDF generado como \textit{artifact} al repositorio.
 \end{enumerate}
 
-\section{El código implementado}
-
-\subsection{La API}
+\section{Implementación de la API}
 \label{api}
 
 Se ha diseñado una API RESTful por el fácil acceso a los \textit{endpoints} implementados, la clara identificación de los diferentes recursos disponibles y la sencillez con la que se realizan las diferentes peticiones, gracias a todos los estándares bien definidos y muy conocidos a día de hoy, que permiten el acceso a diferentes recursos y funcionalidades sin apenas complejidad.
@@ -277,7 +275,7 @@ Para definir los nombres de los recursos accesibles se han seguido todas las bue
 
 Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prácticas} surgen a través del razonamiento lógico apoyado por el consenso de la comunidad, aunque también pueden verse influenciadas por otros elementos, como por ejemplo en el caso del uso exclusivo de minúsculas, que deriva parcialmente de la RFC-3986\cite{URIRFC} que indica que en las URIs deben distinguirse mayúsculas de minúsculas.
 
-\subsubsection{\textit{Endpoints.}}
+\subsection{\textit{Endpoints.}}
 
 \textbf{GET}
 \begin{itemize}
@@ -336,7 +334,7 @@ Principalmente \href{https://restfulapi.net/resource-naming/}{estas buenas prác
     \end{itemize}
 \end{itemize}
 
-\subsection{Representación y almacenamiento de datos}
+\section{Representación y almacenamiento de datos}
 
 Una parte fundamental de este proyecto son los datos, pues para perfeccionar su principal atractivo, las recomendaciones, será necesario realizar procesamientos con grandes cantidades de libros, y tampoco debemos olvidar funcionalidades más básicas como la de permitir a los usuarios almacenar y gestionar sus propias bibliotecas.
 
@@ -363,7 +361,7 @@ Para las recomendaciones, la aproximación es similar a la de las bibliotecas. U
 
 Ya sabiendo esto, el primer paso será definir las diferentes clases que representen estas entidades en el código, permitiendo así realizar algunas pruebas iniciales que sean de ayuda para detectar posibles problemas con las entidades y atributos definidos antes de que se conviertan en un problema mayor que afecte también al segundo paso: la definición de una base de datos.
 
-\subsubsection{Clases que representan las entidades}
+\subsection{Clases que representan las entidades}
 
 Dadas las tres entidades mencionadas anteriormente, y como ya se ha indicado, el siguiente paso es crear un conjunto de clases que sirvan para representar estas entidades:
 
@@ -383,7 +381,7 @@ Otra de las características que ofrece consiste en un conjunto de parámetros q
 
 Toda la funcionalidad que ofrece este módulo resulta de especial interés, por ejemplo, para la representación de la clase \textit{Book}, ya que sus atributos nunca deben cambiar.
 
-\subsubsection{La base de datos}
+\subsection{La base de datos}
 
 En base a las necesidades del proyecto hay que decidir que tipo de base de datos resulta de mayor interés. En cuanto al tipo de base de datos, existen bastantes que destacan en función del tipo de uso que se le vaya a dar: relacionales, clave-valor, orientadas a documentos, a grafos... Cada una de estas posee unas características que las hacen más adecuadas.
 
@@ -429,17 +427,18 @@ Una de estas es \href{https://supabase.com/}{supabase}, cuyo plan gratuito es m�
 
 Esta experiencia lleva a la reflexión de otro de los problemas que conlleva la elección de una pequeña plataforma de servicios, y es que la situación de estas es bastante volátil, pues pueden ser absorbidas por otras más grandes como este caso en cuanto comienzan a destacar y ofrecer un buen servicio, o por mala fortuna económica no les es posible seguir ofreciendo servicios.
 
-\subsubsection{Estructura de la base de datos}
+\subsection{Estructura de la base de datos}
 
 La estructura de la base de datos debe definirse atendiendo a todas las posibles restricciones de información, además de demostrando una estructura lógica que represente adecuadamente las diferentes entidades almacenadas y las relaciones entre estas. En el \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/init_db.sql}{repositorio} se encuentra el script construido para crear las diferentes tablas, relaciones, y algún que otro dato de prueba.
 
 \includegraphics[width=0.9\textwidth]{img/diagrama_bd.png}\\[1.4cm]
+\label{dbdiagram}
 
 El diagrama anterior se ha generado con \href{https://dbdiagram.io/}{dbdiagram.io}, web que permite importar scripts en diversos lenguajes de bases de datos y generar un diagrama automáticamente.
 
 Nótese que el identificador del libro no es el ISBN, como uno podría esperar. Esto se debe a que aunque el ISBN debería ser único, a veces las editoriales cometen el error de asignar el mismo ISBN a dos o más títulos, o incluso se emplean intencionadamente para identificar colecciones de libros. Por otra parte, este identificador es de uso comercial, lo que quiere decir que no tiene por qué estar presente en libros que no hayan sido puestos a la venta. Estos motivos han llevado a la decisión de que el identificador de un libro debe ser otro, en este caso, un serial interno, y que la duplicidad o ausencia del ISBN debe ser soportada.
 
-\subsubsection{Gestor de datos}
+\subsection{Gestor de datos}
 
 La primera implementación de la API se introdujo en el segundo PMV (ver \underline{\nameref{pmv2}}). En este momento, al ser una fase temprana del proyecto, se carecía de una base de datos, por lo que para poner este código a prueba se introdujeron datos de prueba y lógica en la propia API, aunque esto incumpla el principio de responsabilidad única.
 
@@ -473,17 +472,13 @@ La conexión permite instanciar un objeto \textit{cursor} a través del cual se 
 
 A través de la función \textit{execute} del cursor se envía la consulta, con sus parámetros, a la base de datos. Esta función asegura que los parámetros enviados estén correctamente tratados para evitar ataques tipo \textit{SQL Injection}, por lo que no es necesario preocuparse por esto. Tras lanzar esta consulta, se obtienen los resultados a través de funciones \textit{fetch} como \textit{fetchAll} que devuelve todas las tuplas, o \textit{fetchOne} que las devuelve de una en una. Hay que mencionar que los efectos de manipulaciones de datos (como sentencias \textit{insert} o \textit{update}) se perderán al cerrar la conexión si no se llama a la función \textit{commit} o si la conexión se establece en modo \textit{``autocommit''}.
 
-\subsection{Sistema de recomendaciones}
+\section{Sistema de recomendaciones}
 
-Este sistema es uno de los puntos más importantes del proyecto, pues es el que más atractivo aporta con respecto a los usuarios. Se compone, básicamente, de dos subsistemas: recomendaciones automáticas basadas en librerías y recomendaciones creadas por usuarios.
+Este sistema es uno de los puntos más importantes del proyecto, pues es el que más atractivo aporta con respecto a los usuarios. Se compone, básicamente, de dos subsistemas: recomendaciones automáticas basadas en bibliotecas y recomendaciones creadas por usuarios.
 
-\subsubsection{Recomendaciones de los usuarios}
+\subsection{Recomendaciones de los usuarios}
 
-Para cada pareja de libros, los usuarios podrán escribir un comentario para justificar la recomendación entre ambos libros. Otros usuarios podrán votar dichos comentarios con el fin de apoyar esa recomendación.
-
-El primer paso será determinar cual puede ser la mejor estructura de datos para esta situación. Por una parte, los libros ya se encuentran almacenados en el sistema, por lo que incluirlos de nuevo sería redundante, con su identificador será suficiente.
-
-En este punto ya hay que tener en cuenta algunos aspectos importantes:
+Para cada pareja de libros, los usuarios podrán escribir un comentario para justificar la recomendación entre ambos. Otros usuarios podrán votar dichos comentarios con el fin de apoyar esa recomendación. Teniendo esto en cuenta, se pueden sacar algunos razonamientos al respecto, que ayudarán a guiar la implementación:
 
 \begin{enumerate}
     \item No tiene sentido recomendar un libro consigo mismo.
@@ -494,7 +489,7 @@ En este punto ya hay que tener en cuenta algunos aspectos importantes:
 
 El primer punto es sencillo de tratar, con comprobar que la pareja de libros introducida no está formada por un único identificador duplicado, el problema se soluciona.
 
-Con respecto al segundo punto, lo ideal sería encontrar una estructura de datos predefinida que permitiera crear parejas de objetos las cuales no estuvieran ordenadas, pero no hubo mucha suerte al buscar esto para Python, por lo que simplemente se ordena la tupla al almacenarla para facilitar la comprobación.
+Con respecto al segundo punto, lo ideal sería encontrar una estructura de datos predefinida que permitiera crear parejas de objetos las cuales no estuvieran ordenadas, pero no hubo mucha suerte al buscar esto para \textit{Python}, por lo que simplemente se ordena la tupla al almacenarla para facilitar la comprobación.
 
 Lidiar con el tercer punto es bastante sencillo una vez se ha definido la situación en lenguaje natural. Al crear una recomendación habrá que comprobar si la pareja indicada de libros ya tenía otras recomendaciones o no. En caso afirmativo bastará con añadir el comentario especificado a esta, y en caso negativo se creará la pareja a la que se le añadirá dicho comentario.
 
@@ -502,18 +497,51 @@ Finalmente, el último punto está bastante relacionado con el anterior. De la n
 
 Con toda esta lógica ya controlada e incluida, el único aspecto a controlar es el de la votación, la cual tiene un proceso bastante sencillo, simplemente identificar el comentario objetivo e incrementar en uno su puntuación. Este proceso ganará en complejidad una vez se implementen las sesiones de usuarios, ya que habría que controlar que comentarios ha votado el usuario identificado con el fin de permitir que solo pueda votar una vez por comentario.
 
-\subsubsection{Recomendaciones automáticas}
+Gracias al apoyo de este análisis se puede definir una estructura de datos apropiada para representar estas recomendaciones de forma óptima. Existirá una única instancia de relación entre dos libros, ajena al orden, a la que referenciarán todos los comentarios de los usuarios que apoyen dicha recomendación.
 
-Para elaborar un algoritmo que pueda hacer sugerencias de manera automática para los usuarios, es necesario en primer lugar ser capaz de determinar los gustos de dicho usuario. Para ello, dado que un usuario puede organizar sus lecturas en varias bibliotecas, se van a generar las recomendaciones en base a los gustos definidos en una biblioteca específica, aportando mayor versatilidad a los usuarios de cara a la búsqueda de nuevas lecturas.
 
-Este algoritmo de recomendaciones ofrece como resultado una lista de libros ordenados de mayor a menor relevancia con respecto a la biblioteca especificada. Para construir esta lista se sigue un proceso que puede dividirse en tres pasos principales:
+\subsection{Recomendaciones automáticas}
 
-\begin{enumerate}
-    \item Se generan unas características generales de una biblioteca objetivo, agrupando todas las características relevantes de los libros que la componen con el fin de calcular la afinidad de un libro respecto a esta. Dos de las características más evidentes de un libro que pueden usarse para esta tarea son los géneros y los autores, ya que a partir de estas se puede definir muy bien la temática de un libro y su estilo de escritura. Para hacer esta recopilación de características, se puede realizar un conteo de todos los géneros y autores pertenecientes a cada libro, ponderando cada una de estas apariciones con un valor derivado de la puntuación que el usuario dueño de esa biblioteca ha asignado al libro en concreto, ayudando así a resaltar los géneros y autores favoritos.
-    \item Mediante una función capaz de comparar un libro con estas características recopiladas, se otorga una puntuación de compatibilidad de un libro objetivo con respecto a una biblioteca, que hace las veces de correlación. Esta función comparará las propiedades del libro con las de las características recogidas, siempre teniendo en cuenta que no todas estas características son igual de valiosas para este proceso. Por ejemplo, los géneros de un libro son más representativos que, por ejemplo, la editorial.
-    \item Finalmente, con las características de una biblioteca y la función para puntuar libros respecto a estas se puede generar la lista de recomendaciones. Para ello, se filtra la lista de libros candidatos, pues debemos eliminar los que ya se encuentren en la biblioteca, y se puntúa cada uno de los restantes. Para construir el resultado, estos libros se ordenan por puntuación, facilitando así devolver un subconjunto de los más relevantes.
-\end{enumerate}
+Para elaborar un algoritmo que pueda hacer sugerencias de manera automática para los usuarios, es necesario en primer lugar ser capaz de determinar los gustos de dicho usuario. Teniendo en cuenta que un usuario puede organizar sus lecturas en varias bibliotecas, se van a generar las recomendaciones en base a los gustos definidos en una biblioteca específica, aportando mayor versatilidad a los usuarios de cara a la búsqueda de nuevas lecturas.
 
-Para medir la compatibilidad se pueden tener en cuenta una gran cantidad de propiedades de los libros, no solo géneros y autores, sino también fecha de publicación, similitudes entre las sinopsis, apariciones en bibliotecas similares de otros usuarios e incluso según las recomendaciones manuales.
+El primer paso a la hora de trabajar en este algoritmo es pensar en qué es lo que hace que un libro sea una buena recomendación para una persona concreta. Lo primero que se viene a la mente al pensar en ello es conocer los gustos de esa persona, y en este caso, los gustos vienen definidos por la biblioteca que el usuario ha escogido para generar las recomendaciones.
 
-Conociendo ya todos estos aspectos, solo resta hacer algo de experimentación jugando con la inclusión de algunos o todos estos parámetros y ajustando sus pesos hasta dar con un modelo satisfactorio.
+Una vez conocidos sus gustos, habrá que explorar una colección de libros que no incluyan los que el usuario ya ha leído, y estudiar como encaja cada uno de estos nuevos libros con los de la biblioteca dada por el usuario. Cuanto más similar sea un libro candidato con los gustos definidos por el usuario, más probable es que se trate de una buena recomendación.
+
+Ahora que este problema y su solución están definidos en lenguaje natural, se puede empezar a aproximar una solución más técnica y detallada, dividiendo este proceso en partes tratables y coherentes:
+
+\begin{itemize}
+    \item Primero, habrá que construir un perfil de gustos basado en una biblioteca concreta.
+    \item Después, se recorrerá una lista de libros candidatos, entre los cuales no debería haber ninguno leído por el usuario, y de alguna forma se calculará su nivel de compatibilidad con este perfil de gustos.
+    \item Una vez obtenida la compatibilidad, se ordenará la lista de libros candidatos de más a menos compatible, formando así la lista de recomendaciones. Este es un paso muy sencillo que no requiere más explicación.
+\end{itemize}
+
+\subsubsection{Construyendo el perfil de gustos}
+
+Como ya se ha comentado antes, este perfil estará basado en una biblioteca, por lo que para construirlo habrá que volver a echar un vistazo a la información que contiene una biblioteca, que en este caso claramente la única información de interés que ayuda a definir el perfil son sus entradas. Volviendo al \hyperref[dbdiagram]{\underline{diagrama de la base de datos}} se aprecia que una entrada de biblioteca está compuesta por un libro (más bien su ID, suficiente para obtener la información de este), una puntuación asignada por el usuario a dicho libro, y un estado.
+
+Bien, esto es suficiente para conocer las preferencias, ya que indican que libros se han leído y cuanto han gustado cada uno de ellos, por lo que ahora se puede idear alguna forma de construir un perfil basado en esta información. Para ello, vamos a ver cada una de las propiedades de entre toda la información disponible para estudiar el posible uso e importancia de cada una de estas.
+
+El \textit{\textbf{score}} es una de estas, y representa cuanto le ha gustado al usuario dueño de la biblioteca el libro asociado a esa entrada. Este valor nos puede dar una idea de qué libros gustan más y cuales gustan menos, de forma que podemos darle más importancia a las características de un libro con mayor nota que a las de uno con menos nota.
+
+El \textit{\textbf{status}} también sirve de ayuda, ya que dependiendo del estado, un libro puede ser más significativo para definir los gustos que otro. Los posibles estados son: \textit{PLAN\_TO\_READ, CURRENTLY\_READING, COMPLETED, DROPPED} y \textit{ON\_HOLD}, además de que se permite no establecer ningún valor a esta propiedad. Como claramente se deduce, es más probable que un libro con estado \textit{COMPLETED}, es decir, que se ha leído al completo, represente más los gustos de un usuario que uno cuyo estado sea \textit{DROPPED}, el cual indica que lo empezó a leer pero por algún motivo acabó dejándolo. Por otra parte, las entradas \textit{PLAN\_TO\_READ}, como no se consideran leídas, no se tendrán en cuenta.
+
+Por último, tenemos el \textbf{libro} en cuestión. Las propiedades que más caracterizan a un libro son su \textbf{autor o autores}, pues son los que aportan un estilo narrativo además de la fuente de las ideas plasmadas en sus obras, los \textbf{géneros}, que definen la temática y la \textbf{sinopsis} que es una breve introducción a los temas tratados en el libro.
+
+Teniendo ya estudiadas las características que definen un libro junto a las que indican cuanto ha gustado dicho libro, podemos trabajar en un algoritmo que resuma y agrupe toda esta información, que resultará en el requerido perfil de gustos, un elemento fundamental a la hora de poder obtener las recomendaciones. Este perfil de gustos es representado por la clase \href{https://github.com/Anglepi/My-Many-Reads/blob/main/mmr-backend/library_stats.py}{\textit{LibraryStats}} implementada en \textit{My Many Reads}.
+
+El proceso a seguir para construir el perfil dadas todas estas condiciones es bastante similar al de operaciones tipo \textit{reduce}\cite{reduce}. Se va iterando sobre las entradas de la biblioteca y para cada \textbf{autor} y \textbf{género} encontrado, se va acumulando una puntuación calculada para ellos en base al \textbf{\textit{score}} y el \textbf{\textit{status}}, teniendo en cuenta que cada una de estas propiedades tiene un peso, es decir, un valor numérico que representa su importancia, y que es susceptible a ser modificado para ajustar cuanto se valora cada una de estas propiedades, afectando así al resultado final, la lista de recomendaciones.
+
+Para valorar la \textbf{sinopsis}, la situación gana un gran nivel de complejidad, puesto que su estudio requiere de técnicas más avanzadas que implican un mayor coste y que por tanto se aplazó a fases posteriores del desarrollo que aún no se han alcanzado. Esto no significa que no se haya estudiado cómo hacerlo, sino que los costes de implementarlo son altos en proporción al beneficio que aportan, en comparación con otros requisitos del proyecto, y por tanto no se encontraba entre las prioridades más inmediatas.
+
+Existen dos posibles enfoques a tener en cuenta para extraer información de una sinopsis que sirva para incrementar el valor del perfil de gustos. El primero consiste usar algún algoritmo para extraer las palabras clave, realizar un conteo de estas y valorarlas de manera similar a como se hace con los \textbf{autores} y \textbf{géneros}. El proceso de extracción de palabras clave implica el uso de algoritmos de \textit{Machine Learning} y lo más común es que se empleen redes neuronales. Plataformas como \href{https://monkeylearn.com/}{MonkeyLearn} con su \href{https://monkeylearn.com/api/v3/#extractor-api}{Extractor API} y el gigante Amazon, a través de \href{https://aws.amazon.com/es/comprehend/}{Amazon Comprehend}, ofrecen los servicios, con un precio, para realizar este análisis sobre textos, e incluso pueden llegar a aportar detalles adicionales sobre las palabras clave extraídas.
+
+La otra opción a tener en cuenta, aún más compleja que la anterior, es emplear algoritmos de LSA, \textit{Latent Semantic Analysis}\cite{lsa}, que analizan los textos y permiten extraer diferentes temáticas detectadas definidas por grupos de palabras. Esto nos permitiría detectar las temáticas más comunes entre los libros de una biblioteca, y valorarlas, de nuevo, por \textbf{\textit{score}} y \textbf{\textit{status}}, que son las dos propiedades que indican cuanto gusta un libro.
+
+\subsubsection{Comparando los candidatos con el perfil de gustos}
+
+Anteriormente se ha definido como crear un perfil de gustos, de modo que para una librería, se dispone de un conjunto de valores que puntúan la aparición de determinadas características en los libros a comparar. Esto hace posible calcular una puntuación para cada candidato a recomendación, que será mayor cuanto más encaje dicho candidato con los gustos definidos en el perfil.
+
+Partiendo de un conjunto de libros, los posibles candidatos, se itera sobre ellos y para cada uno se calcula su similitud: partiendo de un valor inicial de 0, si el candidato posee alguno de los autores definidos en el perfil de gustos, se suma el valor de la importancia de dicho autor a su puntuación. Esta estrategia se sigue con el resto de características recogidas en el perfil de gustos, resultando en un valor que representa el nivel de similitud del candidato con el perfil de gustos, que hace las veces de puntuación.
+
+Una vez calculada la puntuación de cada candidato, basta con ordenar esta lista a través de este valor de mayor a menor, y ya se obtiene la lista de recomendaciones automáticas. Esto, por supuesto, se trata de una primera versión de un algoritmo que puede ganar un nivel de complejidad muy alto para mejorar su precisión, en una sección posterior se discuten varias posibles \hyperref[mejoras en las recomendaciones]{\underline{mejoras a este sistema}}, además del posible estudio de la sinopsis mencionado anteriormente.
