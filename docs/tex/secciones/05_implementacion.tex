@@ -478,11 +478,7 @@ Este sistema es uno de los puntos más importantes del proyecto, pues es el que 
 
 \subsection{Recomendaciones de los usuarios}
 
-Para cada pareja de libros, los usuarios podrán escribir un comentario para justificar la recomendación entre ambos libros. Otros usuarios podrán votar dichos comentarios con el fin de apoyar esa recomendación.
-
-El primer paso será determinar cual puede ser la mejor estructura de datos para esta situación. Por una parte, los libros ya se encuentran almacenados en el sistema, por lo que incluirlos de nuevo sería redundante, con su identificador será suficiente.
-
-En este punto ya hay que tener en cuenta algunos aspectos importantes:
+Para cada pareja de libros, los usuarios podrán escribir un comentario para justificar la recomendación entre ambos. Otros usuarios podrán votar dichos comentarios con el fin de apoyar esa recomendación. Teniendo esto en cuenta, se pueden sacar algunos razonamientos al respecto, que ayudarán a guiar la implementación:
 
 \begin{enumerate}
     \item No tiene sentido recomendar un libro consigo mismo.
@@ -493,13 +489,16 @@ En este punto ya hay que tener en cuenta algunos aspectos importantes:
 
 El primer punto es sencillo de tratar, con comprobar que la pareja de libros introducida no está formada por un único identificador duplicado, el problema se soluciona.
 
-Con respecto al segundo punto, lo ideal sería encontrar una estructura de datos predefinida que permitiera crear parejas de objetos las cuales no estuvieran ordenadas, pero no hubo mucha suerte al buscar esto para Python, por lo que simplemente se ordena la tupla al almacenarla para facilitar la comprobación.
+Con respecto al segundo punto, lo ideal sería encontrar una estructura de datos predefinida que permitiera crear parejas de objetos las cuales no estuvieran ordenadas, pero no hubo mucha suerte al buscar esto para \textit{Python}, por lo que simplemente se ordena la tupla al almacenarla para facilitar la comprobación.
 
 Lidiar con el tercer punto es bastante sencillo una vez se ha definido la situación en lenguaje natural. Al crear una recomendación habrá que comprobar si la pareja indicada de libros ya tenía otras recomendaciones o no. En caso afirmativo bastará con añadir el comentario especificado a esta, y en caso negativo se creará la pareja a la que se le añadirá dicho comentario.
 
 Finalmente, el último punto está bastante relacionado con el anterior. De la naturaleza de estas recomendaciones se comienza a sobreentender que para cada pareja de libros existe una lista de comentarios escritos por usuarios, por lo que lo único necesario a realizar será, en el momento de añadir un nuevo comentario, comprobar que de los ya existentes la lista correspondiente ninguno pertenece al nuevo autor.
 
 Con toda esta lógica ya controlada e incluida, el único aspecto a controlar es el de la votación, la cual tiene un proceso bastante sencillo, simplemente identificar el comentario objetivo e incrementar en uno su puntuación. Este proceso ganará en complejidad una vez se implementen las sesiones de usuarios, ya que habría que controlar que comentarios ha votado el usuario identificado con el fin de permitir que solo pueda votar una vez por comentario.
+
+Gracias al apoyo de este análisis se puede definir una estructura de datos apropiada para representar estas recomendaciones de forma óptima. Existirá una única instancia de relación entre dos libros, ajena al orden, a la que referenciarán todos los comentarios de los usuarios que apoyen dicha recomendación.
+
 
 \subsection{Recomendaciones automáticas}
 
