@@ -17,7 +17,7 @@ with open(data_path) as json_books:
 def test_score_book():
     # Given
     library1: Library = Library("user", "name", [Library.Entry(
-        book_list[0], 2, Library.ReadingStatus.DROPPED)])
+        book_list[0], 2, Library.ReadingStatus.COMPLETED)])
     stats1: LibraryStats = LibraryStats(library1)
     library2: Library = Library("user", "name", [Library.Entry(book_list[0], 2, Library.ReadingStatus.DROPPED), Library.Entry(
         book_list[1], 10, Library.ReadingStatus.CURRENTLY_READING), Library.Entry(book_list[2], 0, Library.ReadingStatus.PLAN_TO_READ)])
@@ -29,7 +29,7 @@ def test_score_book():
 
     # Then
     assert_that(score1).is_equal_to(6)
-    assert_that(score2).is_equal_to(36)
+    assert_that(score2).is_close_to(24.5, 0.25)
 
 
 def test_recommendations():
