@@ -438,6 +438,30 @@ El diagrama anterior se ha generado con \href{https://dbdiagram.io/}{dbdiagram.i
 
 Nótese que el identificador del libro no es el ISBN, como uno podría esperar. Esto se debe a que aunque el ISBN debería ser único, a veces las editoriales cometen el error de asignar el mismo ISBN a dos o más títulos, o incluso se emplean intencionadamente para identificar colecciones de libros. Por otra parte, este identificador es de uso comercial, lo que quiere decir que no tiene por qué estar presente en libros que no hayan sido puestos a la venta. Estos motivos han llevado a la decisión de que el identificador de un libro debe ser otro, en este caso, un serial interno, y que la duplicidad o ausencia del ISBN debe ser soportada.
 
+\subsection{Importando datos reales}
+
+Existen muchos conjuntos de datos disponibles en internet, de forma gratuita, sobre casi cualquier temática. El caso de los libros no es una excepción, por lo que podemos aprovechar esto para introducir una carga inicial de datos reales para continuar aportando valor a la plataforma.
+
+A la hora de buscar un conjunto de datos para importar hay que tener en cuenta, además de factores de legalidad y licencias de uso, qué información incluyen, puesto que tratar con información sobrante no es problema, pero si falta información, las necesidades no se cubren.
+
+Explorando las diferentes opciones, se encontró con \href{https://zenodo.org/record/4265096}{este conjunto de datos} que incluye la inmensa mayoría de información necesaria, por no decir toda, salvo algunos valores de los que de momento se puede prescindir, como la fecha de nacimiento de los autores.
+
+Para importar toda esta información se ha desarrollado un \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/import_data.py}{\textit{script}} que procesa cada línea del fichero \textit{CSV} obtenido anteriormente y lo importa  en la base de datos. Este \textit{script} está preparado para funcionar con una base de datos vacía, si se ejecutase varias veces, duplicaría la información, ya que no comprueba si esta ya se encontraba en la base de datos.
+
+En primer lugar se van introduciendo los autores, para lo cual se almacena en una variable los ya introducidos junto con su identificador, de forma que si para un siguiente libro se repite un autor, se salta su inserción ya que se encuentra en dicha variable. Para los géneros, ocurre una lógica similar.
+
+Después se introducen los libros, y como este conjunto de datos está orientado a los libros, no deberían existir libros repetidos, por lo que no es necesario llevar un control de los ya insertados. Tras la inserción de cada libro, se introducen a su vez las relaciones de este con sus autores y géneros, aprovechando que los procesos de inserción devuelven los identificadores con los que se construyen estas relaciones.
+
+Como suele ser común en este tipo de procesos, los datos no son perfectos ni tienen por qué encajar con los formatos deseados. Por ello, en este caso, se realizan operaciones de preprocesamiento de datos tales como:
+
+\begin{itemize}
+    \item Eliminar las comillas simples en los campos de texto
+    \item En el caso de campos con valores requeridos, pero no disponibles en el conjunto de datos, aplicar un valor por defecto. Esto ocurre para la fecha de nacimiento del autor.
+    \item La fecha de publicación viene en un formato diferente, y a veces vacía. Hay que transformar este formato al especificado en la base de datos e introducir un valor por defecto para lidiar con valores vacíos.
+\end{itemize}
+
+Dado que el \textit{commit} de estas transacciones solo se realiza al finalizar la lectura del fichero CSV, esta importación se trata de un proceso ``todo o nada'', donde si algún error ocurre, ninguno de los datos serán introducidos en la base de datos.
+
 \subsection{Gestor de datos}
 
 La primera implementación de la API se introdujo en el segundo PMV (ver \underline{\nameref{pmv2}}). En este momento, al ser una fase temprana del proyecto, se carecía de una base de datos, por lo que para poner este código a prueba se introdujeron datos de prueba y lógica en la propia API, aunque esto incumpla el principio de responsabilidad única.
