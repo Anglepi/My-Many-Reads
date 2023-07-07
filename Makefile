@@ -13,6 +13,9 @@ test: clean-test
 clean-test:
 	POETRY_DOTENV_LOCATION="$(shell pwd)/test.env" poetry run python scripts/clean_test_db.py	
 
+import-data:
+	POETRY_DOTENV_LOCATION="$(shell pwd)/test.env" poetry run python scripts/import_data.py	
+
 test-nodb:
 	TEST="test" poetry run pytest
 
