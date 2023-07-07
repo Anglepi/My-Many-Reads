@@ -444,23 +444,23 @@ Existen muchos conjuntos de datos disponibles en internet, de forma gratuita, so
 
 A la hora de buscar un conjunto de datos para importar hay que tener en cuenta, además de factores de legalidad y licencias de uso, qué información incluyen, puesto que tratar con información sobrante no es problema, pero si falta información, las necesidades no se cubren.
 
-Explorando las diferentes opciones, se encontró con \href{https://zenodo.org/record/4265096}{este conjunto de datos} que incluye la inmensa mayoría de información necesaria, por no decir toda, salvo algunos valores de los que de momento se puede prescindir, como la fecha de nacimiento de los autores.
+Explorando las diferentes opciones, se encontró con \href{https://zenodo.org/record/4265096}{este conjunto de datos} que incluye la inmensa mayoría de información necesaria, salvo algunos valores de los que de momento se puede prescindir, como la fecha de nacimiento de los autores.
 
 Para importar toda esta información se ha desarrollado un \href{https://github.com/Anglepi/My-Many-Reads/blob/main/scripts/import_data.py}{\textit{script}} que procesa cada línea del fichero \textit{CSV} obtenido anteriormente y lo importa  en la base de datos. Este \textit{script} está preparado para funcionar con una base de datos vacía, si se ejecutase varias veces, duplicaría la información, ya que no comprueba si esta ya se encontraba en la base de datos.
 
 En primer lugar se van introduciendo los autores, para lo cual se almacena en una variable los ya introducidos junto con su identificador, de forma que si para un siguiente libro se repite un autor, se salta su inserción ya que se encuentra en dicha variable. Para los géneros, ocurre una lógica similar.
 
-Después se introducen los libros, y como este conjunto de datos está orientado a los libros, no deberían existir libros repetidos, por lo que no es necesario llevar un control de los ya insertados. Tras la inserción de cada libro, se introducen a su vez las relaciones de este con sus autores y géneros, aprovechando que los procesos de inserción devuelven los identificadores con los que se construyen estas relaciones.
+Después se introducen los libros, y como este conjunto de datos está orientado a los estos, no deberían existir entradas repetidas, por lo que no es necesario llevar un control de las obras ya insertadas. Tras la inserción de cada libro, se introducen a su vez las relaciones de este con sus autores y géneros, aprovechando que las consultas de inserción están diseñadas para devolver los nuevos identificadores, con los que se construyen estas relaciones.
 
-Como suele ser común en este tipo de procesos, los datos no son perfectos ni tienen por qué encajar con los formatos deseados. Por ello, en este caso, se realizan operaciones de preprocesamiento de datos tales como:
+Como suele ser común en este tipo de procesos, los datos no son perfectos ni tienen por qué encajar con los formatos deseados. Por ello, en este caso, se realizan operaciones de preprocesamiento tales como:
 
 \begin{itemize}
-    \item Eliminar las comillas simples en los campos de texto
+    \item Eliminar las comillas simples en los campos de texto, ya que rompen las consultas.
     \item En el caso de campos con valores requeridos, pero no disponibles en el conjunto de datos, aplicar un valor por defecto. Esto ocurre para la fecha de nacimiento del autor.
     \item La fecha de publicación viene en un formato diferente, y a veces vacía. Hay que transformar este formato al especificado en la base de datos e introducir un valor por defecto para lidiar con valores vacíos.
 \end{itemize}
 
-Dado que el \textit{commit} de estas transacciones solo se realiza al finalizar la lectura del fichero CSV, esta importación se trata de un proceso ``todo o nada'', donde si algún error ocurre, ninguno de los datos serán introducidos en la base de datos.
+Dado que el \textit{commit} de estas transacciones solo se realiza al finalizar la lectura del fichero CSV, esta importación se trata de un proceso ``todo o nada'', ya que si ocurre algún error, ninguno de los datos serán introducidos en la base de datos.
 
 \subsection{Gestor de datos}
 
