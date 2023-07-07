@@ -28,3 +28,6 @@ Spellchecker.results
 
 # Secrets
 *.env
+
+# Data files
+*.csv
